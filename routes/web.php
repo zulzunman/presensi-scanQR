@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ClassController;
+use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -27,5 +28,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [LoginController::class, 'dashboard'])->name('dashboard');
     Route::resource('teachers', TeacherController::class);
     Route::resource('classes', ClassController::class);
+    Route::resource('students', StudentController::class);
     Route::resource('users', UserController::class);
 });

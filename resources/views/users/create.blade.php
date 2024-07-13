@@ -20,6 +20,8 @@
                 <select id="role" name="role" required>
                     @if ($role === 'admin')
                     <option value="admin">Admin</option>
+                    <option value="teacher">Teacher</option>
+                    <option value="student">Student</option>
                         <!-- tambahkan menu lainnya untuk admin -->
                     @elseif ($role === 'teacher')
                     <option value="teacher">Teacher</option>

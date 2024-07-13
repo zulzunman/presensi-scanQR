@@ -18,10 +18,10 @@ return new class extends Migration
             $table->dropForeign(['teacher_id']);
             $table->dropColumn('teacher_id');
 
-            // Add the new foreign key and column
-            $table->unsignedBigInteger('schedule_id')->after('name');
+            // // Add the new foreign key and column
+            // $table->unsignedBigInteger('schedule_id')->after('name');
 
-            $table->foreign('schedule_id')->references('id')->on('schedules')->onDelete('cascade');
+            // $table->foreign('schedule_id')->references('id')->on('schedules')->onDelete('cascade');
         });
     }
 
@@ -33,9 +33,9 @@ return new class extends Migration
     public function down()
     {
         Schema::table('subjects', function (Blueprint $table) {
-            // Drop the new foreign key and column
-            $table->dropForeign(['schedule_id']);
-            $table->dropColumn('schedule_id');
+            // // Drop the new foreign key and column
+            // $table->dropForeign(['schedule_id']);
+            // $table->dropColumn('schedule_id');
 
             // Restore the old foreign key and column
             $table->unsignedBigInteger('teacher_id')->after('name');

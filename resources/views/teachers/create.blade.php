@@ -1,5 +1,6 @@
 <!-- resources/views/teachers/create.blade.php -->
 
+@extends('layouts.app')
 <div>
     <h2>Add Teacher</h2>
     <form method="POST" action="{{ route('teachers.store') }}">
@@ -14,7 +15,6 @@
         </div>
     </form>
 </div>
-@extends('layouts.app')
 
 @section('content')
 @endsection

@@ -14,6 +14,7 @@
         <ul>
             @if ($role === 'admin' || $role ==='teacher')
                 <li><a href="{{ route('teachers.index') }}">Manage Teachers</a></li>
+                <li><a href="{{ route('students.index') }}">Manage Students</a></li>
                 <li><a href="{{ route('users.index') }}">Manage Users</a></li>
                 <li><a href="{{ route('classes.index') }}">Manage Class</a></li>
                 <!-- tambahkan menu untuk guru jika diperlukan -->
