@@ -31,7 +31,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="class_id">Class ID</label>
+                            <label for="class_id">Class</label>
                             <select class="form-control" id="class_id" name="class_id" required>
                                 @foreach($classes as $class)
                                     <option value="{{ $class->id }}">{{ $class->name }}</option>
@@ -63,6 +63,10 @@
 
                         <button type="submit" class="btn btn-primary">Create Schedule</button>
                     </form>
+
+                    <div>
+                        <a href="{{ route('schedules.index') }}">Back to Schedule</a>
+                    </div>
                 </div>
             </div>
         </div>

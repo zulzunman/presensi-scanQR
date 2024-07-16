@@ -24,9 +24,7 @@ class ScheduleController extends Controller
 
     public function store(Request $request)
     {
-        // Validasi input
         $request->validate([
-            'class' => 'required|string|max:255',
             'subject_id' => 'required|exists:subjects,id',
             'class_id' => 'required|exists:classes,id',
             'day' => 'required|in:Monday,Tuesday,Wednesday,Thursday,Friday,Saturday',
@@ -34,19 +32,45 @@ class ScheduleController extends Controller
             'end_time' => 'required|date_format:H:i|after:start_time',
         ]);
 
-        // Buat jadwal baru
-        $schedule = Schedule::create([
-            'class' => $request->class,
-            'subject_id' => $request->subject_id,
-            'class_id' => $request->class_id,
-            'day' => $request->day,
-            'start_time' => $request->start_time,
-            'end_time' => $request->end_time,
+        Schedule::create($request->all());
+
+        return redirect()->route('schedules.index')->with('success', 'Schedule created successfully.');
+    }
+
+    public function edit($id)
+    {
+        $schedule = Schedule::findOrFail($id);
+        $subjects = Subject::all();
+        $classes = Classes::all(); // Change 'ClassModel' to the appropriate class model name
+
+        return view('schedules.edit', compact('schedule', 'subjects', 'classes'));
+    }
+
+    // Metode update
+    public function update(Request $request, $id)
+    {
+        // dd($request);
+        // Validasi input
+        $request->validate([
+            'subject_id' => 'required|exists:subjects,id',
+            'class_id' => 'required|exists:classes,id',
+            'day' => 'required|in:Monday,Tuesday,Wednesday,Thursday,Friday,Saturday',
+            // 'start_time' => 'required|date_format:H:i',
+            // 'end_time' => 'required|date_format:H:i|after:start_time',
         ]);
 
-        return response()->json([
-            'message' => 'Schedule created successfully',
-            'schedule' => $schedule,
-        ], 201);
+
+        $schedule = Schedule::findOrFail($id);
+        $schedule->update($request->all());
+
+        return redirect()->route('schedules.index')->with('success', 'Schedule updated successfully');
+    }
+
+    public function destroy($id)
+    {
+        $schedule = Schedule::findOrFail($id);
+        $schedule->delete();
+
+        return redirect()->route('schedules.index')->with('success', 'Schedule deleted successfully.');
     }
 }
