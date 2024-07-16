@@ -27,7 +27,7 @@ Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 // Route untuk dashboard berbeda berdasarkan role
 Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', [LoginController::class, 'dashboard'])->name('dashboard');
+    Route::get('/', [LoginController::class, 'dashboard'])->name('dashboard');
     Route::resource('teachers', TeacherController::class);
     Route::resource('classes', ClassController::class);
     Route::resource('students', StudentController::class);

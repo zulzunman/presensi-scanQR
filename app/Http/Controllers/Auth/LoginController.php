@@ -46,6 +46,6 @@ class LoginController extends Controller
     {
         $role = Auth::user()->role;
 
-        return view('dashboard.index', ['role' => $role]);
+        return view('index', ['role' => $role]);
     }
 }
