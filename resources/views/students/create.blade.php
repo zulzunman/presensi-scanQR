@@ -45,6 +45,7 @@
 
         <div class="form-group">
             <label for="class_id">Class:</label>
+
             <select name="class_id" id="class_id" class="form-control">
                 @foreach ($classes as $class)
                     <option value="{{ $class->id }}">{{ $class->name }}</option>

@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ClassController;
+use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -29,5 +31,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('teachers', TeacherController::class);
     Route::resource('classes', ClassController::class);
     Route::resource('students', StudentController::class);
+    Route::resource('subjects', SubjectController::class);
+    Route::resource('schedules', ScheduleController::class);
     Route::resource('users', UserController::class);
 });

@@ -1,11 +1,11 @@
-<!-- resources/views/classes/index.blade.php -->
+<!-- resources/views/subjects/index.blade.php -->
 
 @extends('layouts.app')
 
 @section('content')
     <div>
-        <h2>Classes</h2>
-        <a href="{{ route('classes.create') }}" class="btn btn-primary">Add Class</a>
+        <h2>Subjects</h2>
+        <a href="{{ route('subjects.create') }}" class="btn btn-primary">Add Subject</a>
 
         <div><a href="{{ route('dashboard') }}">Back Menu</a></div>
         <table>
@@ -16,13 +16,13 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($classes as $class)
+                @foreach ($subjects as $subject)
                     <tr>
-                        <td>{{ $class->name }}</td>
+                        <td>{{ $subject->name }}</td>
                         <td>
-                            <a href="{{ route('classes.show', $class->id) }}">View</a>
-                            <a href="{{ route('classes.edit', $class->id) }}">Edit</a>
-                            <form action="{{ route('classes.destroy', $class->id) }}" method="POST" style="display:inline;">
+                            <a href="{{ route('subjects.show', $subject->id) }}">View</a>
+                            <a href="{{ route('subjects.edit', $subject->id) }}">Edit</a>
+                            <form action="{{ route('subjects.destroy', $subject->id) }}" method="POST" style="display:inline;">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" onclick="return confirm('Are you sure?')">Delete</button>
