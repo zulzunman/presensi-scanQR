@@ -9,7 +9,9 @@
             {{ session('success') }}
         </div>
     @endif
+    @if (auth()->user()->role == 'admin')
     <a href="{{ route('schedules.create') }}" class="btn btn-primary">Add Schedule</a>
+    @endif
 
     <div><a href="{{ route('dashboard') }}">Back Menu</a></div>
     <table class="table table-bordered">
@@ -20,7 +22,9 @@
                 <th>End Time</th>
                 <th>Subject</th>
                 <th>Class</th>
+                @if (auth()->user()->role == 'admin')
                 <th>Actions</th>
+                @endif
             </tr>
         </thead>
         <tbody>
@@ -31,6 +35,7 @@
                     <td>{{ $schedule->end_time }}</td>
                     <td>{{ $schedule->subject->name }}</td>
                     <td>{{ $schedule->class->name }}</td>
+                    @if (auth()->user()->role == 'admin')
                     <td>
                         <a href="{{ route('schedules.edit', $schedule->id) }}" class="btn btn-warning">Edit</a>
                         <form action="{{ route('schedules.destroy', $schedule->id) }}" method="POST" style="display:inline;">
@@ -39,6 +44,7 @@
                             <button type="submit" class="btn btn-danger">Delete</button>
                         </form>
                     </td>
+                    @endif
                 </tr>
             @endforeach
         </tbody>

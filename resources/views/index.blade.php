@@ -12,7 +12,7 @@
 
         <!-- Menu navigasi -->
         <ul>
-            @if ($role === 'admin' || $role ==='teacher')
+            @if ($role === 'admin')
                 <li><a href="{{ route('teachers.index') }}">Manage Teachers</a></li>
                 <li><a href="{{ route('students.index') }}">Manage Students</a></li>
                 <li><a href="{{ route('users.index') }}">Manage Users</a></li>
@@ -21,7 +21,12 @@
                 <li><a href="{{ route('classes.index') }}">Manage Class</a></li>
                 <li><a href="{{ route('attendances.index') }}">Manage Attendance</a></li>
                 <!-- tambahkan menu untuk guru jika diperlukan -->
+            @elseif ($role === 'teacher')
+                <li><a href="{{ route('schedules.index') }}">Manage Schedule</a></li>
+                <li><a href="{{ route('teachers.index') }}">Manage Teachers</a></li>
+                <li><a href="{{ route('attendances.index') }}">Manage Attendance</a></li>
             @elseif ($role === 'student')
+                <li><a href="{{ route('students.index') }}">Manage Students</a></li>
                 <!-- tambahkan menu untuk siswa jika diperlukan -->
             @endif
         </ul>
