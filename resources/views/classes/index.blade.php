@@ -1,4 +1,3 @@
-<!-- resources/views/classes/index.blade.php -->
 <!DOCTYPE html>
 <html lang="en">
 

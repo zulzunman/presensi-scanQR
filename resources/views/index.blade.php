@@ -43,10 +43,10 @@
             <div class="sidebar-logo">
                 <!-- Logo Header -->
                 <div class="logo-header" data-background-color="dark">
-                    <a href="index.html" class="logo">
+                    {{-- <a href="index.html" class="logo">
                         <img src="{{ asset('assets/img/kaiadmin/logo_light.svg') }}" alt="navbar brand"
                             class="navbar-brand" height="20">
-                    </a>
+                    </a> --}}
                     <div class="nav-toggle">
                         <button class="btn btn-toggle toggle-sidebar">
                             <i class="gg-menu-right"></i>
@@ -156,10 +156,10 @@
                             <li class="nav-item topbar-user dropdown hidden-caret">
                                 <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#"
                                     aria-expanded="false">
-                                    <div class="avatar-sm">
+                                    {{-- <div class="avatar-sm">
                                         <img src="{{ asset('assets/img/profile.jpg') }}" alt="..."
                                             class="avatar-img rounded-circle">
-                                    </div>
+                                    </div> --}}
                                     <span class="profile-username">
                                         <span class="op-7">Hi,</span>
                                         <span class="fw-bold">Hizrian</span>
@@ -169,10 +169,10 @@
                                     <div class="dropdown-user-scroll scrollbar-outer">
                                         <li>
                                             <div class="user-box">
-                                                <div class="avatar-lg">
+                                                {{-- <div class="avatar-lg">
                                                     <img src="{{ asset('assets/img/profile.jpg') }}"
                                                         alt="image profile" class="avatar-img rounded">
-                                                </div>
+                                                </div> --}}
                                                 <div class="u-text">
                                                     <h4>Hizrian</h4>
                                                     <p class="text-muted">hello@example.com</p>
@@ -205,24 +205,6 @@
             </div>
         </div>
     </div>
-
-    <!-- JavaScript Files -->
-    <script src="{{ asset('style/assets/js/plugin/jquery/jquery.min.js') }}"></script>
-    <script src="{{ asset('style/assets/js/plugin/bootstrap/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('style/assets/js/plugin/bootstrap/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('style/assets/js/kaiadmin.min.js') }}"></script>
-    <script src="{{ asset('style/assets/js/plugin/datatables/datatables.min.js') }}"></script>
-    <script src="{{ asset('style/assets/js/plugin/jquery-ui/jquery-ui.min.js') }}"></script>
-    <script src="{{ asset('style/assets/js/plugin/moment/moment.min.js') }}"></script>
-    <script src="{{ asset('style/assets/js/plugin/fullcalendar/fullcalendar.min.js') }}"></script>
-    <script src="{{ asset('style/assets/js/plugin/datepicker/bootstrap-datetimepicker.min.js') }}"></script>
-    <script src="{{ asset('style/assets/js/plugin/select2/select2.full.min.js') }}"></script>
-    <script src="{{ asset('style/assets/js/plugin/scrollbar/jquery.scrollbar.min.js') }}"></script>
-    <script src="{{ asset('style/assets/js/plugin/scrollbar/scrollbar.min.js') }}"></script>
-    <script src="{{ asset('style/assets/js/plugin/chart.js/chart.min.js') }}"></script>
-    <script src="{{ asset('style/assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js') }}"></script>
-    <script src="{{ asset('style/assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js') }}"></script>
-    <script src="{{ asset('style/assets/js/plugin/sweetalert/sweetalert.min.js') }}"></script>
 </body>
 
 </html>
