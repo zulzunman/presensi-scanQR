@@ -19,6 +19,7 @@
                 <li><a href="{{ route('subjects.index') }}">Manage Subject</a></li>
                 <li><a href="{{ route('schedules.index') }}">Manage Schedule</a></li>
                 <li><a href="{{ route('classes.index') }}">Manage Class</a></li>
+                <li><a href="{{ route('attendances.index') }}">Manage Attendance</a></li>
                 <!-- tambahkan menu untuk guru jika diperlukan -->
             @elseif ($role === 'student')
                 <!-- tambahkan menu untuk siswa jika diperlukan -->
