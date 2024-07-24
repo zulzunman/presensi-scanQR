@@ -12,6 +12,14 @@
     <a href="{{ route('attendances.create') }}" class="btn btn-primary">Add Attendance</a>
 
     <div><a href="{{ route('dashboard') }}">Back Menu</a></div>
+    <div>
+        <h4>scan untuk melakukan presensi</h4><br>
+        @foreach ($teachers as $teacher )
+            <div>
+                <img src="{{ asset('assets/qrcodes/' . $teacher->qr_name) }}" alt="QR Code">
+            </div>
+        @endforeach
+    </div>
     <table class="table table-bordered">
         <thead>
             <tr>

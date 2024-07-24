@@ -6,19 +6,47 @@ use App\Models\Subject;
 use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class TeacherController extends Controller
 {
     public function index()
     {
-        $teachers = Teacher::with('user','subject')->get();
+        $user = auth()->user(); // Mendapatkan pengguna yang sedang login
+        if ($user->role == 'admin') {
+            // Jika pengguna adalah admin, tampilkan semua data guru
+            $teachers = Teacher::with('user', 'subject')->get();
+        } elseif ($user->role == 'teacher') {
+            // Jika pengguna adalah guru, tampilkan data sesuai dengan ID guru pada pengguna
+            $teachers = Teacher::with('user', 'subject')->where('user_id', $user->id)->get();
+        } else {
+            // Jika peran lain, misalnya siswa atau lainnya, bisa ditambahkan kondisi lain atau menampilkan error
+            return abort(403, 'Unauthorized action.');
+        }
+
         return view('teachers.index', compact('teachers'));
     }
 
     public function create()
     {
-        $subjects = Subject::all(); // Change 'ClassModel' to the appropriate class model name
-        $teachers = User::where('role', 'Teacher')->get();
+        $user = auth()->user(); // Mendapatkan pengguna yang sedang login
+
+        // Ambil semua subjects
+        $subjects = Subject::all();
+
+        // Cek peran pengguna dan ambil data teachers sesuai peran
+        if ($user->role == 'admin') {
+            // Jika pengguna adalah admin, ambil semua data guru
+            $teachers = User::where('role', 'Teacher')->get();
+        } elseif ($user->role == 'teacher') {
+            // Jika pengguna adalah guru, ambil data guru yang sesuai dengan ID pengguna
+            $teachers = User::where('role', 'Teacher')->where('id', $user->id)->get();
+        } else {
+            // Jika peran lain, misalnya siswa atau lainnya, bisa ditambahkan kondisi lain atau menampilkan error
+            return abort(403, 'Unauthorized action.');
+        }
         return view('teachers.create', compact('teachers', 'subjects'));
     }
 
@@ -32,9 +60,42 @@ class TeacherController extends Controller
             'subject_id' => 'required|exists:subjects,id',
         ]);
 
-        Teacher::create($request->all());
+        // Menyimpan data teacher ke database
+        $teacher = Teacher::create($request->all());
 
-        return redirect()->route('teachers.index')->with('success', 'Teacher created successfully.');
+        // Memanggil fungsi generateQr untuk menghasilkan QR code
+        $this->generateQr($teacher->id);
+
+        return redirect()->route('teachers.index')->with('success', 'Teacher created and QR code generated successfully.');
+    }
+
+    // Fungsi generateQr
+    public function generateQr($id)
+    {
+        $teacher = Teacher::findOrFail($id);
+
+        $data = [
+            'id' => $teacher->id,
+            'name' => $teacher->name,
+            'nip' => $teacher->nip,
+            'jenis_kelamin' => $teacher->jenis_kelamin,
+            'subject_id' => $teacher->subject_id
+        ];
+
+        // Generate QR code
+        $qrCode = QrCode::format('png')->size(300)->generate(json_encode($data));
+
+        // Nama file QR code
+        $fileName = 'teacher-' . $teacher->id . '.png';
+        $filePath = public_path('assets/qrcodes/' .
+        $fileName);
+
+        // Simpan QR code ke file
+        file_put_contents($filePath, $qrCode);
+
+        // Simpan nama file QR ke database
+        $teacher->qr_name = $fileName;
+        $teacher->save();
     }
 
     public function show($id)
@@ -45,9 +106,25 @@ class TeacherController extends Controller
 
     public function edit($id)
     {
+        $user = auth()->user(); // Mendapatkan pengguna yang sedang login
+
+        // Ambil data guru berdasarkan ID
         $teacher = Teacher::findOrFail($id);
-        $users = User::where('role', 'Teacher')->get();
-        $subjects = Subject::all(); // Change 'ClassModel' to the appropriate class model name
+
+        // Ambil semua subjects
+        $subjects = Subject::all();
+
+        // Cek peran pengguna dan ambil data teachers sesuai peran
+        if ($user->role == 'admin') {
+            // Jika pengguna adalah admin, ambil semua data guru
+            $users = User::where('role', 'Teacher')->get();
+        } elseif ($user->role == 'teacher') {
+            // Jika pengguna adalah guru, ambil data guru yang sesuai dengan ID pengguna
+            $users = User::where('role', 'Teacher')->where('id', $user->id)->get();
+        } else {
+            // Jika peran lain, misalnya siswa atau lainnya, bisa ditambahkan kondisi lain atau menampilkan error
+            return abort(403, 'Unauthorized action.');
+        }
 
         return view('teachers.edit', compact('teacher', 'users', 'subjects'));
     }
