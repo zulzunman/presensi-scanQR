@@ -22,12 +22,12 @@
                         <td>
                             <a href="{{ route('users.show', $user->id) }}">View</a>
                             @if ($currentUserRole === 'admin')
-                            <a href="{{ route('users.edit', $user->id) }}">Edit</a>
-                            <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" onclick="return confirm('Are you sure?')">Delete</button>
-                            </form>
+                                <a href="{{ route('users.edit', $user->id) }}">Edit</a>
+                                <form action="{{ route('users.destroy', $user->id) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" onclick="return confirm('Are you sure?')">Delete</button>
+                                </form>
                             @endif
                         </td>
                     </tr>
