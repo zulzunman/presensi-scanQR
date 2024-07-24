@@ -5,13 +5,32 @@ namespace App\Http\Controllers;
 use App\Models\Classes;
 use App\Models\Schedule;
 use App\Models\Subject;
+use App\Models\Teacher;
 use Illuminate\Http\Request;
 
 class ScheduleController extends Controller
 {
     public function index()
     {
-        $schedules = Schedule::with('class','subject')->get(); // Make sure the relationship name is correct
+        // Dapatkan user yang sedang login
+        $user = auth()->user();
+
+        // Cek hak akses user
+        if ($user->role == 'admin') {
+            // Jika user adalah admin, ambil semua data schedule
+            $schedules = Schedule::with('class', 'subject')->get();
+        } elseif ($user->role == 'teacher') {
+            // Jika user adalah teacher, ambil data schedule sesuai subject_id yang terkait dengan user
+            $teacher = Teacher::with('user', 'subject')->where('user_id', $user->id)->get();
+            $subjectIds = $teacher->pluck('subject_id'); // Asumsikan user memiliki relasi 'subjects'
+            $schedules = Schedule::with('class', 'subject')
+                                ->whereIn('subject_id', $subjectIds)
+                                ->get();
+        } else {
+            // Jika user tidak memiliki hak akses yang sesuai
+            $schedules = collect(); // Mengembalikan koleksi kosong atau lakukan tindakan lainnya
+        }
+
         return view('schedules.index', compact('schedules'));
     }
 

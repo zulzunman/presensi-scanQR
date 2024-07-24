@@ -9,7 +9,9 @@
             {{ session('success') }}
         </div>
     @endif
+    @if (auth()->user()->role == 'admin')
     <a href="{{ route('students.create') }}" class="btn btn-primary">Add Student</a>
+    @endif
 
     <div><a href="{{ route('dashboard') }}">Back Menu</a></div>
     <table class="table table-bordered">
@@ -33,11 +35,13 @@
                     <td>{{ $student->class->name }}</td>
                     <td>
                         <a href="{{ route('students.edit', $student->id) }}" class="btn btn-warning">Edit</a>
+                        @if (auth()->user()->role == 'admin')
                         <form action="{{ route('students.destroy', $student->id) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn btn-danger">Delete</button>
                         </form>
+                        @endif
                     </td>
                 </tr>
             @endforeach

@@ -4,13 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class Attendance extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'student_id', 'schedule_id', 'date', 'time', 'location',
+        'student_id', 'teacher_id', 'date', 'time', 'location',
     ];
 
     public function student()
@@ -18,8 +19,14 @@ class Attendance extends Model
         return $this->belongsTo(Student::class);
     }
 
-    public function schedule()
+    public function teacher()
     {
-        return $this->belongsTo(Schedule::class);
+        return $this->belongsTo(Teacher::class);
+    }
+
+    public static function generateQrCode($teacher_id)
+    {
+        $data = route('attendances.scan', ['teacher_id' => $teacher_id]);
+        return QrCode::size(300)->generate($data);
     }
 }

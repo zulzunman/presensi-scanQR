@@ -49,6 +49,7 @@
                             class="navbar-brand" height="20">
                     </a> --}}
                     <div class="nav-toggle">
+                        <h1>Welcome {{ ucfirst($role) }}!</h1>
                         <button class="btn btn-toggle toggle-sidebar">
                             <i class="gg-menu-right"></i>
                         </button>
@@ -73,48 +74,82 @@
                                     <span></span>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a href="{{ route('teachers.index') }}">
-                                    <i class="far fa-chart-bar"></i>
-                                    <p>Manage Teachers</p>
-                                </a>
-                            </li>
+                            @if ($role === 'admin')
+                                <li class="nav-item">
+                                    <a href="{{ route('teachers.index') }}">
+                                        <i class="far fa-chart-bar"></i>
+                                        <p>Manage Teachers</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('students.index') }}">
+                                        <i class="far fa-chart-bar"></i>
+                                        <p>Manage Students</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('users.index') }}">
+                                        <i class="far fa-chart-bar"></i>
+                                        <p>Manage Users</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('subjects.index') }}">
+                                        <i class="far fa-chart-bar"></i>
+                                        <p>Manage Subject</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('schedules.index') }}">
+                                        <i class="far fa-chart-bar"></i>
+                                        <p>Manage Schedule</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('classes.index') }}">
+                                        <i class="far fa-chart-bar"></i>
+                                        <p>Manage Class</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('attendances.index') }}">
+                                        <i class="far fa-chart-bar"></i>
+                                        <p>Manage Attendance</p>
+                                    </a>
+                                </li>
+                            @elseif ($role === 'teacher')
+                                <li class="nav-item">
+                                    <a href="{{ route('schedules.index') }}">
+                                        <i class="far fa-chart-bar"></i>
+                                        <p>Manage Schedule</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('teachers.index') }}">
+                                        <i class="far fa-chart-bar"></i>
+                                        <p>Manage Teachers</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('attendances.index') }}">
+                                        <i class="far fa-chart-bar"></i>
+                                        <p>Manage Attendance</p>
+                                    </a>
+                                </li>
+                            @endif
+                        @elseif ($role === 'student')
                             <li class="nav-item">
                                 <a href="{{ route('students.index') }}">
                                     <i class="far fa-chart-bar"></i>
                                     <p>Manage Students</p>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a href="{{ route('users.index') }}">
-                                    <i class="far fa-chart-bar"></i>
-                                    <p>Manage Users</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('subjects.index') }}">
-                                    <i class="far fa-chart-bar"></i>
-                                    <p>Manage Subject</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('schedules.index') }}">
-                                    <i class="far fa-chart-bar"></i>
-                                    <p>Manage Schedule</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('classes.index') }}">
-                                    <i class="far fa-chart-bar"></i>
-                                    <p>Manage Class</p>
-                                </a>
-                            </li>
-                        @elseif ($role === 'student')
-                            <!-- Add student-specific menu items here if any -->
+                            <!-- tambahkan menu untuk siswa jika diperlukan -->
                         @endif
                     </ul>
                 </div>
             </div>
+
         </div>
         <!-- End Sidebar -->
 
@@ -149,11 +184,13 @@
                                 </ul>
                             </li>
                             <li class="nav-item topbar-icon dropdown hidden-caret">
-                                <a class="nav-link dropdown-toggle" href="#" id="messageDropdown" role="button"
-                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <a class="nav-link dropdown-toggle" href="#" id="messageDropdown"
+                                    role="button" data-bs-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false">
                                     <i class="fa fa-envelope"></i>
                                 </a>
                             </li>
+
                             <li class="nav-item topbar-user dropdown hidden-caret">
                                 <a class="dropdown-toggle profile-pic" data-bs-toggle="dropdown" href="#"
                                     aria-expanded="false">
@@ -178,7 +215,8 @@
                                                     <h4>Hizrian</h4>
                                                     <p class="text-muted">hello@example.com</p>
                                                     <a href="profile.html"
-                                                        class="btn btn-xs btn-secondary btn-sm">View Profile</a>
+                                                        class="btn btn-xs btn-secondary btn-sm">View
+                                                        Profile</a>
                                                 </div>
                                             </div>
                                         </li>
@@ -198,10 +236,11 @@
                 </nav>
                 <!-- End Navbar -->
             </div>
-
+            <!-- Menu navigasi -->
             <div class="container">
                 <div class="page-inner">
-                    @yield('content') <!-- Placeholder for main content -->
+                    @yield('content')
+                    <!-- Placeholder for main content -->
                 </div>
             </div>
         </div>
