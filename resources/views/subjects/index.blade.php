@@ -1,36 +1,179 @@
-<!-- resources/views/subjects/index.blade.php -->
+<!DOCTYPE html>
+<html lang="en">
 
-@extends('layouts.app')
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Class Management - Kaiadmin Bootstrap 5 Admin Dashboard</title>
+    <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
+    <link rel="icon" href="{{ asset('style/assets/img/kaiadmin/favicon.ico') }}" type="image/x-icon" />
 
-@section('content')
-    <div>
-        <h2>Subjects</h2>
-        <a href="{{ route('subjects.create') }}" class="btn btn-primary">Add Subject</a>
+    <!-- Fonts and icons -->
+    <script src="{{ asset('style/assets/js/plugin/webfont/webfont.min.js') }}"></script>
+    <script>
+        WebFont.load({
+            google: {
+                families: ["Public Sans:300,400,500,600,700"]
+            },
+            custom: {
+                families: [
+                    "Font Awesome 5 Solid",
+                    "Font Awesome 5 Regular",
+                    "Font Awesome 5 Brands",
+                    "simple-line-icons",
+                ],
+                urls: ["{{ asset('style/assets/css/fonts.min.css') }}"],
+            },
+            active: function() {
+                sessionStorage.fonts = true;
+            },
+        });
+    </script>
 
-        <div><a href="{{ route('dashboard') }}">Back Menu</a></div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($subjects as $subject)
-                    <tr>
-                        <td>{{ $subject->name }}</td>
-                        <td>
-                            <a href="{{ route('subjects.show', $subject->id) }}">View</a>
-                            <a href="{{ route('subjects.edit', $subject->id) }}">Edit</a>
-                            <form action="{{ route('subjects.destroy', $subject->id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" onclick="return confirm('Are you sure?')">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="{{ asset('style/assets/css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('style/assets/css/plugins.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('style/assets/css/kaiadmin.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('style/assets/css/demo.css') }}" />
+
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="main-panel">
+            <div class="container">
+                <div class="page-inner">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    @if (session('success'))
+                                        <script>
+                                            document.addEventListener("DOMContentLoaded", function() {
+                                                Swal.fire({
+                                                    title: 'Success!',
+                                                    text: '{{ session('success') }}',
+                                                    icon: 'success',
+                                                    confirmButtonText: 'OK'
+                                                });
+                                            });
+                                        </script>
+                                    @endif
+                                    <div class="d-flex align-items-center">
+                                        <h4 class="card-title">List Subject</h4>
+                                        <button class="btn btn-primary btn-round ms-auto" data-bs-toggle="modal"
+                                            data-bs-target="#createSubjectModal">
+                                            <i class="fa fa-plus"></i>
+                                            Add Subject
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table id="add-row" class="display table table-striped table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th style="width: 10%">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($subjects as $subject)
+                                                    <tr>
+                                                        <td>{{ $subject->name }}</td>
+                                                        <td>
+                                                            <div class="form-button-action">
+                                                                <button class="btn btn-link btn-primary btn-lg"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#viewSubjectModal{{ $subject->id }}">
+                                                                    <i class="fas fa-list"></i>
+                                                                </button>
+                                                                <button class="btn btn-link btn-primary btn-lg"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-target="#editSubjectModal{{ $subject->id }}">
+                                                                    <i class="fa fa-edit"></i>
+                                                                </button>
+                                                                <form
+                                                                    action="{{ route('subjects.destroy', $subject->id) }}"
+                                                                    method="POST" class="delete-form"
+                                                                    data-name="{{ $subject->name }}">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="button" data-bs-toggle="tooltip"
+                                                                        title="Remove"
+                                                                        class="btn btn-link btn-danger delete-btn">
+                                                                        <i class="fa fa-times"></i>
+                                                                    </button>
+                                                                </form>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    @include('subjects.show', ['subject' => $subject])
+                                                    @include('subjects.edit', ['subject' => $subject])
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            @include('subjects.create')
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-@endsection
+
+    <!-- JS Files -->
+    <script src="{{ asset('style/assets/js/core/jquery-3.7.1.min.js') }}"></script>
+    <script src="{{ asset('style/assets/js/core/popper.min.js') }}"></script>
+    <script src="{{ asset('style/assets/js/core/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('style/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js') }}"></script>
+    <script src="{{ asset('style/assets/js/plugin/datatables/datatables.min.js') }}"></script>
+    <script src="{{ asset('style/assets/js/kaiadmin.min.js') }}"></script>
+    <script src="{{ asset('style/assets/js/setting-demo2.js') }}"></script>
+
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        @if (session('success'))
+            Swal.fire({
+                title: 'Success!',
+                text: '{{ session('success') }}',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            });
+        @endif
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Konfirmasi penghapusan
+            const deleteButtons = document.querySelectorAll('.delete-btn');
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    const form = button.closest('.delete-form');
+                    const subjectName = form.getAttribute('data-name');
+
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: `Do you want to delete the subject : ${subjectName}?`,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
