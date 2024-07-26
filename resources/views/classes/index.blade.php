@@ -33,9 +33,11 @@
     <link rel="stylesheet" href="{{ asset('style/assets/css/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('style/assets/css/plugins.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('style/assets/css/kaiadmin.min.css') }}" />
-
-    <!-- CSS Just for demo purpose, don't include it in your project -->
     <link rel="stylesheet" href="{{ asset('style/assets/css/demo.css') }}" />
+
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
 </head>
 
 <body>
@@ -47,6 +49,18 @@
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
+                                    @if (session('success'))
+                                        <script>
+                                            document.addEventListener("DOMContentLoaded", function() {
+                                                Swal.fire({
+                                                    title: 'Success!',
+                                                    text: '{{ session('success') }}',
+                                                    icon: 'success',
+                                                    confirmButtonText: 'OK'
+                                                });
+                                            });
+                                        </script>
+                                    @endif
                                     <div class="d-flex align-items-center">
                                         <h4 class="card-title">List Class</h4>
                                         <button class="btn btn-primary btn-round ms-auto" data-bs-toggle="modal"
@@ -83,13 +97,13 @@
                                                                 </button>
                                                                 <form
                                                                     action="{{ route('classes.destroy', $class->id) }}"
-                                                                    method="POST" style="display:inline;">
+                                                                    method="POST" class="delete-form"
+                                                                    data-name="{{ $class->name }}">
                                                                     @csrf
                                                                     @method('DELETE')
-                                                                    <button type="submit"
-                                                                        onclick="return confirm('Are you sure delete this class?')"
-                                                                        data-bs-toggle="tooltip" title="Remove"
-                                                                        class="btn btn-link btn-danger">
+                                                                    <button type="button" data-bs-toggle="tooltip"
+                                                                        title="Remove"
+                                                                        class="btn btn-link btn-danger delete-btn">
                                                                         <i class="fa fa-times"></i>
                                                                     </button>
                                                                 </form>
@@ -121,11 +135,44 @@
     <script src="{{ asset('style/assets/js/kaiadmin.min.js') }}"></script>
     <script src="{{ asset('style/assets/js/setting-demo2.js') }}"></script>
 
-    <!-- Notifikasi penghapusan -->
+    <!-- SweetAlert2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         @if (session('success'))
-            alert('{{ session('success') }}');
+            Swal.fire({
+                title: 'Success!',
+                text: '{{ session('success') }}',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            });
         @endif
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Konfirmasi penghapusan
+            const deleteButtons = document.querySelectorAll('.delete-btn');
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    const form = button.closest('.delete-form');
+                    const className = form.getAttribute('data-name');
+
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: `Do you want to delete the class: ${className}?`,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                });
+            });
+        });
     </script>
 </body>
 
