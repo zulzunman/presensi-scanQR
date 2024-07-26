@@ -8,7 +8,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p><strong>Name:</strong> {{ $class->name }}</p>
+                <p><strong>Name :</strong> {{ $class->name }}</p>
             </div>
         </div>
     </div>

@@ -11,8 +11,8 @@
                 <form method="POST" action="{{ route('subjects.store') }}">
                     @csrf
                     <div class="form-group">
-                        <label for="name">Name:</label>
-                        <input type="text" id="name" name="name" class="form-control" required>
+                        <label for="name">Name :</label>
+                        <input type="text" id="name" name="name" class="form-control" placeholder="Name">
                     </div>
                     <div class="form-group d-flex justify-content-end mt-3">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
