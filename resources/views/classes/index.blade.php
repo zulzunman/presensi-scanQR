@@ -159,7 +159,7 @@
 
                     Swal.fire({
                         title: 'Are you sure?',
-                        text: `Do you want to delete the class: ${className}?`,
+                        text: `Do you want to delete the class : ${className}?`,
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',
