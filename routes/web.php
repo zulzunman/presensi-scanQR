@@ -36,4 +36,5 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('schedules', ScheduleController::class);
     Route::resource('attendances', AttendanceController::class);
     Route::resource('users', UserController::class);
+    Route::post('/scan-qr', [AttendanceController::class, 'showScanPage'])->name('save.scanned.data');
 });

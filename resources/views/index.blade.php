@@ -144,6 +144,12 @@
                                     <p>Manage Students</p>
                                 </a>
                             </li>
+                            <li class="nav-item">
+                                <a href="{{ route('attendances.index') }}">
+                                    <i class="far fa-chart-bar"></i>
+                                    <p>Manage Attendance</p>
+                                </a>
+                            </li>
                             <!-- tambahkan menu untuk siswa jika diperlukan -->
                         @endif
                         <a href="{{ route('logout') }}"
