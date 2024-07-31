@@ -49,18 +49,6 @@
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-header">
-                                    @if (session('success'))
-                                        <script>
-                                            document.addEventListener("DOMContentLoaded", function() {
-                                                Swal.fire({
-                                                    title: 'Success!',
-                                                    text: '{{ session('success') }}',
-                                                    icon: 'success',
-                                                    confirmButtonText: 'OK'
-                                                });
-                                            });
-                                        </script>
-                                    @endif
                                     <div class="d-flex align-items-center">
                                         <h4 class="card-title">List Users</h4>
                                         <button class="btn btn-primary btn-round ms-auto" data-bs-toggle="modal"
@@ -162,11 +150,11 @@
                 button.addEventListener('click', function(event) {
                     event.preventDefault();
                     const form = button.closest('.delete-form');
-                    const subjectName = form.getAttribute('data-name');
+                    const className = form.getAttribute('data-name');
 
                     Swal.fire({
                         title: 'Are you sure?',
-                        text: `Do you want to delete the subject : ${userName}?`,
+                        text: `Do you want to delete the user : ${className}?`,
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',

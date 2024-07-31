@@ -15,6 +15,10 @@ class ScheduleController extends Controller
         // Dapatkan user yang sedang login
         $user = auth()->user();
 
+        // Ambil data subjects dan classes untuk digunakan dalam modals
+        $subjects = Subject::all();
+        $classes = Classes::all();
+
         // Cek hak akses user
         if ($user->role == 'admin') {
             // Jika user adalah admin, ambil semua data schedule
@@ -24,14 +28,14 @@ class ScheduleController extends Controller
             $teacher = Teacher::with('user', 'subject')->where('user_id', $user->id)->get();
             $subjectIds = $teacher->pluck('subject_id'); // Asumsikan user memiliki relasi 'subjects'
             $schedules = Schedule::with('class', 'subject')
-                                ->whereIn('subject_id', $subjectIds)
-                                ->get();
+                ->whereIn('subject_id', $subjectIds)
+                ->get();
         } else {
             // Jika user tidak memiliki hak akses yang sesuai
             $schedules = collect(); // Mengembalikan koleksi kosong atau lakukan tindakan lainnya
         }
 
-        return view('schedules.index', compact('schedules'));
+        return view('schedules.index', compact('schedules', 'subjects', 'classes'));
     }
 
     public function create()
