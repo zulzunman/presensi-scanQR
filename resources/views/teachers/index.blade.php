@@ -5,8 +5,13 @@
 <div>
     <h2>Teachers</h2>
 
-    @if ($teachers->isEmpty())
+    @if (auth()->user()->role == 'admin')
         <a href="{{ route('teachers.create') }}" class="btn btn-primary">Add Teacher</a>
+    @elseif (auth()->user()->role == 'teacher')
+    @if ($teachers->isEmpty())
+            <a href="{{ route('teachers.create') }}" class="btn btn-primary">Add Teacher</a>
+            <!-- Tampilan khusus untuk teacher jika $teachers kosong -->
+        @endif
     @endif
 
     <div><a href="{{ route('dashboard') }}">Back Menu</a></div>
