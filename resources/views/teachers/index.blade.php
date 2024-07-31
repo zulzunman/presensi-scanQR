@@ -14,6 +14,7 @@
         @endif
     @endif
 
+
     <div><a href="{{ route('dashboard') }}">Back Menu</a></div>
     <div class="container">
         @if (session('success'))
