@@ -18,18 +18,19 @@ class ScheduleController extends Controller
         // Ambil data subjects dan classes untuk digunakan dalam modals
         $subjects = Subject::all();
         $classes = Classes::all();
+        $perPage = 10; // Jumlah item per halaman
 
         // Cek hak akses user
         if ($user->role == 'admin') {
             // Jika user adalah admin, ambil semua data schedule
-            $schedules = Schedule::with('class', 'subject')->get();
+            $schedules = Schedule::with('class', 'subject')->paginate($perPage);
         } elseif ($user->role == 'teacher') {
             // Jika user adalah teacher, ambil data schedule sesuai subject_id yang terkait dengan user
-            $teacher = Teacher::with('user', 'subject')->where('user_id', $user->id)->get();
+            $teacher = Teacher::with('user', 'subject')->where('user_id', $user->id)->paginate($perPage);
             $subjectIds = $teacher->pluck('subject_id'); // Asumsikan user memiliki relasi 'subjects'
             $schedules = Schedule::with('class', 'subject')
                 ->whereIn('subject_id', $subjectIds)
-                ->get();
+                ->paginate($perPage);
         } else {
             // Jika user tidak memiliki hak akses yang sesuai
             $schedules = collect(); // Mengembalikan koleksi kosong atau lakukan tindakan lainnya

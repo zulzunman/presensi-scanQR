@@ -15,12 +15,13 @@ class TeacherController extends Controller
     public function index()
     {
         $user = auth()->user(); // Mendapatkan pengguna yang sedang login
+        $perPage = 10; // Jumlah item per halaman
         if ($user->role == 'admin') {
             // Jika pengguna adalah admin, tampilkan semua data guru
-            $teachers = Teacher::with('user', 'subject')->get();
+            $teachers = Teacher::with('user', 'subject')->paginate($perPage);
         } elseif ($user->role == 'teacher') {
             // Jika pengguna adalah guru, tampilkan data sesuai dengan ID guru pada pengguna
-            $teachers = Teacher::with('user', 'subject')->where('user_id', $user->id)->get();
+            $teachers = Teacher::with('user', 'subject')->where('user_id', $user->id)->paginate($perPage);
         } else {
             // Jika peran lain, misalnya siswa atau lainnya, bisa ditambahkan kondisi lain atau menampilkan error
             return abort(403, 'Unauthorized action.');
@@ -87,8 +88,7 @@ class TeacherController extends Controller
 
         // Nama file QR code
         $fileName = 'teacher-' . $teacher->id . '.png';
-        $filePath = public_path('assets/qrcodes/' .
-        $fileName);
+        $filePath = public_path('assets/qrcodes/' . $fileName);
 
         // Simpan QR code ke file
         file_put_contents($filePath, $qrCode);
@@ -96,7 +96,36 @@ class TeacherController extends Controller
         // Simpan nama file QR ke database
         $teacher->qr_name = $fileName;
         $teacher->save();
+
+        return response()->json(['file_path' => asset('assets/qrcodes/' . $fileName)]);
     }
+    // public function generateQr($id)
+    // {
+    //     $teacher = Teacher::findOrFail($id);
+
+    //     $data = [
+    //         'id' => $teacher->id,
+    //         'name' => $teacher->name,
+    //         'nip' => $teacher->nip,
+    //         'jenis_kelamin' => $teacher->jenis_kelamin,
+    //         'subject_id' => $teacher->subject_id
+    //     ];
+
+    //     // Generate QR code
+    //     $qrCode = QrCode::format('png')->size(300)->generate(json_encode($data));
+
+    //     // Nama file QR code
+    //     $fileName = 'teacher-' . $teacher->id . '.png';
+    //     $filePath = public_path('assets/qrcodes/' .
+    //     $fileName);
+
+    //     // Simpan QR code ke file
+    //     file_put_contents($filePath, $qrCode);
+
+    //     // Simpan nama file QR ke database
+    //     $teacher->qr_name = $fileName;
+    //     $teacher->save();
+    // }
 
     public function show($id)
     {

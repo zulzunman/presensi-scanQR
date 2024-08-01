@@ -11,7 +11,8 @@ class StudentController extends Controller
 {
     public function index()
     {
-        $students = Student::with('class')->get(); // Make sure the relationship name is correct
+        $perPage = 10; // Jumlah item per halaman
+        $students = Student::with('class')->paginate($perPage); // Make sure the relationship name is correct
         return view('students.index', compact('students'));
     }
 
