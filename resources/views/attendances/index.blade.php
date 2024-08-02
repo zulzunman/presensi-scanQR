@@ -32,7 +32,6 @@
     @endif
     <div><a href="{{ route('dashboard') }}">Back Menu</a></div>
     <div>
-        @endforeach
         @if (auth()->user()->role == 'student')
             <div class="card">
                 <div class="card-header">
@@ -46,9 +45,13 @@
         <h4>scan untuk melakukan presensi</h4><br>
         @foreach ($teachers as $teacher )
             <div>
+                <!-- Tombol untuk meregenerasi QR code -->
+                <button id="regenerate-qr-button" data-id="{{ $teacher->id }}">Regenerate QR Code</button>
+
+                <!-- Menampilkan QR code -->
                 <img id="qr-code-{{ $teacher->id }}" src="{{ asset('assets/qrcodes/' . $teacher->qr_name) }}" alt="QR Code">
-                <!-- <img src="{{ asset('assets/qrcodes/' . $teacher->qr_name) }}" alt="QR Code"> -->
             </div>
+        @endforeach
         @endif
     </div>
     <table class="table table-bordered">
@@ -76,7 +79,44 @@
 
 @section('scripts')
 <script>
+    // Auto click the "Regenerate QR" button every 5 seconds (5000 milliseconds)
+    function autoClickButton() {
+        document.getElementById('regenerate-qr-button').click();
+        setTimeout(autoClickButton, 5000);
+    }
+
+    // Start the auto-click process
+    autoClickButton();
+
+    $(document).ready(function() {
+        $('#regenerate-qr-button').click(function() {
+            var teacherId = $(this).data('id');
+
+            $.ajax({
+                url: '/user/' + teacherId + '/regenerate-qr-code',
+                type: 'GET',
+                success: function(response) {
+                    if (response.status) {
+                        // Update the QR code image src with a timestamp to avoid caching
+                        $('#qr-code-' + teacherId).attr('src', response.file_path + '?t=' + new Date().getTime());
+                        // alert('QR Code regenerated successfully');
+                    } else {
+                        alert('Failed to regenerate QR code: ' + response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    alert('An error occurred: ' + xhr.responseText);
+                }
+            });
+        });
+    });
+
     document.addEventListener('DOMContentLoaded', (event) => {
+        // Auto click the "Book Now" button after 5 seconds (5000 milliseconds)
+        setTimeout(function() {
+            document.getElementById('bookNowButton').click();
+        }, 5000);
+
         function onScanSuccess(decodedText, decodedResult) {
 
             // Send data to server

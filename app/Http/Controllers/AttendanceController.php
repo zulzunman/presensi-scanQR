@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Attendance;
 use App\Models\Student;
 use App\Models\Teacher;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Storage;
 
@@ -50,4 +53,57 @@ class AttendanceController extends Controller
         // Mengembalikan respons JSON
         return response()->json(['status' => 'success', 'message' => 'Data saved successfully!']);
     }
+
+    public function regenerateQrCode($id)
+    {
+        try {
+            // Cari teacher berdasarkan ID
+            $teacher = Teacher::findOrFail($id);
+
+            // Tentukan path untuk menyimpan QR code
+            $fileName = 'teacher-' . $teacher->id . '.png';
+            $filePath = public_path('assets/qrcodes/' . $fileName);
+
+            // Hapus QR code yang lama jika ada
+            if (File::exists($filePath)) {
+                File::delete($filePath);
+                Log::info("Deleted old QR code for teacher ID: {$teacher->id}");
+            }
+
+            // Data untuk QR code dengan pola yang berbeda (misalnya, menambahkan timestamp)
+            $data = [
+                'id' => $teacher->id,
+                'name' => $teacher->name,
+                'nip' => $teacher->nip,
+                'jenis_kelamin' => $teacher->jenis_kelamin,
+                'subject_id' => $teacher->subject_id,
+                'timestamp' => Carbon::now()->toDateTimeString() // Tambahkan timestamp
+            ];
+
+            // Generate QR code baru
+            $qrCode = QrCode::format('png')->size(300)->generate(json_encode($data));
+
+            // Simpan QR code ke file
+            file_put_contents($filePath, $qrCode);
+            Log::info("Generated new QR code for teacher ID: {$teacher->id}");
+
+            // Simpan nama file QR ke database
+            $teacher->qr_name = $fileName;
+            $teacher->save();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'QR Code regenerated successfully',
+                'file_path' => asset('assets/qrcodes/' . $fileName)
+            ], 200);
+        } catch (\Exception $e) {
+            Log::error("Failed to regenerate QR code: " . $e->getMessage());
+            return response()->json([
+                'status' => false,
+                'message' => 'Failed to regenerate QR code',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
 }

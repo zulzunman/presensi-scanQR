@@ -99,33 +99,6 @@ class TeacherController extends Controller
 
         return response()->json(['file_path' => asset('assets/qrcodes/' . $fileName)]);
     }
-    // public function generateQr($id)
-    // {
-    //     $teacher = Teacher::findOrFail($id);
-
-    //     $data = [
-    //         'id' => $teacher->id,
-    //         'name' => $teacher->name,
-    //         'nip' => $teacher->nip,
-    //         'jenis_kelamin' => $teacher->jenis_kelamin,
-    //         'subject_id' => $teacher->subject_id
-    //     ];
-
-    //     // Generate QR code
-    //     $qrCode = QrCode::format('png')->size(300)->generate(json_encode($data));
-
-    //     // Nama file QR code
-    //     $fileName = 'teacher-' . $teacher->id . '.png';
-    //     $filePath = public_path('assets/qrcodes/' .
-    //     $fileName);
-
-    //     // Simpan QR code ke file
-    //     file_put_contents($filePath, $qrCode);
-
-    //     // Simpan nama file QR ke database
-    //     $teacher->qr_name = $fileName;
-    //     $teacher->save();
-    // }
 
     public function show($id)
     {
