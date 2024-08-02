@@ -12,16 +12,16 @@ class UserController extends Controller
     public function index()
     {
         $currentUserRole = auth()->user()->role;
+        $perPage = 1000000000000; // Jumlah item per halaman
 
         if ($currentUserRole == 'teacher') {
-            $users = User::where('role', '!=', 'admin')->get();
+            $users = User::where('role', '!=', 'admin')->paginate($perPage);
         } else {
-            $users = User::all();
+            $users = User::paginate($perPage);
         }
 
         return view('users.index', compact('users', 'currentUserRole'));
     }
-
     public function create()
     {
         $role = Auth::user()->role;

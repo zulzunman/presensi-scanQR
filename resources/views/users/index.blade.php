@@ -35,6 +35,9 @@
     <link rel="stylesheet" href="{{ asset('style/assets/css/kaiadmin.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('style/assets/css/demo.css') }}" />
 
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="{{ asset('style/assets/js/plugin/datatables/datatables.min.css') }}" />
+
     <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
@@ -60,7 +63,7 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="table-responsive">
-                                        <table id="add-row" class="display table table-striped table-hover">
+                                        <table id="user-table" class="display table table-striped table-hover">
                                             <thead>
                                                 <tr>
                                                     <th>Username</th>
@@ -87,7 +90,7 @@
                                                                 </button>
                                                                 <form action="{{ route('users.destroy', $user->id) }}"
                                                                     method="POST" class="delete-form"
-                                                                    data-name="{{ $user->name }}">
+                                                                    data-name="{{ $user->username }}">
                                                                     @csrf
                                                                     @method('DELETE')
                                                                     <button type="button" data-bs-toggle="tooltip"
@@ -107,68 +110,80 @@
                                                 @endforeach
                                             </tbody>
                                         </table>
+                                        @include('users.create', [
+                                            'user' => $user,
+                                            'role' => $currentUserRole,
+                                        ])
                                     </div>
                                 </div>
                             </div>
-                            @include('users.create', [
-                                'user' => $user,
-                                'role' => $currentUserRole,
-                            ])
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
 
-    <!-- JS Files -->
-    <script src="{{ asset('style/assets/js/core/jquery-3.7.1.min.js') }}"></script>
-    <script src="{{ asset('style/assets/js/core/popper.min.js') }}"></script>
-    <script src="{{ asset('style/assets/js/core/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('style/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js') }}"></script>
-    <script src="{{ asset('style/assets/js/plugin/datatables/datatables.min.js') }}"></script>
-    <script src="{{ asset('style/assets/js/kaiadmin.min.js') }}"></script>
-    <script src="{{ asset('style/assets/js/setting-demo2.js') }}"></script>
+                <!-- JS Files -->
+                <script src="{{ asset('style/assets/js/core/jquery-3.7.1.min.js') }}"></script>
+                <script src="{{ asset('style/assets/js/core/popper.min.js') }}"></script>
+                <script src="{{ asset('style/assets/js/core/bootstrap.min.js') }}"></script>
+                <script src="{{ asset('style/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js') }}"></script>
+                <script src="{{ asset('style/assets/js/plugin/datatables/datatables.min.js') }}"></script>
+                <script src="{{ asset('style/assets/js/kaiadmin.min.js') }}"></script>
+                <script src="{{ asset('style/assets/js/setting-demo2.js') }}"></script>
 
-    <!-- SweetAlert2 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                <!-- SweetAlert2 JS -->
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <script>
-        @if (session('success'))
-            Swal.fire({
-                title: 'Success!',
-                text: '{{ session('success') }}',
-                icon: 'success',
-                confirmButtonText: 'OK'
-            });
-        @endif
+                <script>
+                    @if (session('success'))
+                        Swal.fire({
+                            title: 'Success!',
+                            text: '{{ session('success') }}',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        });
+                    @endif
 
-        document.addEventListener('DOMContentLoaded', function() {
-            // Konfirmasi penghapusan
-            const deleteButtons = document.querySelectorAll('.delete-btn');
-            deleteButtons.forEach(button => {
-                button.addEventListener('click', function(event) {
-                    event.preventDefault();
-                    const form = button.closest('.delete-form');
-                    const className = form.getAttribute('data-name');
+                    $(document).ready(function() {
+                        // Konfirmasi penghapusan
+                        const deleteButtons = document.querySelectorAll('.delete-btn');
+                        deleteButtons.forEach(button => {
+                            button.addEventListener('click', function(event) {
+                                event.preventDefault();
+                                const form = button.closest('.delete-form');
+                                const username = form.getAttribute('data-name');
 
-                    Swal.fire({
-                        title: 'Are you sure?',
-                        text: `Do you want to delete the user : ${className}?`,
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes, delete it!'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            form.submit();
-                        }
+                                Swal.fire({
+                                    title: 'Are you sure?',
+                                    text: `Do you want to delete the user: ${username}?`,
+                                    icon: 'warning',
+                                    showCancelButton: true,
+                                    confirmButtonColor: '#3085d6',
+                                    cancelButtonColor: '#d33',
+                                    confirmButtonText: 'Yes, delete it!'
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        form.submit();
+                                    }
+                                });
+                            });
+                        });
+
+                        $('#user-table').DataTable({
+                            pageLength: 5, // Set number of rows per page
+                            lengthChange: true, // Allow changing the number of rows per page
+                            searching: true, // Enable the search box
+                            info: true, // Enable the information text
+                            paging: true, // Enable pagination
+                            ordering: true, // Enable column ordering
+                            language: {
+                                paginate: {
+                                    next: 'Next', // or '>'
+                                    previous: 'Previous' // or '<'
+                                }
+                            }
+                        });
                     });
-                });
-            });
-        });
-    </script>
+                </script>
 </body>
 
 </html>
