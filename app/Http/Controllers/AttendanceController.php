@@ -18,7 +18,7 @@ class AttendanceController extends Controller
     public function index()
     {
 
-        $role = Auth::user()->role;
+        // $role = Auth::user()->role;
 
         $user = auth()->user(); // Mendapatkan pengguna yang sedang login
         if ($user->role == 'admin') {
@@ -36,7 +36,7 @@ class AttendanceController extends Controller
             $teachers = Teacher::with('user', 'subject')->where('user_id', $user->id)->get();
             return view('attendances.index', compact('attendances', 'teachers'));
         }
-        return view('attendances.index', compact('attendances', 'teachers', 'role'));
+        return view('attendances.index', compact('attendances', 'teachers'));
     }
 
     public function showScanPage(Request $request)
