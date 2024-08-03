@@ -37,4 +37,5 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('attendances', AttendanceController::class);
     Route::resource('users', UserController::class);
     Route::post('/scan-qr', [AttendanceController::class, 'showScanPage'])->name('save.scanned.data');
+    Route::post('user/{id}/regenerate-qr-code', [AttendanceController::class, 'regenerateQrCode'])->name('user.regenerateQrCode');
 });

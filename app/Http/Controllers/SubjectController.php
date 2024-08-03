@@ -9,7 +9,8 @@ class SubjectController extends Controller
 {
     public function index()
     {
-        $subjects = Subject::all();
+        $perPage = 10; // Jumlah item per halaman
+        $subjects = Subject::paginate($perPage);
         return view('subjects.index', compact('subjects'));
     }
 

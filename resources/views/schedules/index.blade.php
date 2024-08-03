@@ -82,9 +82,22 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($schedules as $schedule)
+                                                @php
+                                                    $sortedSchedules = $schedules->sortBy(function ($schedule) {
+                                                        return $schedule->day . $schedule->start_time;
+                                                    });
+                                                    $hariSebelumnya = null;
+                                                @endphp
+                                                @foreach ($sortedSchedules as $schedule)
                                                     <tr>
-                                                        <td>{{ $schedule->day }}</td>
+                                                        @if ($schedule->day != $hariSebelumnya)
+                                                            <td>{{ $schedule->day }}</td>
+                                                            @php
+                                                                $hariSebelumnya = $schedule->day;
+                                                            @endphp
+                                                        @else
+                                                            <td></td>
+                                                        @endif
                                                         <td>{{ $schedule->start_time }}</td>
                                                         <td>{{ $schedule->end_time }}</td>
                                                         <td>{{ $schedule->subject->name }}</td>
@@ -142,7 +155,6 @@
 
     <!-- SweetAlert2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 
     <script>
         @if (session('success'))
