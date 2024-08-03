@@ -278,90 +278,44 @@
 
                 // Stop the camera scan once the QR code is scanned
                 html5QrcodeScanner.clear();
-            } <<
-            << << < HEAD
-
-            function onScanError(errorMessage) {
-                // Handle scan error
-                console.error(`QR Code scan error: ${errorMessage}`);
-                document.getElementById('result').innerText = `Error: ${errorMessage}`;
             }
+        },
+        error: function(xhr, status, error) {
+            alert('Request failed: ' + error);
+        }
+        });
 
-            const html5QrcodeScanner = new Html5QrcodeScanner(
-                "reader", {
-                    fps: 10,
-                    qrbox: 250,
-                    rememberLastUsedCamera: true,
-                    supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA]
+        // Auto click the "Regenerate QR" button every 5 seconds (5000 milliseconds)
+        function autoClickButton() {
+            document.getElementById('regenerate-qr-button').click();
+            setTimeout(autoClickButton, 5000);
+        }
+
+        // Start the auto-click process
+        autoClickButton();
+
+        $(document).ready(function() {
+            $('#regenerate-qr-button').click(function() {
+                var teacherId = $(this).data('id');
+
+                $.ajax({
+                    url: '/user/' + teacherId + '/regenerate-qr-code',
+                    type: 'GET',
+                    success: function(response) {
+                        if (response.status) {
+                            // Update the QR code image src with a timestamp to avoid caching
+                            $('#qr-code-' + teacherId).attr('src', response.file_path + '?t=' +
+                                new Date().getTime());
+                            // alert('QR Code regenerated successfully');
+                        } else {
+                            alert('Failed to regenerate QR code: ' + response.message);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert('An error occurred: ' + xhr.responseText);
+                    }
                 });
-
-            html5QrcodeScanner.render(onScanSuccess, onScanError);
-        });
-
-        // Mengirim data menggunakan jQuery AJAX
-        $.ajax({
-            url: '{{ route('save.scanned.data') }}',
-            type: 'POST',
-            data: JSON.stringify({
-                id: yourIdValue
-            }), // Gantilah `yourIdValue` dengan data yang sesuai
-            contentType: 'application/json',
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function(response) {
-                if (response.status === 'success') {
-                    // Jika data berhasil disimpan, refresh halaman
-                    window.location.reload();
-                } else {
-                    alert('Error: ' + response.message);
-                }
-            },
-            error: function(xhr, status, error) {
-                alert('Request failed: ' + error);
-            }
+            });
         });
     </script>
-    =======
-    },
-    error: function(xhr, status, error) {
-    alert('Request failed: ' + error);
-    }
-    });
-
-    // Auto click the "Regenerate QR" button every 5 seconds (5000 milliseconds)
-    function autoClickButton() {
-    document.getElementById('regenerate-qr-button').click();
-    setTimeout(autoClickButton, 5000);
-    }
-
-    // Start the auto-click process
-    autoClickButton();
-
-    $(document).ready(function() {
-    $('#regenerate-qr-button').click(function() {
-    var teacherId = $(this).data('id');
-
-    $.ajax({
-    url: '/user/' + teacherId + '/regenerate-qr-code',
-    type: 'GET',
-    success: function(response) {
-    if (response.status) {
-    // Update the QR code image src with a timestamp to avoid caching
-    $('#qr-code-' + teacherId).attr('src', response.file_path +
-    '?t=' + new Date().getTime());
-                        // alert('QR Code regenerated successfully');
-    } else {
-    alert('Failed to regenerate QR code: ' + response.message);
-    }
-    },
-    error: function(xhr, status, error) {
-    alert('An error occurred: ' + xhr.responseText);
-    }
-    });
-    });
-    });
-
-    </script>
-    >>>>>>> 7533b032028008f7049aa36290e6335c76dc0c4b
 @endsection
