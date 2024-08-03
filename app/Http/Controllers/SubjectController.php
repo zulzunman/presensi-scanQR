@@ -4,14 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\Subject;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SubjectController extends Controller
 {
     public function index()
     {
+
+        $role = Auth::user()->role;
+
         $perPage = 10; // Jumlah item per halaman
         $subjects = Subject::paginate($perPage);
-        return view('subjects.index', compact('subjects'));
+        return view('subjects.index', compact('subjects', 'role'));
     }
 
     public function create()

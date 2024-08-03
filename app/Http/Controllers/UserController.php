@@ -14,13 +14,15 @@ class UserController extends Controller
         $currentUserRole = auth()->user()->role;
         $perPage = 1000000000000; // Jumlah item per halaman
 
+        $role = Auth::user()->role;
+
         if ($currentUserRole == 'teacher') {
             $users = User::where('role', '!=', 'admin')->paginate($perPage);
         } else {
             $users = User::paginate($perPage);
         }
 
-        return view('users.index', compact('users', 'currentUserRole'));
+        return view('users.index', compact('users', 'currentUserRole', 'role'));
     }
     public function create()
     {

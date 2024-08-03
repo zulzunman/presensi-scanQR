@@ -22,71 +22,220 @@
     </script>
 @endsection
 
-@section('content')
-
-    <div class="container mt-4">
-        <h2>Attendance List</h2>
-
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
-
-        <div><a href="{{ route('dashboard') }}">Back to Menu</a></div>
-
-        <div>
-            @if (auth()->user()->role == 'student')
-                <div class="card">
-                    <div class="card-header">
-                        Scan QR Code
-                    </div>
-                    <div class="card-body text-center">
-                        <div id="reader" style="width: 500px; height: 500px;"></div>
+@section('sidebar')
+    <div class="sidebar-wrapper scrollbar scrollbar-inner">
+        <div class="sidebar-content">
+            <div class="user">
+                <div class="avatar-sm float-left mr-2">
+                    <img src="{{ asset('style/assets/img/profile.jpg') }}" alt="..." class="avatar-img rounded-circle">
+                </div>
+                <div class="info">
+                    <a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
+                        <span>
+                            Hizrian
+                            <span class="user-level">Administrator</span>
+                            <span class="caret"></span>
+                        </span>
+                    </a>
+                    <div class="clearfix"></div>
+                    <div class="collapse in" id="collapseExample">
+                        <ul class="nav">
+                            <li>
+                                <a href="#profile">
+                                    <span class="link-collapse">My Profile</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#edit">
+                                    <span class="link-collapse">Edit Profile</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#settings">
+                                    <span class="link-collapse">Settings</span>
+                                </a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
-            @elseif (auth()->user()->role == 'teacher')
-                <h4>scan untuk melakukan presensi</h4><br>
-                @foreach ($teachers as $teacher)
-                    <div>
-                        <!-- Tombol untuk meregenerasi QR code -->
-                        <button id="regenerate-qr-button" data-id="{{ $teacher->id }}">Regenerate QR Code</button>
+            </div>
+            <ul class="nav nav-secondary">
+                <li class="nav-item active">
+                    <a data-bs-toggle="collapse" href="#dashboard" class="collapsed" aria-expanded="false">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <p>Dashboard</p>
+                        <span></span>
+                    </a>
+                </li>
+                @if ($role === 'admin')
+                    <li class="nav-item">
+                        <a href="{{ route('teachers.index') }}">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                            <p>Manage Teachers</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('students.index') }}">
+                            <i class="fas fa-user-graduate"></i>
+                            <p>Manage Students</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('users.index') }}">
+                            <i class="fas fa-users-cog"></i>
+                            <p>Manage Users</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('subjects.index') }}">
+                            <i class="fas fa-book-open"></i>
+                            <p>Manage Subjects</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('schedules.index') }}">
+                            <i class="fas fa-calendar-alt"></i>
+                            <p>Manage Schedule</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('classes.index') }}">
+                            <i class="fas fa-school"></i>
+                            <p>Manage Class</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('attendances.index') }}">
+                            <i class="fas fa-clipboard-list"></i>
+                            <p>Manage Attendance</p>
+                        </a>
+                    </li>
+                @elseif ($role === 'teacher')
+                    <li class="nav-item">
+                        <a href="{{ route('schedules.index') }}">
+                            <i class="fas fa-calendar-alt"></i>
+                            <p>Manage Schedule</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('teachers.index') }}">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                            <p>Manage Teachers</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('attendances.index') }}">
+                            <i class="fas fa-clipboard-list"></i>
+                            <p>Manage Attendance</p>
+                        </a>
+                    </li>
+                @elseif ($role === 'student')
+                    <li class="nav-item">
+                        <a href="{{ route('students.index') }}">
+                            <i class="fas fa-user-graduate"></i>
+                            <p>Manage Students</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('attendances.index') }}">
+                            <i class="fas fa-clipboard-list"></i>
+                            <p>Manage Attendance</p>
+                        </a>
+                    </li>
+                    <!-- tambahkan menu untuk siswa jika diperlukan -->
+                @endif
+                <li class="nav-item">
+                    <a href="{{ route('logout') }}"
+                        onclick="event.preventDefault();
+                        document.getElementById('logout-form').submit();">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <p>Logout</p>
+                    </a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                        @csrf
+                    </form>
+                </li>
+            </ul>
 
-                        <!-- Menampilkan QR code -->
-                        <img id="qr-code-{{ $teacher->id }}" src="{{ asset('assets/qrcodes/' . $teacher->qr_name) }}"
-                            alt="QR Code">
-                    </div>
-                @endforeach
-            @endif
         </div>
-        <table class="table table-bordered mt-4">
-            <thead>
-                <tr>
-                    <th>NIS</th>
-                    <th>Name</th>
-                    <th>Gender</th>
-                    <th>Class</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($attendances as $attendance)
-                    <tr>
-                        <td>{{ $attendance->student->nis }}</td>
-                        <td>{{ $attendance->student->name }}</td>
-                        <td>{{ $attendance->student->jenis_kelamin }}</td>
-                        <td>{{ $attendance->student->class->name }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
+    </div>
+@endsection
+
+@section('content')
+
+    <div class="container">
+        <div class="page-inner">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="d-flex align-items-center">
+                                <h4 class="card-title">Attendance List</h4>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <div>
+                                @if (auth()->user()->role == 'student')
+                                    <div class="card">
+                                        <div class="card-header">
+                                            Scan QR Code
+                                        </div>
+                                        <div class="card-body text-center">
+                                            <div id="reader" style="width: 500px; height: 500px;"></div>
+                                        </div>
+                                    </div>
+                                @elseif (auth()->user()->role == 'teacher')
+                                    <div class="d-flex align-items-center ">
+                                        <h4 class="card-title">Scan untuk melakukan presensi</h4>
+                                    </div>
+                                    @foreach ($teachers as $teacher)
+                                        <div>
+                                            <!-- Tombol untuk meregenerasi QR code -->
+                                            <button id="regenerate-qr-button" data-id="{{ $teacher->id }}">Regenerate
+                                                QR Code</button>
+
+                                            <!-- Menampilkan QR code -->
+                                            <img id="qr-code-{{ $teacher->id }}"
+                                                src="{{ asset('assets/qrcodes/' . $teacher->qr_name) }}" alt="QR Code">
+                                        </div>
+                                    @endforeach
+                                @endif
+                            </div>
+
+                            <div class="table-responsive mt-4">
+                                <table id="add-row" class="display table table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>NIS</th>
+                                            <th>Name</th>
+                                            <th>Gender</th>
+                                            <th>Class</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($attendances as $attendance)
+                                            <tr>
+                                                <td>{{ $attendance->student->nis }}</td>
+                                                <td>{{ $attendance->student->name }}</td>
+                                                <td>{{ $attendance->student->jenis_kelamin }}</td>
+                                                <td>{{ $attendance->student->class->name }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
 
+@endsection
 
 @section('scripts')
-    <script src="{{ asset('style/assets/js/core/jquery-3.7.1.min.js') }}"></script>
-    <script src="{{ asset('style/assets/js/core/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('style/assets/js/script.js') }}"></script>
     <script>
         // Auto click the "Regenerate QR" button every 5 seconds (5000 milliseconds)
         function autoClickButton() {

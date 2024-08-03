@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('sidebar')
     <div class="sidebar-wrapper scrollbar scrollbar-inner">
         <div class="sidebar-content">
@@ -37,36 +36,95 @@
                     </div>
                 </div>
             </div>
-            <ul class="nav nav-primary">
+            <ul class="nav nav-secondary">
                 <li class="nav-item active">
-                    <a href="{{ route('dashboard') }}">
-                        <i class="fas fa-home"></i>
+                    <a data-bs-toggle="collapse" href="#dashboard" class="collapsed" aria-expanded="false">
+                        <i class="fas fa-tachometer-alt"></i>
                         <p>Dashboard</p>
+                        <span></span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="{{ route('users.index') }}">
-                        <i class="fas fa-users"></i>
-                        <p>Manage Users</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('teachers.index') }}">
-                        <i class="fas fa-chalkboard-teacher"></i>
-                        <p>Manage Teachers</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('students.index') }}">
-                        <i class="fas fa-user-graduate"></i>
-                        <p>Manage Students</p>
-                    </a>
-                </li>
-                <!-- Tambahkan item menu lainnya sesuai kebutuhan -->
+                @if ($role === 'admin')
+                    <li class="nav-item">
+                        <a href="{{ route('teachers.index') }}">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                            <p>Manage Teachers</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('students.index') }}">
+                            <i class="fas fa-user-graduate"></i>
+                            <p>Manage Students</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('users.index') }}">
+                            <i class="fas fa-users-cog"></i>
+                            <p>Manage Users</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('subjects.index') }}">
+                            <i class="fas fa-book-open"></i>
+                            <p>Manage Subjects</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('schedules.index') }}">
+                            <i class="fas fa-calendar-alt"></i>
+                            <p>Manage Schedule</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('classes.index') }}">
+                            <i class="fas fa-school"></i>
+                            <p>Manage Class</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('attendances.index') }}">
+                            <i class="fas fa-clipboard-list"></i>
+                            <p>Manage Attendance</p>
+                        </a>
+                    </li>
+                @elseif ($role === 'teacher')
+                    <li class="nav-item">
+                        <a href="{{ route('schedules.index') }}">
+                            <i class="fas fa-calendar-alt"></i>
+                            <p>Manage Schedule</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('teachers.index') }}">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                            <p>Manage Teachers</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('attendances.index') }}">
+                            <i class="fas fa-clipboard-list"></i>
+                            <p>Manage Attendance</p>
+                        </a>
+                    </li>
+                @elseif ($role === 'student')
+                    <li class="nav-item">
+                        <a href="{{ route('students.index') }}">
+                            <i class="fas fa-user-graduate"></i>
+                            <p>Manage Students</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('attendances.index') }}">
+                            <i class="fas fa-clipboard-list"></i>
+                            <p>Manage Attendance</p>
+                        </a>
+                    </li>
+                    <!-- tambahkan menu untuk siswa jika diperlukan -->
+                @endif
                 <li class="nav-item">
                     <a href="{{ route('logout') }}"
                         onclick="event.preventDefault();
-                            document.getElementById('logout-form').submit();">
+                        document.getElementById('logout-form').submit();">
                         <i class="fas fa-sign-out-alt"></i>
                         <p>Logout</p>
                     </a>
@@ -75,10 +133,10 @@
                     </form>
                 </li>
             </ul>
+
         </div>
     </div>
 @endsection
-
 @section('content')
     <div class="container">
         <div class="page-inner">
@@ -127,8 +185,8 @@
                                                             data-name="{{ $user->username }}">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="button" data-bs-toggle="tooltip" title="Remove"
-                                                                class="btn btn-link btn-danger delete-btn">
+                                                            <button type="button" data-bs-toggle="tooltip"
+                                                                title="Remove" class="btn btn-link btn-danger delete-btn">
                                                                 <i class="fa fa-times"></i>
                                                             </button>
                                                         </form>

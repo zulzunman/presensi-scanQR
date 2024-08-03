@@ -4,13 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\Classes;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ClassController extends Controller
 {
     public function index()
     {
+
+        $role = Auth::user()->role;
+
         $classes = Classes::all();
-        return view('classes.index', compact('classes'));
+        return view('classes.index', compact('classes', 'role'));
     }
 
     public function create()

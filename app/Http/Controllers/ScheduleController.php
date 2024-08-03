@@ -7,6 +7,7 @@ use App\Models\Schedule;
 use App\Models\Subject;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ScheduleController extends Controller
 {
@@ -18,6 +19,8 @@ class ScheduleController extends Controller
         // Ambil data subjects dan classes untuk digunakan dalam modals
         $subjects = Subject::all();
         $classes = Classes::all();
+
+        $role = Auth::user()->role;
 
         // Cek hak akses user
         if ($user->role == 'admin') {
@@ -35,7 +38,7 @@ class ScheduleController extends Controller
             $schedules = collect(); // Mengembalikan koleksi kosong atau lakukan tindakan lainnya
         }
 
-        return view('schedules.index', compact('schedules', 'subjects', 'classes'));
+        return view('schedules.index', compact('schedules', 'subjects', 'classes', 'role'));
     }
 
     public function create()
