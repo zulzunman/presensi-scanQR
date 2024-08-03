@@ -44,7 +44,6 @@
                             @endforeach
                         </select>
                     </div>
-
                     <div class="form-group">
                         <label for="user_id">Account:</label>
                         <select name="user_id" id="user_id" class="form-control">

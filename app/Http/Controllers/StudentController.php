@@ -26,8 +26,8 @@ class StudentController extends Controller
     public function create()
     {
         $classes = Classes::all(); // Change 'ClassModel' to the appropriate class model name
-        $students = User::where('role', 'Student')->get();
-        return view('students.create', compact('students', 'classes'));
+        $users = User::where('role', 'Student')->get();
+        return view('students.create', compact('users', 'classes'));
     }
 
     public function store(Request $request)

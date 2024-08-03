@@ -168,7 +168,7 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="display table table-striped table-hover">
+                                <table id="user-table" class="display table table-striped table-hover">
                                     <thead>
                                         <tr>
                                             <th>ID</th>
@@ -221,7 +221,7 @@
                             </div>
                         </div>
                     </div>
-                    @include('students.create', ['classes' => $classes, 'students' => $students])
+                    @include('students.create', ['classes' => $classes, 'users' => $users])
                 </div>
             </div>
         </div>

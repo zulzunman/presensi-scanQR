@@ -168,7 +168,7 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="display table table-striped table-hover">
+                                <table id="user-table" class="display table table-striped table-hover">
                                     <thead>
                                         <tr>
                                             <th>Day</th>
@@ -220,6 +220,7 @@
                                                                     class="btn btn-link btn-danger delete-btn">
                                                                     <i class="fa fa-times"></i>
                                                                 </button>
+                                                            </form>
                                                         </div>
                                                     </td>
                                                 @endif

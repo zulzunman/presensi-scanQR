@@ -1,3 +1,4 @@
+<!-- Create Student Modal -->
 <div class="modal fade" id="createStudentModal" tabindex="-1" role="dialog" aria-labelledby="createStudentModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -21,8 +22,10 @@
                         <label for="user_id">Student:</label>
                         <select name="user_id" id="user_id" class="form-control">
                             <option value="" disabled selected>Select Student</option>
-                            @foreach ($students as $student)
-                                <option value="{{ $student->id }}">{{ $student->username }}</option>
+                            @foreach ($users as $account)
+                                <option value="{{ $account->id }}"
+                                    {{ $student->user_id == $account->id ? 'selected' : '' }}>{{ $account->username }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
@@ -51,6 +54,7 @@
                             @endforeach
                         </select>
                     </div>
+
                     <div class="form-group d-flex justify-content-end mt-3">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary ms-2">Create</button>
