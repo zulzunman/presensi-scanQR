@@ -12,6 +12,7 @@
                 });
         }
 
+
         teachers.forEach(function(id) {
             setInterval(function() {
                 updateQrCode(id);
