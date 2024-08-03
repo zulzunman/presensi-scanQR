@@ -1,131 +1,137 @@
-@section('sidebar')
-<!-- Sidebar -->
-<div class="sidebar" data-background-color="dark">
-    <div class="sidebar-logo">
-        <!-- Logo Header -->
-        <div class="logo-header" data-background-color="dark">
-            {{-- <a href="index.html" class="logo">
-                <img src="{{ asset('assets/img/kaiadmin/logo_light.svg') }}" alt="navbar brand"
-                    class="navbar-brand" height="20">
-            </a> --}}
-            <div class="nav-toggle">
-                <h1>Welcome {{ ucfirst($role) }}!</h1>
-                <button class="btn btn-toggle toggle-sidebar">
-                    <i class="gg-menu-right"></i>
-                </button>
-                <button class="btn btn-toggle sidenav-toggler">
-                    <i class="gg-menu-left"></i>
-                </button>
+<!-- resources/views/layouts/sidebar.blade.php -->
+
+<div class="sidebar-wrapper scrollbar scrollbar-inner">
+    <div class="sidebar-content">
+        <div class="user">
+            <div class="avatar-sm float-left mr-2">
+                <img src="{{ asset('style/assets/img/profile.jpg') }}" alt="..." class="avatar-img rounded-circle">
             </div>
-            <button class="topbar-toggler more">
-                <i class="gg-more-vertical-alt"></i>
-            </button>
+            <div class="info">
+                <a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
+                    <span>
+                        Hizrian
+                        <span class="user-level">Administrator</span>
+                        <span class="caret"></span>
+                    </span>
+                </a>
+                <div class="clearfix"></div>
+                <div class="collapse in" id="collapseExample">
+                    <ul class="nav">
+                        <li>
+                            <a href="#profile">
+                                <span class="link-collapse">My Profile</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#edit">
+                                <span class="link-collapse">Edit Profile</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#settings">
+                                <span class="link-collapse">Settings</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
-        <!-- End Logo Header -->
-    </div>
-    <div class="sidebar-wrapper scrollbar scrollbar-inner">
-        <div class="sidebar-content">
-            <ul class="nav nav-secondary">
-                @if ($role === 'admin' || $role === 'teacher')
-                    <li class="nav-item active">
-                        <a data-bs-toggle="collapse" href="#dashboard" class="collapsed" aria-expanded="false">
-                            <i class="fas fa-home"></i>
-                            <p>Dashboard</p>
-                            <span></span>
-                        </a>
-                    </li>
-                    @if ($role === 'admin')
-                        <li class="nav-item">
-                            <a href="{{ route('teachers.index') }}">
-                                <i class="far fa-chart-bar"></i>
-                                <p>Manage Teachers</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('students.index') }}">
-                                <i class="far fa-chart-bar"></i>
-                                <p>Manage Students</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('users.index') }}">
-                                <i class="far fa-chart-bar"></i>
-                                <p>Manage Users</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('subjects.index') }}">
-                                <i class="far fa-chart-bar"></i>
-                                <p>Manage Subject</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('schedules.index') }}">
-                                <i class="far fa-chart-bar"></i>
-                                <p>Manage Schedule</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('classes.index') }}">
-                                <i class="far fa-chart-bar"></i>
-                                <p>Manage Class</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('attendances.index') }}">
-                                <i class="far fa-chart-bar"></i>
-                                <p>Manage Attendance</p>
-                            </a>
-                        </li>
-                    @elseif ($role === 'teacher')
-                        <li class="nav-item">
-                            <a href="{{ route('schedules.index') }}">
-                                <i class="far fa-chart-bar"></i>
-                                <p>Manage Schedule</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('teachers.index') }}">
-                                <i class="far fa-chart-bar"></i>
-                                <p>Manage Teachers</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('attendances.index') }}">
-                                <i class="far fa-chart-bar"></i>
-                                <p>Manage Attendance</p>
-                            </a>
-                        </li>
-                    @endif
-                @elseif ($role === 'student')
-                    <li class="nav-item">
-                        <a href="{{ route('students.index') }}">
-                            <i class="far fa-chart-bar"></i>
-                            <p>Manage Students</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{ route('attendances.index') }}">
-                            <i class="far fa-chart-bar"></i>
-                            <p>Manage Attendance</p>
-                        </a>
-                    </li>
-                    <!-- tambahkan menu untuk siswa jika diperlukan -->
-                @endif
+        <ul class="nav nav-secondary">
+            <li class="nav-item active">
+                <a data-bs-toggle="collapse" href="{{ route('dashboard') }}" class="collapsed" aria-expanded="false">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <p>Dashboard</p>
+                    <span></span>
+                </a>
+            </li>
+            @if ($role === 'admin')
+                <li class="nav-item">
+                    <a href="{{ route('teachers.index') }}">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                        <p>Manage Teachers</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('students.index') }}">
+                        <i class="fas fa-user-graduate"></i>
+                        <p>Manage Students</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('users.index') }}">
+                        <i class="fas fa-users-cog"></i>
+                        <p>Manage Users</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('subjects.index') }}">
+                        <i class="fas fa-book-open"></i>
+                        <p>Manage Subjects</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('schedules.index') }}">
+                        <i class="fas fa-calendar-alt"></i>
+                        <p>Manage Schedule</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('classes.index') }}">
+                        <i class="fas fa-school"></i>
+                        <p>Manage Class</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('attendances.index') }}">
+                        <i class="fas fa-clipboard-list"></i>
+                        <p>Manage Attendance</p>
+                    </a>
+                </li>
+            @elseif ($role === 'teacher')
+                <li class="nav-item">
+                    <a href="{{ route('schedules.index') }}">
+                        <i class="fas fa-calendar-alt"></i>
+                        <p>Manage Schedule</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('teachers.index') }}">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                        <p>Profil Teachers</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('attendances.index') }}">
+                        <i class="fas fa-clipboard-list"></i>
+                        <p>Manage Attendance</p>
+                    </a>
+                </li>
+            @elseif ($role === 'student')
+                <li class="nav-item">
+                    <a href="{{ route('students.index') }}">
+                        <i class="fas fa-user-graduate"></i>
+                        <p>Manage Students</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('attendances.index') }}">
+                        <i class="fas fa-clipboard-list"></i>
+                        <p>Manage Attendance</p>
+                    </a>
+                </li>
+                <!-- tambahkan menu untuk siswa jika diperlukan -->
+            @endif
+            <li class="nav-item">
                 <a href="{{ route('logout') }}"
                     onclick="event.preventDefault();
-                        document.getElementById('logout-form').submit();">
-                    Logout
+                document.getElementById('logout-form').submit();">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <p>Logout</p>
                 </a>
-
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                     @csrf
                 </form>
-            </ul>
-        </div>
+            </li>
+        </ul>
     </div>
-
 </div>
-<!-- End Sidebar -->
-
-@endsection

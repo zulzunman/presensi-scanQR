@@ -145,18 +145,6 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            @if (session('success'))
-                                <script>
-                                    document.addEventListener("DOMContentLoaded", function() {
-                                        Swal.fire({
-                                            title: 'Success!',
-                                            text: '{{ session('success') }}',
-                                            icon: 'success',
-                                            confirmButtonText: 'OK'
-                                        });
-                                    });
-                                </script>
-                            @endif
                             <div class="d-flex align-items-center">
                                 <h4 class="card-title">List Class</h4>
                                 <button class="btn btn-primary btn-round ms-auto" data-bs-toggle="modal"
