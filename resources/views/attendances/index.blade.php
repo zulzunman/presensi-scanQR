@@ -33,14 +33,14 @@
     <div><a href="{{ route('dashboard') }}">Back Menu</a></div>
     <div>
         @if (auth()->user()->role == 'student')
-        <div class="card">
-            <div class="card-header">
-                Scan QR Code
+            <div class="card">
+                <div class="card-header">
+                    Scan QR Code
+                </div>
+                <div class="card-body text-center">
+                    <div id="reader" style="width: 500px; height: 500px;"></div>
+                </div>
             </div>
-            <div class="card-body text-center">
-                <div id="reader" style="width: 500px; height: 500px;"></div>
-            </div>
-        </div>
         @elseif (auth()->user()->role == 'teacher')
         <h4>scan untuk melakukan presensi</h4><br>
         @foreach ($teachers as $teacher )
@@ -80,7 +80,7 @@
 @section('scripts')
 <script>
 
-    document.addEventListener('DOMContentLoaded', (event) => {
+document.addEventListener('DOMContentLoaded', (event) => {
         function onScanSuccess(decodedText, decodedResult) {
 
             // Send data to server
