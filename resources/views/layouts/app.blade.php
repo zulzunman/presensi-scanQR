@@ -35,6 +35,8 @@
     <link rel="stylesheet" href="{{ asset('style/assets/css/kaiadmin.min.css') }}">
     <link rel="stylesheet" href="{{ asset('style/assets/css/demo.css') }}">
 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <link rel="stylesheet" href="{{ asset('style/assets/css/style.css') }}">
 </head>
 <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -83,6 +85,9 @@
     <script src="{{ asset('style/assets/js/plugin/datatables/datatables.min.js') }}"></script>
     <script src="{{ asset('style/assets/js/kaiadmin.min.js') }}"></script>
     <script src="{{ asset('style/assets/js/setting-demo2.js') }}"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 
     <!-- SweetAlert2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

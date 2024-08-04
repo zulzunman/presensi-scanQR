@@ -45,8 +45,9 @@ class LoginController extends Controller
     public function dashboard()
     {
         $role = Auth::user()->role;
+        $username = Auth::user()->username;
 
-        return view('index', ['role' => $role]);
+        return view('index', ['role' => $role], ['username' => $username]);
     }
 
     public function error()
