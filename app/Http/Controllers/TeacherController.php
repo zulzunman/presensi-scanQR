@@ -15,21 +15,22 @@ class TeacherController extends Controller
 {
     public function index()
     {
-        $user = auth()->user(); // Mendapatkan pengguna yang sedang login
+        // Dapatkan user yang sedang login
+        $userData = auth()->user();
 
         // Mengambil semua mata pelajaran
         $subjects = Subject::all();
 
         $role = Auth::user()->role;
 
-        if ($user->role == 'admin') {
+        if ($userData->role == 'admin') {
             // Jika pengguna adalah admin, tampilkan semua data guru
             $teachers = Teacher::with('user', 'subject')->get();
             // Mendapatkan data users, misalnya untuk dropdown di modal
             $users = User::all();
-        } elseif ($user->role == 'teacher') {
+        } elseif ($userData->role == 'teacher') {
             // Jika pengguna adalah guru, tampilkan data sesuai dengan ID guru pada pengguna
-            $teachers = Teacher::with('user', 'subject')->where('user_id', $user->id)->get();
+            $teachers = Teacher::with('user', 'subject')->where('user_id', $userData->id)->get();
             // Mendapatkan data users, misalnya untuk dropdown di modal
             $users = User::all();
         } else {
@@ -37,7 +38,7 @@ class TeacherController extends Controller
             return abort(403, 'Unauthorized action.');
         }
 
-        return view('teachers.index', compact('teachers', 'users', 'subjects', 'role', 'user'));
+        return view('teachers.index', compact('teachers', 'users', 'subjects', 'role', 'userData'));
     }
 
     public function create()

@@ -9,7 +9,7 @@
                     <div class="w-100">
                         <div class="h1 text-start">
                             <h4 class="card-title">
-                                Hello, {{ ucfirst($role) }}!
+                                Hello, {{ ucfirst($userData->username) }}!
                             </h4>
                         </div>
                     </div>

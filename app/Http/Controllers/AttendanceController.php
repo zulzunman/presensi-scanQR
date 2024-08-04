@@ -17,10 +17,9 @@ class AttendanceController extends Controller
 {
     public function index()
     {
-
-        // $role = Auth::user()->role;
-
-        $user = auth()->user(); // Mendapatkan pengguna yang sedang login
+        // Dapatkan user yang sedang login
+        $userData = auth()->user();
+        $user = auth()->user();
         if ($user->role == 'admin') {
             // Jika pengguna adalah admin, tampilkan semua data guru
             $teachers = Teacher::with('user', 'subject')->get();
@@ -34,9 +33,9 @@ class AttendanceController extends Controller
             $attendances = Attendance::all();
             // Jika pengguna adalah guru, tampilkan data sesuai dengan ID guru pada pengguna
             $teachers = Teacher::with('user', 'subject')->where('user_id', $user->id)->get();
-            return view('attendances.index', compact('attendances', 'teachers'));
+            // dd($userData);
+            return view('attendances.index', compact('attendances', 'teachers', 'userData', 'user'));
         }
-        return view('attendances.index', compact('attendances', 'teachers'));
     }
 
     public function showScanPage(Request $request)
