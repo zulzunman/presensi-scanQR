@@ -11,11 +11,15 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class AttendanceController extends Controller
 {
     public function index()
     {
+
+        // $role = Auth::user()->role;
+
         $user = auth()->user(); // Mendapatkan pengguna yang sedang login
         if ($user->role == 'admin') {
             // Jika pengguna adalah admin, tampilkan semua data guru
@@ -105,5 +109,4 @@ class AttendanceController extends Controller
             ], 500);
         }
     }
-
 }

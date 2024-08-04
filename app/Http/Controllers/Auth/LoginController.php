@@ -48,4 +48,9 @@ class LoginController extends Controller
 
         return view('index', ['role' => $role]);
     }
+
+    public function error()
+    {
+        return view('error');
+    }
 }
