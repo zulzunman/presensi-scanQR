@@ -6,21 +6,28 @@ use App\Models\Classes;
 use App\Models\Student;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class StudentController extends Controller
 {
     public function index()
     {
+        $students = Student::with('class')->get(); // Make sure the relationship name is correct
+
+        $role = Auth::user()->role;
+
+        $classes = Classes::all(); // Ambil semua data kelas
+        $users = User::where('role', 'student')->get(); // Ambil semua user dengan role 'student'
         $perPage = 10; // Jumlah item per halaman
         $students = Student::with('class')->paginate($perPage); // Make sure the relationship name is correct
-        return view('students.index', compact('students'));
+        return view('students.index', compact('students', 'classes', 'users', 'role'));
     }
 
     public function create()
     {
         $classes = Classes::all(); // Change 'ClassModel' to the appropriate class model name
-        $students = User::where('role', 'Student')->get();
-        return view('students.create', compact('students', 'classes'));
+        $users = User::where('role', 'Student')->get();
+        return view('students.create', compact('users', 'classes'));
     }
 
     public function store(Request $request)

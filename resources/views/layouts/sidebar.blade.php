@@ -44,7 +44,7 @@
                     <span></span>
                 </a>
             </li>
-            @if ($role === 'admin')
+            @if (auth()->user()->role == 'admin')
                 <li class="nav-item">
                     <a href="{{ route('teachers.index') }}">
                         <i class="fas fa-chalkboard-teacher"></i>
@@ -87,7 +87,7 @@
                         <p>Manage Attendance</p>
                     </a>
                 </li>
-            @elseif ($role === 'teacher')
+            @elseif (auth()->user()->role == 'teacher')
                 <li class="nav-item">
                     <a href="{{ route('schedules.index') }}">
                         <i class="fas fa-calendar-alt"></i>
@@ -106,7 +106,7 @@
                         <p>Manage Attendance</p>
                     </a>
                 </li>
-            @elseif ($role === 'student')
+            @elseif (auth()->user()->role == 'student')
                 <li class="nav-item">
                     <a href="{{ route('students.index') }}">
                         <i class="fas fa-user-graduate"></i>

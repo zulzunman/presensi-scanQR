@@ -9,25 +9,35 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Illuminate\Support\Facades\Auth;
 
 class TeacherController extends Controller
 {
     public function index()
     {
         $user = auth()->user(); // Mendapatkan pengguna yang sedang login
-        $perPage = 10; // Jumlah item per halaman
+
+        // Mengambil semua mata pelajaran
+        $subjects = Subject::all();
+
+        $role = Auth::user()->role;
+
         if ($user->role == 'admin') {
             // Jika pengguna adalah admin, tampilkan semua data guru
-            $teachers = Teacher::with('user', 'subject')->paginate($perPage);
+            $teachers = Teacher::with('user', 'subject')->get();
+            // Mendapatkan data users, misalnya untuk dropdown di modal
+            $users = User::all();
         } elseif ($user->role == 'teacher') {
             // Jika pengguna adalah guru, tampilkan data sesuai dengan ID guru pada pengguna
-            $teachers = Teacher::with('user', 'subject')->where('user_id', $user->id)->paginate($perPage);
+            $teachers = Teacher::with('user', 'subject')->where('user_id', $user->id)->get();
+            // Mendapatkan data users, misalnya untuk dropdown di modal
+            $users = User::all();
         } else {
             // Jika peran lain, misalnya siswa atau lainnya, bisa ditambahkan kondisi lain atau menampilkan error
             return abort(403, 'Unauthorized action.');
         }
 
-        return view('teachers.index', compact('teachers'));
+        return view('teachers.index', compact('teachers', 'users', 'subjects', 'role'));
     }
 
     public function create()
@@ -145,7 +155,7 @@ class TeacherController extends Controller
         $teacher->update($request->all());
 
         return redirect()->route('teachers.index')
-                         ->with('success', 'Teacher updated successfully.');
+            ->with('success', 'Teacher updated successfully.');
     }
 
     public function destroy($id)
@@ -154,6 +164,6 @@ class TeacherController extends Controller
         $teacher->delete();
 
         return redirect()->route('teachers.index')
-                         ->with('success', 'Teacher deleted successfully.');
+            ->with('success', 'Teacher deleted successfully.');
     }
 }
