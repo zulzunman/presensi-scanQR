@@ -147,11 +147,13 @@
                         <div class="card-header">
                             <div class="d-flex align-items-center">
                                 <h4 class="card-title">Schedule List</h4>
-                                <button class="btn btn-primary btn-round ms-auto" data-bs-toggle="modal"
-                                    data-bs-target="#createScheduleModal">
-                                    <i class="fa fa-plus"></i>
-                                    Add Schedule
-                                </button>
+                                @if (auth()->user()->role == 'admin')
+                                    <button class="btn btn-primary btn-round ms-auto" data-bs-toggle="modal"
+                                        data-bs-target="#createScheduleModal">
+                                        <i class="fa fa-plus"></i>
+                                        Add Schedule
+                                    </button>
+                                @endif
                             </div>
                         </div>
                         <div class="card-body">

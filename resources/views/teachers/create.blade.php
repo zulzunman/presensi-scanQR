@@ -18,15 +18,21 @@
                             value="{{ old('nip') }}">
                     </div>
 
-                    <div class="form-group">
-                        <label for="user_id">Account:</label>
-                        <select name="user_id" id="user_id" class="form-control">
-                            <option value="" disabled selected>Select Account</option>
-                            @foreach ($users as $user)
-                                <option value="{{ $user->id }}">{{ $user->username }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                    @if (auth()->user()->role == 'admin')
+                        <div class="form-group">
+                            <label for="user_id">Account:</label>
+                            <select name="user_id" id="user_id" class="form-control">
+                                <option value="" disabled selected>Select Account</option>
+                                @foreach ($users as $user)
+                                    <option value="{{ $user->id }}">{{ $user->username }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    @elseif (auth()->user()->role == 'teacher')
+                        <div class="form-group">
+                            <input type="hidden" name="user_id" id="user_id" class="form-control" value="{{ $user->id }}">
+                        </div>
+                    @endif
 
                     <div class="form-group">
                         <label for="name">Name:</label>

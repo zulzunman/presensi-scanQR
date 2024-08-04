@@ -12,14 +12,27 @@ class StudentController extends Controller
 {
     public function index()
     {
+        $user = auth()->user(); // Mendapatkan pengguna yang sedang login
+
         $students = Student::with('class')->get(); // Make sure the relationship name is correct
 
         $role = Auth::user()->role;
+        if ($user->role == 'admin') {
+            // Jika pengguna adalah admin, tampilkan semua data guru
+            $students = Student::with('class')->get();
+            // Mendapatkan data users, misalnya untuk dropdown di modal
+            $users = User::all();
+        } elseif ($user->role == 'student') {
+            // Jika pengguna adalah guru, tampilkan data sesuai dengan ID guru pada pengguna
+            $students = Student::with('class')->where('user_id', $user->id)->get();
+            // Mendapatkan data users, misalnya untuk dropdown di modal
+            $users = User::all();
+        } else {
+            // Jika peran lain, misalnya siswa atau lainnya, bisa ditambahkan kondisi lain atau menampilkan error
+            return abort(403, 'Unauthorized action.');
+        }
 
         $classes = Classes::all(); // Ambil semua data kelas
-        $users = User::where('role', 'student')->get(); // Ambil semua user dengan role 'student'
-        $perPage = 10; // Jumlah item per halaman
-        $students = Student::with('class')->paginate($perPage); // Make sure the relationship name is correct
         return view('students.index', compact('students', 'classes', 'users', 'role'));
     }
 

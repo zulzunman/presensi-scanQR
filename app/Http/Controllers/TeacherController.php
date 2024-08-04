@@ -37,7 +37,7 @@ class TeacherController extends Controller
             return abort(403, 'Unauthorized action.');
         }
 
-        return view('teachers.index', compact('teachers', 'users', 'subjects', 'role'));
+        return view('teachers.index', compact('teachers', 'users', 'subjects', 'role', 'user'));
     }
 
     public function create()
