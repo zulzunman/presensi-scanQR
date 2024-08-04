@@ -22,7 +22,6 @@
         });
     </script>
 @endsection
-
 @section('sidebar')
     @include('layouts.sidebar')
 @endsection
@@ -68,29 +67,32 @@
                                     @endforeach
                                 @endif
                             </div>
-
-                            <div class="table-responsive mt-4">
-                                <table id="add-row" class="display table table-striped table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>NIS</th>
-                                            <th>Name</th>
-                                            <th>Gender</th>
-                                            <th>Class</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($attendances as $attendance)
+                            @if (auth()->user()->role == 'teacher' || 'admin')
+                                <div class="table-responsive mt-4">
+                                    <table id="add-row" class="display table table-striped table-hover">
+                                        <thead>
                                             <tr>
-                                                <td>{{ $attendance->student->nis }}</td>
-                                                <td>{{ $attendance->student->name }}</td>
-                                                <td>{{ $attendance->student->jenis_kelamin }}</td>
-                                                <td>{{ $attendance->student->class->name }}</td>
+                                                <th>NIS</th>
+                                                <th>Name</th>
+                                                <th>Gender</th>
+                                                <th>Class</th>
                                             </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($attendances as $attendance)
+                                                <tr>
+                                                    <td>{{ $attendance->student->nis }}</td>
+                                                    <td>{{ $attendance->student->name }}</td>
+                                                    <td>{{ $attendance->student->jenis_kelamin }}</td>
+                                                    <td>{{ $attendance->student->class->name }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            @else
+
+                            @endif
                         </div>
                     </div>
                 </div>

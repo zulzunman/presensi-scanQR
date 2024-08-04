@@ -66,5 +66,48 @@
         </div>
     </div>
 </body>
+<!-- <script>
+    // Tentukan lokasi yang diizinkan
+    const allowedLatitude = -6.930852; // Contoh latitude dari unla
+    const allowedLongitude = 107.615788; // Contoh longitude dari unla
+    const allowedRadius = 0.1; // dalam derajat (~11.1 km)
 
+    function distance(lat1, lon1, lat2, lon2) {
+        const p = 0.017453292519943295; // Math.PI / 180
+        const c = Math.cos;
+        const a = 0.5 - c((lat2 - lat1) * p) / 2 +
+                    c(lat1 * p) * c(lat2 * p) *
+                    (1 - c((lon2 - lon1) * p)) / 2;
+        return 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
+    }
+
+    // Periksa lokasi pengguna
+    function checkLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                const userLat = position.coords.latitude;
+                const userLon = position.coords.longitude;
+
+                const dist = distance(allowedLatitude, allowedLongitude, userLat, userLon);
+
+                if (dist <= allowedRadius) {
+                    // Lokasi pengguna dalam jangkauan, izinkan klik tombol otomatis
+                    setTimeout(function() {
+                        document.getElementById('bookNowButton').click();
+                    }, 5000);
+                } else {
+                    // Arahkan ke link jika pengguna tidak berada dalam lokasi yang diizinkan
+                    window.location.href = "{{route('error')}}";
+                }
+            }, function(error) {
+                console.error("Error obtaining location", error);
+            });
+        } else {
+            alert("Geolocation is not supported by this browser.");
+        }
+    }
+
+    // Panggil fungsi untuk memeriksa lokasi pengguna
+    checkLocation();
+</script> -->
 </html>

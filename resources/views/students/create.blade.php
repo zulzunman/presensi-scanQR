@@ -18,17 +18,21 @@
                             value="{{ old('nis') }}">
                     </div>
 
-                    <div class="form-group">
-                        <label for="user_id">Student:</label>
-                        <select name="user_id" id="user_id" class="form-control">
-                            <option value="" disabled selected>Select Student</option>
-                            @foreach ($users as $account)
-                                <option value="{{ $account->id }}"
-                                    {{ $student->user_id == $account->id ? 'selected' : '' }}>{{ $account->username }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
+                    @if (auth()->user()->role == 'admin')
+                        <div class="form-group">
+                            <label for="user_id">Account:</label>
+                            <select name="user_id" id="user_id" class="form-control">
+                                <option value="" disabled selected>Select Account</option>
+                                @foreach ($users as $user)
+                                    <option value="{{ $user->id }}">{{ $user->username }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    @elseif (auth()->user()->role == 'student')
+                        <div class="form-group">
+                            <input type="hidden" name="user_id" id="user_id" class="form-control" value="{{ $user->id }}">
+                        </div>
+                    @endif
 
                     <div class="form-group">
                         <label for="name">Name:</label>
