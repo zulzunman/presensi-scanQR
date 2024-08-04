@@ -2,49 +2,16 @@
 
 <div class="sidebar-wrapper scrollbar scrollbar-inner">
     <div class="sidebar-content">
-        <div class="user">
-            <div class="avatar-sm float-left mr-2">
-                <img src="{{ asset('style/assets/img/profile.jpg') }}" alt="..." class="avatar-img rounded-circle">
-            </div>
-            <div class="info">
-                <a data-toggle="collapse" href="#collapseExample" aria-expanded="true">
-                    <span>
-                        Hizrian
-                        <span class="user-level">Administrator</span>
-                        <span class="caret"></span>
-                    </span>
-                </a>
-                <div class="clearfix"></div>
-                <div class="collapse in" id="collapseExample">
-                    <ul class="nav">
-                        <li>
-                            <a href="#profile">
-                                <span class="link-collapse">My Profile</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#edit">
-                                <span class="link-collapse">Edit Profile</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#settings">
-                                <span class="link-collapse">Settings</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
         <ul class="nav nav-secondary">
-            <li class="nav-item active">
-                <a data-bs-toggle="collapse" href="{{ route('dashboard') }}" class="collapsed" aria-expanded="false">
+            <!-- Dashboard Item -->
+            <li class="nav-item">
+                <a href="{{ route('dashboard') }}">
                     <i class="fas fa-tachometer-alt"></i>
                     <p>Dashboard</p>
-                    <span></span>
                 </a>
             </li>
             @if (auth()->user()->role == 'admin')
+                <!-- Admin Features -->
                 <li class="nav-item">
                     <a href="{{ route('teachers.index') }}">
                         <i class="fas fa-chalkboard-teacher"></i>
@@ -88,6 +55,7 @@
                     </a>
                 </li>
             @elseif (auth()->user()->role == 'teacher')
+                <!-- Teacher Features -->
                 <li class="nav-item">
                     <a href="{{ route('schedules.index') }}">
                         <i class="fas fa-calendar-alt"></i>
@@ -97,7 +65,7 @@
                 <li class="nav-item">
                     <a href="{{ route('teachers.index') }}">
                         <i class="fas fa-chalkboard-teacher"></i>
-                        <p>Profil Teachers</p>
+                        <p>Profile</p>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -107,6 +75,7 @@
                     </a>
                 </li>
             @elseif (auth()->user()->role == 'student')
+                <!-- Student Features -->
                 <li class="nav-item">
                     <a href="{{ route('students.index') }}">
                         <i class="fas fa-user-graduate"></i>
@@ -119,12 +88,13 @@
                         <p>Manage Attendance</p>
                     </a>
                 </li>
-                <!-- tambahkan menu untuk siswa jika diperlukan -->
+                <!-- Tambahkan menu untuk siswa jika diperlukan -->
             @endif
+            <!-- Logout Item -->
             <li class="nav-item">
                 <a href="{{ route('logout') }}"
                     onclick="event.preventDefault();
-                document.getElementById('logout-form').submit();">
+                    document.getElementById('logout-form').submit();">
                     <i class="fas fa-sign-out-alt"></i>
                     <p>Logout</p>
                 </a>

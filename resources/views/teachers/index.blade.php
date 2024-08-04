@@ -58,8 +58,8 @@
                                                             data-name="{{ $teacher->name }}">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button type="button" data-bs-toggle="tooltip"
-                                                                title="Hapus" class="btn btn-link btn-danger delete-btn">
+                                                            <button type="button" data-bs-toggle="tooltip" title="Hapus"
+                                                                class="btn btn-link btn-danger delete-btn">
                                                                 <i class="fa fa-times"></i>
                                                             </button>
                                                         </form>
