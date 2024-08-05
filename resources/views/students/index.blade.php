@@ -26,7 +26,6 @@
                                 <table id="user-table" class="display table table-striped table-hover">
                                     <thead>
                                         <tr>
-                                            <th>ID</th>
                                             <th>NIS</th>
                                             <th>Name</th>
                                             <th>Gender</th>
@@ -37,7 +36,6 @@
                                     <tbody>
                                         @foreach ($students as $student)
                                             <tr>
-                                                <td>{{ $student->id }}</td>
                                                 <td>{{ $student->nis }}</td>
                                                 <td>{{ $student->name }}</td>
                                                 <td>{{ $student->jenis_kelamin }}</td>
