@@ -30,6 +30,7 @@
                                             <th>Start Time</th>
                                             <th>End Time</th>
                                             <th>Subject</th>
+                                            <th>Teacher</th>
                                             <th>Class</th>
                                             @if (auth()->user()->role == 'admin')
                                                 <th>Actions</th>
@@ -56,6 +57,7 @@
                                                 <td>{{ $schedule->start_time }}</td>
                                                 <td>{{ $schedule->end_time }}</td>
                                                 <td>{{ $schedule->subject->name }}</td>
+                                                <td>{{ $schedule->teacher->name }}</td>
                                                 <td>{{ $schedule->class->name }}</td>
                                                 @if (auth()->user()->role == 'admin')
                                                     <td>
@@ -91,7 +93,7 @@
                             </div>
                         </div>
                     </div>
-                    @include('schedules.create', ['subjects' => $subjects, 'classes' => $classes])
+                    @include('schedules.create', ['subjects' => $subjects, 'classes' => $classes, 'teachers' => $teachers])
                 </div>
             </div>
         </div>
