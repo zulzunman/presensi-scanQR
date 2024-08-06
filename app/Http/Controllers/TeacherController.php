@@ -27,7 +27,12 @@ class TeacherController extends Controller
             // Jika pengguna adalah admin, tampilkan semua data guru
             $teachers = Teacher::with('user', 'subject')->get();
             // Mendapatkan data users, misalnya untuk dropdown di modal
-            $users = User::all();
+            $users = User::where('role', 'teacher')
+            ->leftJoin('teachers', 'users.id', '=', 'teachers.user_id')
+            ->whereNull('teachers.user_id')
+            ->select('users.*')
+            ->get();
+            // dd($users);
         } elseif ($userData->role == 'teacher') {
             // Jika pengguna adalah guru, tampilkan data sesuai dengan ID guru pada pengguna
             $teachers = Teacher::with('user', 'subject')->where('user_id', $userData->id)->get();

@@ -22,7 +22,11 @@ class StudentController extends Controller
             // Jika pengguna adalah admin, tampilkan semua data guru
             $students = Student::with('class')->get();
             // Mendapatkan data users, misalnya untuk dropdown di modal
-            $users = User::all();
+            $users = User::where('role', 'Student')
+            ->leftJoin('students', 'users.id', '=', 'students.user_id')
+            ->whereNull('students.user_id')
+            ->select('users.*')
+            ->get();
         } elseif ($userData->role == 'student') {
             // Jika pengguna adalah guru, tampilkan data sesuai dengan ID guru pada pengguna
             $students = Student::with('class')->where('user_id', $userData->id)->get();
@@ -40,7 +44,13 @@ class StudentController extends Controller
     public function create()
     {
         $classes = Classes::all(); // Change 'ClassModel' to the appropriate class model name
-        $users = User::where('role', 'Student')->get();
+        // $users = User::where('role', 'Student')->get();
+        // Mengambil data User dengan role 'Student' yang belum ada di tabel students
+        $users = User::where('role', 'Student')
+        ->leftJoin('students', 'users.id', '=', 'students.user_id')
+        ->whereNull('students.user_id')
+        ->select('users.*')
+        ->get();
         return view('students.create', compact('users', 'classes'));
     }
 
