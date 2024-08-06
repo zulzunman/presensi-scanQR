@@ -79,7 +79,7 @@
                 <li class="nav-item">
                     <a href="{{ route('students.index') }}">
                         <i class="fas fa-user-graduate"></i>
-                        <p>Manage Students</p>
+                        <p>Profile</p>
                     </a>
                 </li>
                 <li class="nav-item">

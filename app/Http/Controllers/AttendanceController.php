@@ -19,23 +19,15 @@ class AttendanceController extends Controller
     {
         // Dapatkan user yang sedang login
         $userData = auth()->user();
-        $user = auth()->user();
-        if ($user->role == 'admin') {
+        $attendances = Attendance::all();
+        if ($userData->role == 'admin') {
             // Jika pengguna adalah admin, tampilkan semua data guru
             $teachers = Teacher::with('user', 'subject')->get();
-            $attendances = Attendance::all();
-        } elseif ($user->role == 'teacher') {
+        } elseif ($userData->role == 'teacher' || 'student') {
             // Jika pengguna adalah guru, tampilkan data sesuai dengan ID guru pada pengguna
-            $teachers = Teacher::with('user', 'subject')->where('user_id', $user->id)->get();
-            $attendances = Attendance::all();
-        } else {
-            // Jika peran lain, misalnya siswa atau lainnya, bisa ditambahkan kondisi lain atau menampilkan error
-            $attendances = Attendance::all();
-            // Jika pengguna adalah guru, tampilkan data sesuai dengan ID guru pada pengguna
-            $teachers = Teacher::with('user', 'subject')->where('user_id', $user->id)->get();
-            // dd($userData);
-            return view('attendances.index', compact('attendances', 'teachers', 'userData', 'user'));
+            $teachers = Teacher::with('user', 'subject')->where('user_id', $userData->id)->get();
         }
+        return view('attendances.index', compact('attendances', 'teachers', 'userData'));
     }
 
     public function showScanPage(Request $request)
