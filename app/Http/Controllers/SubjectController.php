@@ -10,12 +10,13 @@ class SubjectController extends Controller
 {
     public function index()
     {
-
+        // Dapatkan user yang sedang login
+        $userData = auth()->user();
         $role = Auth::user()->role;
 
         $perPage = 10; // Jumlah item per halaman
         $subjects = Subject::paginate($perPage);
-        return view('subjects.index', compact('subjects', 'role'));
+        return view('subjects.index', compact('subjects', 'role', 'userData'));
     }
 
     public function create()

@@ -21,6 +21,16 @@
                         </select>
                     </div>
                     <div class="form-group">
+                        <label for="teacher_id{{ $schedule->id }}">Teacher</label>
+                        <select class="form-control" id="teacher_id{{ $schedule->id }}" name="teacher_id" required>
+                            @foreach ($teachers as $teacher)
+                                <option value="{{ $teacher->id }}"
+                                    {{ $schedule->teacher_id == $teacher->id ? 'selected' : '' }}>{{ $teacher->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label for="class_id{{ $schedule->id }}">Class</label>
                         <select class="form-control" id="class_id{{ $schedule->id }}" name="class_id" required>
                             @foreach ($classes as $class)

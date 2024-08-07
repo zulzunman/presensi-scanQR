@@ -19,6 +19,15 @@
                         </select>
                     </div>
                     <div class="form-group">
+                        <label for="teacher_id">Teacher</label>
+                        <select class="form-control" id="teacher_id" name="teacher_id" required>
+                            <option value="" disabled selected>Select Teacher</option>
+                            @foreach ($teachers as $teacher)
+                                <option value="{{ $teacher->id }}">{{ $teacher->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label for="class_id">Class</label>
                         <select class="form-control" id="class_id" name="class_id" required>
                             <option value="" disabled selected>Select Class</option>

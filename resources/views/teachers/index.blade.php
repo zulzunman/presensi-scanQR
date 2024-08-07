@@ -32,10 +32,10 @@
                             <table id="user-table" class="display table table-striped table-hover">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
-                                        <th>NIS</th>
+                                        <th>NIP</th>
                                         <th>Nama</th>
                                         <th>Jenis Kelamin</th>
+                                        <th>Mata Pelajaran</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>

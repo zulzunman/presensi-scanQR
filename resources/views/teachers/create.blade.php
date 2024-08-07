@@ -30,7 +30,7 @@
                         </div>
                     @elseif (auth()->user()->role == 'teacher')
                         <div class="form-group">
-                            <input type="hidden" name="user_id" id="user_id" class="form-control" value="{{ $user->id }}">
+                            <input type="hidden" name="user_id" id="user_id" class="form-control" value="{{ $userData->id }}">
                         </div>
                     @endif
 

@@ -10,11 +10,13 @@ class ClassController extends Controller
 {
     public function index()
     {
+        // Dapatkan user yang sedang login
+        $userData = auth()->user();
 
         $role = Auth::user()->role;
 
         $classes = Classes::all();
-        return view('classes.index', compact('classes', 'role'));
+        return view('classes.index', compact('classes', 'role', 'userData'));
     }
 
     public function create()

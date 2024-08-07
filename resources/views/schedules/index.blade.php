@@ -92,7 +92,7 @@
                             </div>
                         </div>
                     </div>
-                    @include('schedules.create', ['subjects' => $subjects, 'classes' => $classes])
+                    @include('schedules.create', ['subjects' => $subjects, 'classes' => $classes, 'teachers' => $teachers])
                 </div>
             </div>
         </div>

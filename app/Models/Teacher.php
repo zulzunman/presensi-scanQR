@@ -22,4 +22,8 @@ class Teacher extends Model
     {
         return $this->belongsTo(Subject::class);
     }
+    public function schedule()
+    {
+        return $this->hasMany(Schedule::class);
+    }
 }
