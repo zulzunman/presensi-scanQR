@@ -1,4 +1,5 @@
 @extends('layouts.app')
+
 @section('sidebar')
     @include('layouts.sidebar')
 @endsection
@@ -10,7 +11,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <div class="d-flex align-items-center">
+                            <div class="d-flex align-items-center justify-content-between">
                                 <h4 class="card-title">Schedule List</h4>
                                 @if (auth()->user()->role == 'admin')
                                     <button class="btn btn-primary btn-round ms-auto" data-bs-toggle="modal"
@@ -23,6 +24,17 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
+                                <div class="d-flex justify-content-end mb-3">
+                                    <div class="d-flex align-items-center me-3">
+                                        <label for="sort-by-class" class="form-label me-2">Sort By Class:</label>
+                                        <select id="sort-by-class" class="form-select" onchange="filterSchedulesByClass()">
+                                            <option value="all">All Classes</option>
+                                            @foreach ($classes as $class)
+                                                <option value="{{ $class->name }}">{{ $class->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
                                 <table id="user-table" class="display table table-striped table-hover">
                                     <thead>
                                         <tr>
@@ -30,32 +42,21 @@
                                             <th>Start Time</th>
                                             <th>End Time</th>
                                             <th>Subject</th>
+                                            <th>Teacher</th>
                                             <th>Class</th>
                                             @if (auth()->user()->role == 'admin')
                                                 <th>Actions</th>
                                             @endif
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        @php
-                                            $sortedSchedules = $schedules->sortBy(function ($schedule) {
-                                                return $schedule->day . $schedule->start_time;
-                                            });
-                                            $hariSebelumnya = null;
-                                        @endphp
-                                        @foreach ($sortedSchedules as $schedule)
-                                            <tr>
-                                                @if ($schedule->day != $hariSebelumnya)
-                                                    <td>{{ $schedule->day }}</td>
-                                                    @php
-                                                        $hariSebelumnya = $schedule->day;
-                                                    @endphp
-                                                @else
-                                                    <td></td>
-                                                @endif
+                                    <tbody id="schedule-body">
+                                        @foreach ($schedules as $schedule)
+                                            <tr data-class="{{ $schedule->class->name }}">
+                                                <td>{{ $schedule->day }}</td>
                                                 <td>{{ $schedule->start_time }}</td>
                                                 <td>{{ $schedule->end_time }}</td>
                                                 <td>{{ $schedule->subject->name }}</td>
+                                                <td>{{ $schedule->teacher->name }}</td>
                                                 <td>{{ $schedule->class->name }}</td>
                                                 @if (auth()->user()->role == 'admin')
                                                     <td>
@@ -96,4 +97,35 @@
             </div>
         </div>
     </div>
+@endsection
+
+@section('scripts')
+    <script>
+        function filterSchedulesByClass() {
+            var selectedClass = document.getElementById('sort-by-class').value.trim();
+            var tableBody = document.getElementById('schedule-body');
+            var rows = Array.from(tableBody.getElementsByTagName('tr'));
+
+            console.log("Selected Class: ", selectedClass); // Debugging line
+            console.log("Total Rows: ", rows.length); // Debugging line
+
+            rows.forEach(function(row) {
+                var rowClass = row.getAttribute('data-class').trim();
+                console.log("Row Class: ", rowClass); // Debugging line
+
+                if (selectedClass === 'all' || rowClass === selectedClass) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+
+                console.log("Display Style for Row: ", row.style.display); // Debugging line
+            });
+        }
+
+        // Ensure the function is called when the page loads if needed
+        document.addEventListener('DOMContentLoaded', function() {
+            filterSchedulesByClass(); // Optional: Call to filter initially if desired
+        });
+    </script>
 @endsection
