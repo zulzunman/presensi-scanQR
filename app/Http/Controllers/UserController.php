@@ -64,6 +64,8 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
+
+        $currentUserRole = auth()->user()->role;
         $request->validate([
             'username' => 'required|string|max:255|unique:users,username,' . $id,
             'password' => 'nullable|string|min:8',
@@ -78,7 +80,14 @@ class UserController extends Controller
         $user->role = $request->role;
         $user->save();
 
-        return redirect()->route('users.index')->with('success', 'User updated successfully.');
+        if ($currentUserRole == 'admin') {
+            return redirect()->route('users.index')->with('success', 'User updated successfully.');
+        } elseif ($currentUserRole == 'teacher') {
+            return redirect()->route('teachers.index')->with('success', 'User updated successfully.');
+        } else {
+            return redirect()->route('students.index')->with('success', 'User updated successfully.');
+        }
+
     }
 
     public function destroy($id)

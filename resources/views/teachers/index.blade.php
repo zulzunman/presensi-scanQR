@@ -48,6 +48,18 @@
                                             <td>{{ $teacher->subject->name }}</td>
                                             <td>
                                                 <div class="form-button-action">
+                                                    @if (auth()->user()->role == 'teacher')
+                                                        @foreach ( $users as $user)
+                                                            <button class="btn btn-link btn-primary btn-lg" data-bs-toggle="modal"
+                                                                data-bs-target="#editUserModal{{ $user->id }}">
+                                                                <i class="fa fa-user"></i>
+                                                            </button>
+                                                            @include('users.edit', [
+                                                                'user' => $user,
+                                                                'role' => $currentUserRole,
+                                                            ])
+                                                        @endforeach
+                                                    @endif
                                                     <button class="btn btn-link btn-primary btn-lg" data-bs-toggle="modal"
                                                         data-bs-target="#editTeacherModal{{ $teacher->id }}">
                                                         <i class="fa fa-edit"></i>

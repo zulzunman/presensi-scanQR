@@ -21,7 +21,7 @@ class TeacherController extends Controller
         // Mengambil semua mata pelajaran
         $subjects = Subject::all();
 
-        $role = Auth::user()->role;
+        $currentUserRole = auth()->user()->role;
 
         if ($userData->role == 'admin') {
             // Jika pengguna adalah admin, tampilkan semua data guru
@@ -32,18 +32,17 @@ class TeacherController extends Controller
             ->whereNull('teachers.user_id')
             ->select('users.*')
             ->get();
-            // dd($users);
         } elseif ($userData->role == 'teacher') {
             // Jika pengguna adalah guru, tampilkan data sesuai dengan ID guru pada pengguna
             $teachers = Teacher::with('user', 'subject')->where('user_id', $userData->id)->get();
             // Mendapatkan data users, misalnya untuk dropdown di modal
-            $users = User::all();
+            $users = User::where('id', $userData->id)->get();
         } else {
             // Jika peran lain, misalnya siswa atau lainnya, bisa ditambahkan kondisi lain atau menampilkan error
             return abort(403, 'Unauthorized action.');
         }
 
-        return view('teachers.index', compact('teachers', 'users', 'subjects', 'role', 'userData'));
+        return view('teachers.index', compact('teachers', 'users', 'subjects', 'currentUserRole', 'userData'));
     }
 
     public function create()
