@@ -38,18 +38,23 @@
                                 <h4 class="card-title">Attendance List</h4>
                             </div>
                         </div>
-
                         <div class="card-body">
                             <div>
                                 @if (auth()->user()->role == 'student')
-                                    <div class="card">
-                                        <div class="card-header">
-                                            Scan QR Code
+                                    @if ($students)
+                                        <div class="card">
+                                            <div class="card-header d-flex align-items-center">
+                                                <h4 class="card-title">Scan QR Code</h4>
+                                            </div>
+                                            <div class="card-body text-center">
+                                                <div id="reader" style="width: 500px; height: 500px;"></div>
+                                            </div>
                                         </div>
-                                        <div class="card-body text-center">
-                                            <div id="reader" style="width: 500px; height: 500px;"></div>
+                                    @else
+                                        <div class="d-flex align-items-center">
+                                            <h4 class="card-title">Silakan lengkapi terlebih dahulu data profil anda</h4>
                                         </div>
-                                    </div>
+                                        @endif
                                 @elseif (auth()->user()->role == 'teacher')
                                     <div class="d-flex align-items-center ">
                                         <h4 class="card-title">Scan untuk melakukan presensi</h4>

@@ -24,9 +24,14 @@
                         <select id="role" name="role" class="form-select" required>
                             @if ($role === 'admin')
                                 <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Admin</option>
-
                                 <option value="teacher" {{ $user->role == 'teacher' ? 'selected' : '' }}>Teacher
                                 </option>
+                                <option value="student" {{ $user->role == 'student' ? 'selected' : '' }}>Student
+                                </option>
+                            @elseif ($role === 'teacher')
+                                <option value="teacher" {{ $user->role == 'teacher' ? 'selected' : '' }}>Teacher
+                                </option>
+                            @elseif ($role === 'student')
                                 <option value="student" {{ $user->role == 'student' ? 'selected' : '' }}>Student
                                 </option>
                             @endif
