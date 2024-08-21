@@ -1,21 +1,19 @@
 <div class="main-header">
-    <!-- Navbar Header -->
-    <nav class="navbar navbar-header navbar-header-transparent navbar-expand-lg border-bottom">
-        <div class="container-fluid d-flex align-items-center position-relative">
-            <nav class="navbar navbar-header-left navbar-expand-lg navbar-form p-0 d-none d-lg-flex">
-            </nav>
-            <ul class="navbar-nav topbar-nav ms-md-auto align-items-center w-100">
-                <li class="nav-item topbar-user dropdown hidden-caret w-100">
-                    <div class="w-100">
-                        <div class="h1 text-start">
-                            <h4 class="card-title">
-                                Hello, {{ ucfirst($userData->username) }}!
-                            </h4>
-                        </div>
-                    </div>
-                </li>
-            </ul>
+    <div class="card">
+        <!-- Logo Header -->
+        <div class="logo-header p-3" data-background-color="white">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="nav-toggle">
+                    <button class="btn btn-toggle sidenav-toggler">
+                        <i class="gg-menu-left"></i>
+                    </button>
+                </div>
+
+                <h4 class="card-title mb-0 ms-5">
+                    Hello, {{ ucfirst($userData->username) }}!
+                </h4>
+            </div>
         </div>
-    </nav>
-    <!-- End Navbar -->
+        <!-- End Logo Header -->
+    </div>
 </div>
