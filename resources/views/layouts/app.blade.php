@@ -36,6 +36,8 @@
     <link rel="stylesheet" href="{{ asset('style/assets/css/demo.css') }}">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
 
     <link rel="stylesheet" href="{{ asset('style/assets/css/style.css') }}">
 </head>
@@ -154,8 +156,8 @@
         const p = 0.017453292519943295; // Math.PI / 180
         const c = Math.cos;
         const a = 0.5 - c((lat2 - lat1) * p) / 2 +
-                    c(lat1 * p) * c(lat2 * p) *
-                    (1 - c((lon2 - lon1) * p)) / 2;
+            c(lat1 * p) * c(lat2 * p) *
+            (1 - c((lon2 - lon1) * p)) / 2;
         return 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
     }
 
