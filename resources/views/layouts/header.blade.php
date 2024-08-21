@@ -7,10 +7,10 @@
             <i class="gg-menu-left"></i>
             </button>
             <div class="h1 text-start">
-                            <h4 class="card-title">
-                                Hello, {{ ucfirst($userData->username) }}!
-                            </h4>
-                        </div>
+                <h4 class="card-title">
+                    Hello, {{ ucfirst($userData->username) }}!
+                </h4>
+            </div>
         </div>
         </div>
         <!-- End Logo Header -->
