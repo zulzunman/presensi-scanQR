@@ -17,7 +17,7 @@ class StudentController extends Controller
 
         $students = Student::with('class')->get(); // Make sure the relationship name is correct
 
-        $role = Auth::user()->role;
+        $currentUserRole = auth()->user()->role;
         if ($userData->role == 'admin') {
             // Jika pengguna adalah admin, tampilkan semua data guru
             $students = Student::with('class')->get();
@@ -31,14 +31,14 @@ class StudentController extends Controller
             // Jika pengguna adalah guru, tampilkan data sesuai dengan ID guru pada pengguna
             $students = Student::with('class')->where('user_id', $userData->id)->get();
             // Mendapatkan data users, misalnya untuk dropdown di modal
-            $users = User::all();
+            $users = User::where('id', $userData->id)->get();
         } else {
             // Jika peran lain, misalnya siswa atau lainnya, bisa ditambahkan kondisi lain atau menampilkan error
             return abort(403, 'Unauthorized action.');
         }
 
         $classes = Classes::all(); // Ambil semua data kelas
-        return view('students.index', compact('students', 'classes', 'users', 'role', 'userData'));
+        return view('students.index', compact('students', 'classes', 'users', 'currentUserRole', 'userData'));
     }
 
     public function create()
