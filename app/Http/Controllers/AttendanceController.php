@@ -23,6 +23,7 @@ class AttendanceController extends Controller
         if ($userData->role == 'admin') {
             // Jika pengguna adalah admin, tampilkan semua data guru
             $teachers = Teacher::with('user', 'subject')->get();
+            $students = Student::with('class')->get();
         } elseif ($userData->role == 'teacher' || 'student') {
             // Jika pengguna adalah guru, tampilkan data sesuai dengan ID guru pada pengguna
             $teachers = Teacher::with('user', 'subject')->where('user_id', $userData->id)->get();
