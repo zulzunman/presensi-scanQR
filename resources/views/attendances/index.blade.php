@@ -47,7 +47,7 @@
                                                 <h4 class="card-title">Scan QR Code</h4>
                                             </div>
                                             <div class="card-body text-center">
-                                                <div id="reader" style="width: 500px; height: 500px;"></div>
+                                                <div id="reader" style="width: 100%;"></div>
                                             </div>
                                         </div>
                                     @else
