@@ -43,8 +43,9 @@
                                                 <td>
                                                     <div class="form-button-action">
                                                         @if (auth()->user()->role == 'student')
-                                                            @foreach ( $users as $user)
-                                                                <button class="btn btn-link btn-primary btn-lg" data-bs-toggle="modal"
+                                                            @foreach ($users as $user)
+                                                                <button class="btn btn-link btn-primary btn-lg"
+                                                                    data-bs-toggle="modal"
                                                                     data-bs-target="#editUserModal{{ $user->id }}">
                                                                     <i class="fa fa-user"></i>
                                                                 </button>

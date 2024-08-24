@@ -5,15 +5,15 @@
 @endsection
 
 @section('content')
-    <div class="container d-flex align-items-center justify-content-center" style="min-height: 80vh;">
+    <div class="container d-flex justify-content-center " style="min-height: 100vh;">
         <div class="page-inner w-100">
-            <div class="row">
-                <div class="col-md-10 mx-auto"> <!-- Mengubah dari 12 menjadi 10 untuk sedikit margin di kiri dan kanan -->
-                    <div class="card w-100">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card">
                         <div class="card-header">
                             <div class="card-body">
-                                <div class="table-responsive">
-                                    <h4 class="text-center fw-bold">Welcome {{ ucfirst($role) }}!</h4>
+                                <div class="table-responsive text-center">
+                                    <h6 class="fw-bold mb-0">Welcome {{ ucfirst($role) }}!</h6>
                                 </div>
                             </div>
                         </div>

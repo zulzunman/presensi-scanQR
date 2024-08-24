@@ -128,20 +128,50 @@
                     });
                 });
             });
+        });
 
+        $(document).ready(function() {
             $('#user-table').DataTable({
                 pageLength: 5, // Set number of rows per page
-                lengthChange: false, // Allow changing the number of rows per page
+                lengthChange: false, // Disable the option to change the number of rows per page
                 searching: true, // Enable the search box
                 info: true, // Enable the information text
                 paging: true, // Enable pagination
-                ordering: false, // Enable column ordering
+                ordering: false, // Disable column ordering
                 language: {
                     paginate: {
-                        next: 'Next', // or '>'
-                        previous: 'Previous' // or '<'
+                        next: 'Next', // Customize text for next button
+                        previous: 'Previous' // Customize text for previous button
                     }
-                }
+                },
+                initComplete: function() {
+                    this.api()
+                        .columns()
+                        .every(function() {
+                            var column = this;
+                            var select = $(
+                                    '<select class="form-select"><option value=""></option></select>'
+                                )
+                                .appendTo($(column.footer()).empty())
+                                .on("change", function() {
+                                    var val = $.fn.dataTable.util.escapeRegex($(this).val());
+
+                                    column
+                                        .search(val ? "^" + val + "$" : "", true, false)
+                                        .draw();
+                                });
+
+                            column
+                                .data()
+                                .unique()
+                                .sort()
+                                .each(function(d, j) {
+                                    select.append(
+                                        '<option value="' + d + '">' + d + "</option>"
+                                    );
+                                });
+                        });
+                },
             });
         });
     </script>
