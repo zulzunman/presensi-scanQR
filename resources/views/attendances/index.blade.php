@@ -83,6 +83,7 @@
                                                 <th>Name</th>
                                                 <th>Gender</th>
                                                 <th>Class</th>
+                                                <th>Status Kehadiran</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -92,6 +93,7 @@
                                                     <td>{{ $attendance->student->name }}</td>
                                                     <td>{{ $attendance->student->jenis_kelamin }}</td>
                                                     <td>{{ $attendance->student->class->name }}</td>
+                                                    <td>{{ $attendance->status }}</td>
                                                 </tr>
                                             @endforeach
                                         </tbody>

@@ -42,6 +42,7 @@ class AttendanceController extends Controller
         $attend = new Attendance([
             'student_id' => $students[0],
             'teacher_id' => $dataQR,
+            'status' => 'Hadir',
             'date' => now()->toDateString(), // Mengatur tanggal ke waktu saat ini
             'time' => now()->toTimeString(),
         ]);
@@ -91,7 +92,7 @@ class AttendanceController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => 'QR Code regenerated successfully',
-                'file_path' => asset('assets/qrcodes/' . $fileName)
+                'file_path' => asset('public/assets/qrcodes/' . $fileName)
             ], 200);
         } catch (\Exception $e) {
             Log::error("Failed to regenerate QR code: " . $e->getMessage());
