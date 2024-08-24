@@ -55,6 +55,8 @@
                                             <h4 class="card-title">Silakan lengkapi terlebih dahulu data profil anda</h4>
                                         </div>
                                     @endif
+                                @elseif (auth()->user()->role == 'picket_teacher')
+                                <!-- simpan button add disini -->
                                 @elseif (auth()->user()->role == 'teacher')
                                     <div class="d-flex align-items-center justify-content-center">
                                         <h4 class="card-title">Scan untuk melakukan presensi</h4>
@@ -88,13 +90,13 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($attendances as $attendance)
-                                                <tr>
-                                                    <td>{{ $attendance->student->nis }}</td>
-                                                    <td>{{ $attendance->student->name }}</td>
-                                                    <td>{{ $attendance->student->jenis_kelamin }}</td>
-                                                    <td>{{ $attendance->student->class->name }}</td>
-                                                    <td>{{ $attendance->status }}</td>
-                                                </tr>
+                                            <tr>
+                                                <td>{{ $attendance->student->nis }}</td>
+                                                <td>{{ $attendance->student->name }}</td>
+                                                <td>{{ $attendance->student->jenis_kelamin }}</td>
+                                                <td>{{ $attendance->student->class->name }}</td>
+                                                <td>{{ $attendance->status }}</td>
+                                            </tr>
                                             @endforeach
                                         </tbody>
                                         <tfoot>
@@ -103,6 +105,7 @@
                                                 <th>Name</th>
                                                 <th>Gender</th>
                                                 <th>Class</th>
+                                                <th>Status Kehadiran</th>
                                             </tr>
                                         </tfoot>
                                     </table>

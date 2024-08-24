@@ -11,7 +11,7 @@ class Attendance extends Model
     use HasFactory;
 
     protected $fillable = [
-        'student_id', 'teacher_id', 'date', 'time', 'location',
+        'student_id', 'teacher_id', 'date', 'time', 'location', 'status'
     ];
 
     public function student()
