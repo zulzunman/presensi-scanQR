@@ -67,7 +67,7 @@
 
                                             <!-- Menampilkan QR code -->
                                             <img id="qr-code-{{ $teacher->id }}"
-                                                src="{{ asset('assets/qrcodes/' . $teacher->qr_name) }}" alt="QR Code">
+                                                src="{{ asset('public/assets/qrcodes/' . $teacher->qr_name) }}" alt="QR Code">
                                         </div>
                                     @endforeach
                                 @endif
@@ -81,6 +81,7 @@
                                                 <th>Name</th>
                                                 <th>Gender</th>
                                                 <th>Class</th>
+                                                <th>Status Kehadiran</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -90,6 +91,7 @@
                                                     <td>{{ $attendance->student->name }}</td>
                                                     <td>{{ $attendance->student->jenis_kelamin }}</td>
                                                     <td>{{ $attendance->student->class->name }}</td>
+                                                    <td>{{ $attendance->status }}</td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
