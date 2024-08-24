@@ -32,6 +32,25 @@ class AttendanceController extends Controller
         return view('attendances.index', compact('attendances', 'teachers', 'userData', 'students'));
     }
 
+    public function addManual(Request $request)
+    {
+        $request->validate([
+            'student_id' => 'required',
+            'teacher_id' => 'required',
+            'status' => 'required',
+        ]);
+
+        Attendance::create([
+            'student_id' => $request->student_id,
+            'teacher_id' => $request->teacher_id,
+            'status' => $request->status,
+            'date' => now()->toDateString(), // Mengatur tanggal ke waktu saat ini
+            'time' => now()->toTimeString(),
+        ]);
+
+        return redirect()->route('attendances.index')->with('success', 'Attendance created successfully.');
+    }
+
     public function showScanPage(Request $request)
     {
         $dataArray = json_decode($request->json('data'), true);
