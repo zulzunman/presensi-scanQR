@@ -26,6 +26,7 @@
                             <option value="" disabled selected>Select role</option>
                             <option value="admin">Admin</option>
                             <option value="teacher">Teacher</option>
+                            <option value="picket_teacher">Picket Teacher</option>
                             <option value="student">Student</option>
                         </select>
                     </div>
