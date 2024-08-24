@@ -30,7 +30,7 @@
 
     <div class="container">
         <div class="page-inner">
-            <div class="row">
+            <div class="row ">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
@@ -43,7 +43,7 @@
                                 @if (auth()->user()->role == 'student')
                                     @if ($students)
                                         <div class="card">
-                                            <div class="card-header d-flex align-items-center">
+                                            <div class="card-header d-flex align-items-center justify-content-center">
                                                 <h4 class="card-title">Scan QR Code</h4>
                                             </div>
                                             <div class="card-body text-center">
@@ -51,30 +51,32 @@
                                             </div>
                                         </div>
                                     @else
-                                        <div class="d-flex align-items-center">
+                                        <div class="d-flex align-items-center justify-content-center">
                                             <h4 class="card-title">Silakan lengkapi terlebih dahulu data profil anda</h4>
                                         </div>
-                                        @endif
+                                    @endif
                                 @elseif (auth()->user()->role == 'teacher')
-                                    <div class="d-flex align-items-center ">
+                                    <div class="d-flex align-items-center justify-content-center">
                                         <h4 class="card-title">Scan untuk melakukan presensi</h4>
                                     </div>
                                     @foreach ($teachers as $teacher)
-                                        <div>
+                                        <div class="text-center my-3"> <!-- Menggunakan text-center dan margin vertical -->
                                             <!-- Tombol untuk meregenerasi QR code -->
-                                            <button id="regenerate-qr-button" data-id="{{ $teacher->id }}">Regenerate
-                                                QR Code</button>
-
+                                            <button id="regenerate-qr-button" data-id="{{ $teacher->id }}"
+                                                class="btn btn-primary mb-2">
+                                                Regenerate QR Code
+                                            </button>
                                             <!-- Menampilkan QR code -->
                                             <img id="qr-code-{{ $teacher->id }}"
-                                                src="{{ asset('assets/qrcodes/' . $teacher->qr_name) }}" alt="QR Code">
+                                                src="{{ asset('assets/qrcodes/' . $teacher->qr_name) }}" alt="QR Code"
+                                                class="img-fluid"> <!-- img-fluid untuk responsive image -->
                                         </div>
                                     @endforeach
                                 @endif
                             </div>
                             @if (auth()->user()->role == 'teacher' || 'admin')
                                 <div class="table-responsive mt-4">
-                                    <table id="add-row" class="display table table-striped table-hover">
+                                    <table id="user-table" class="display table table-striped table-hover">
                                         <thead>
                                             <tr>
                                                 <th>NIS</th>
@@ -93,10 +95,17 @@
                                                 </tr>
                                             @endforeach
                                         </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th>NIS</th>
+                                                <th>Name</th>
+                                                <th>Gender</th>
+                                                <th>Class</th>
+                                            </tr>
+                                        </tfoot>
                                     </table>
                                 </div>
                             @else
-
                             @endif
                         </div>
                     </div>
@@ -104,8 +113,6 @@
             </div>
         </div>
     </div>
-
-
 @endsection
 
 @section('scripts')

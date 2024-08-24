@@ -126,20 +126,50 @@
                     });
                 });
             });
+        });
 
+        $(document).ready(function() {
             $('#user-table').DataTable({
                 pageLength: 5, // Set number of rows per page
-                lengthChange: false, // Allow changing the number of rows per page
+                lengthChange: false, // Disable the option to change the number of rows per page
                 searching: true, // Enable the search box
                 info: true, // Enable the information text
                 paging: true, // Enable pagination
-                ordering: false, // Enable column ordering
+                ordering: false, // Disable column ordering
                 language: {
                     paginate: {
-                        next: 'Next', // or '>'
-                        previous: 'Previous' // or '<'
+                        next: 'Next', // Customize text for next button
+                        previous: 'Previous' // Customize text for previous button
                     }
-                }
+                },
+                initComplete: function() {
+                    this.api()
+                        .columns()
+                        .every(function() {
+                            var column = this;
+                            var select = $(
+                                    '<select class="form-select"><option value=""></option></select>'
+                                )
+                                .appendTo($(column.footer()).empty())
+                                .on("change", function() {
+                                    var val = $.fn.dataTable.util.escapeRegex($(this).val());
+
+                                    column
+                                        .search(val ? "^" + val + "$" : "", true, false)
+                                        .draw();
+                                });
+
+                            column
+                                .data()
+                                .unique()
+                                .sort()
+                                .each(function(d, j) {
+                                    select.append(
+                                        '<option value="' + d + '">' + d + "</option>"
+                                    );
+                                });
+                        });
+                },
             });
         });
     </script>
@@ -154,8 +184,8 @@
         const p = 0.017453292519943295; // Math.PI / 180
         const c = Math.cos;
         const a = 0.5 - c((lat2 - lat1) * p) / 2 +
-                    c(lat1 * p) * c(lat2 * p) *
-                    (1 - c((lon2 - lon1) * p)) / 2;
+            c(lat1 * p) * c(lat2 * p) *
+            (1 - c((lon2 - lon1) * p)) / 2;
         return 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
     }
 
