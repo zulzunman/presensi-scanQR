@@ -89,6 +89,16 @@
                     </a>
                 </li>
                 <!-- Tambahkan menu untuk siswa jika diperlukan -->
+            @elseif (auth()->user()->role == 'picket_teacher')
+                <!-- Student Features -->
+                <li class="nav-item">
+                    <a href="{{ route('attendances.index') }}">
+                        <i class="fas fa-clipboard-list"></i>
+                        <p>Manage Attendance</p>
+                    </a>
+                </li>
+                <!-- Tambahkan menu untuk siswa jika diperlukan -->
+            @endif
             @endif
             <!-- Logout Item -->
             <li class="nav-item">

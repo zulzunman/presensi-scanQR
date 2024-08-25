@@ -55,6 +55,13 @@
                                             <h4 class="card-title">Silakan lengkapi terlebih dahulu data profil anda</h4>
                                         </div>
                                     @endif
+                                    {{-- @elseif (auth()->user()->role == 'picket_teacher')
+                                    <div class="d-flex justify-content-center my-3">
+                                        <button class="btn btn-primary btn-round" data-bs-toggle="modal"
+                                            data-bs-target="#createAttendanceModal">
+                                            <i class="fa fa-plus"></i> Add Presensi
+                                        </button>
+                                    </div> --}}
                                 @elseif (auth()->user()->role == 'teacher')
                                     <div class="d-flex align-items-center justify-content-center">
                                         <h4 class="card-title">Scan untuk melakukan presensi</h4>
@@ -83,6 +90,7 @@
                                                 <th>Name</th>
                                                 <th>Gender</th>
                                                 <th>Class</th>
+                                                <th>Subject</th>
                                                 <th>Status Kehadiran</th>
                                             </tr>
                                         </thead>
@@ -93,6 +101,13 @@
                                                     <td>{{ $attendance->student->name }}</td>
                                                     <td>{{ $attendance->student->jenis_kelamin }}</td>
                                                     <td>{{ $attendance->student->class->name }}</td>
+                                                    @if ($attendance->teacher->schedule->isNotEmpty())
+                                                        <!-- Cek jika jadwal ada -->
+                                                        <td>{{ $attendance->teacher->schedule->first()->subject->name }}
+                                                        </td>
+                                                    @else
+                                                        <td>N/A</td> <!-- Jika tidak ada jadwal -->
+                                                    @endif
                                                     <td>{{ $attendance->status }}</td>
                                                 </tr>
                                             @endforeach
