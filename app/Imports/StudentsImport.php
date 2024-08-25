@@ -2,34 +2,51 @@
 
 namespace App\Imports;
 
+use App\Models\Classes;
 use App\Models\Student;
 use App\Models\User;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithStartRow;
 
-class StudentsImport implements ToModel
+class StudentsImport implements ToCollection, WithStartRow
 {
-    /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
-    public function model(array $row)
+    public function startRow(): int
     {
-        // Buat data di tabel users terlebih dahulu
-        $user = User::create([
-            'username' => $row['Name'],  // Sesuaikan dengan kolom name di Excel
-            'password' => Hash::make('12345678'), // Default password yang di-hash
-            'role'     => 'student',  // Set role sebagai student
-        ]);
+        return 2;
+    }
 
-        // Setelah user dibuat, buat data di tabel students dengan user_id dari user yang baru saja dibuat
-        return new Student([
-            'user_id'  => $user->id,
-            'nis'      => $row['NIS'],    // Sesuaikan dengan heading kolom di Excel
-            'name'     => $row['Name'],
-            'gender'   => $row['Gender'],
-            'class'    => $row['Class'],
-        ]);
+    public function collection(Collection $rows)
+    {
+        foreach ($rows as $row)
+        {
+            // Step 1: Create or find the user
+            $user = User::firstOrCreate(
+                ['username' => $row[1]],
+                [
+                    'role' => 'student',
+                    'password' => Hash::make('12345678'),
+                ]
+            );
+
+            // Step 2: Check if class exists, if not, create it
+            $class = Classes::where('name', $row[3])->first();
+
+            if (!$class) {
+                $class = Classes::create(['name' => $row[3]]);
+            }
+
+            // Step 3: Create the student with user_id and class_id
+            Student::create([
+                'nis'      => $row[0],
+                'name'     => $row[1],
+                'jenis_kelamin'   => $row[2],
+                'user_id'  => $user->id,
+                'class_id' => $class->id,
+            ]);
+        }
     }
 }

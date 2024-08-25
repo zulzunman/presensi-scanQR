@@ -21,6 +21,6 @@ class TemplateExport implements FromCollection, WithHeadings
 
     public function headings(): array
     {
-        return ['NIS', 'Name', 'Gender', 'Class'];  // Sesuaikan dengan kebutuhan
+        return ['NIS', 'Name', 'Gender[L/P]', 'Class'];  // Sesuaikan dengan kebutuhan
     }
 }
