@@ -76,7 +76,7 @@
                                     @endforeach
                                 @endif
                             </div>
-                            @if (auth()->user()->role == 'teacher' || 'admin')
+                            @if (auth()->user()->role == 'teacher' || 'admin' || 'picket_teacher')
                                 <div class="table-responsive mt-4">
                                     <table id="user-table" class="display table table-striped table-hover">
                                         <thead>

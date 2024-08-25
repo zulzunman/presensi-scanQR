@@ -111,7 +111,7 @@ class AttendanceController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => 'QR Code regenerated successfully',
-                'file_path' => asset('public/assets/qrcodes/' . $fileName)
+                'file_path' => asset('assets/qrcodes/' . $fileName)
             ], 200);
         } catch (\Exception $e) {
             Log::error("Failed to regenerate QR code: " . $e->getMessage());
