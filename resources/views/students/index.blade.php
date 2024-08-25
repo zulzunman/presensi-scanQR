@@ -18,6 +18,7 @@
                                         <i class="fa fa-plus"></i>
                                         Add Student
                                     </button>
+                                @elseif (auth()->user()->role == 'admin')
                                     <a href="{{ url('/download-template') }}" class="btn btn-primary">Download Template Excel</a>
                                     <form action="{{ route('import') }}" method="POST" enctype="multipart/form-data">
                                         @csrf
