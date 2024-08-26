@@ -40,12 +40,6 @@
                         </div>
                         <div class="card-body">
                             <div>
-                            <div class="d-flex justify-content-center my-3">
-                                        <button class="btn btn-primary btn-round" data-bs-toggle="modal"
-                                            data-bs-target="#createAttendanceModal">
-                                            <i class="fa fa-plus"></i> Add Presensi
-                                        </button>
-                                    </div>
                                 @if (auth()->user()->role == 'student')
                                     @if ($students)
                                         <div class="card">
@@ -61,7 +55,14 @@
                                             <h4 class="card-title">Silakan lengkapi terlebih dahulu data profil anda</h4>
                                         </div>
                                     @endif
-
+                                @elseif (auth()->user()->role == 'picket_teacher')
+                                <!-- simpan button add disini -->
+                                    <div class="d-flex justify-content-center my-3">
+                                        <button class="btn btn-primary btn-round" data-bs-toggle="modal"
+                                            data-bs-target="#createAttendanceModal">
+                                            <i class="fa fa-plus"></i> Add Presensi
+                                        </button>
+                                    </div>
                                 @elseif (auth()->user()->role == 'teacher')
                                     <div class="d-flex align-items-center justify-content-center">
                                         <h4 class="card-title">Scan untuk melakukan presensi</h4>
@@ -82,7 +83,7 @@
                                     @endforeach
                                 @endif
                             </div>
-                            @if (auth()->user()->role == 'teacher' || 'admin')
+                            @if (auth()->user()->role == 'teacher' || 'admin' || 'picket_teacher')
                                 <div class="table-responsive mt-4">
                                     <table id="user-table" class="display table table-striped table-hover">
                                         <thead>

@@ -62,6 +62,25 @@ class AttendanceController extends Controller
         return redirect()->route('attendances.index')->with('success', 'Attendance created successfully.');
     }
 
+    public function addManual(Request $request)
+    {
+        $request->validate([
+            'student_id' => 'required',
+            'teacher_id' => 'required',
+            'status' => 'required',
+        ]);
+
+        Attendance::create([
+            'student_id' => $request->student_id,
+            'teacher_id' => $request->teacher_id,
+            'status' => $request->status,
+            'date' => now()->toDateString(), // Mengatur tanggal ke waktu saat ini
+            'time' => now()->toTimeString(),
+        ]);
+
+        return redirect()->route('attendances.index')->with('success', 'Attendance created successfully.');
+    }
+
     public function showScanPage(Request $request)
     {
         $dataArray = json_decode($request->json('data'), true);
@@ -122,7 +141,7 @@ class AttendanceController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => 'QR Code regenerated successfully',
-                'file_path' => asset('public/assets/qrcodes/' . $fileName)
+                'file_path' => asset('assets/qrcodes/' . $fileName)
             ], 200);
         } catch (\Exception $e) {
             Log::error("Failed to regenerate QR code: " . $e->getMessage());

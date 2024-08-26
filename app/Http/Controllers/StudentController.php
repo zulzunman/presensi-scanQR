@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\StudentsImport;
 use App\Models\Classes;
 use App\Models\Student;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class StudentController extends Controller
 {
@@ -100,5 +102,21 @@ class StudentController extends Controller
         $student->delete();
 
         return redirect()->route('students.index')->with('success', 'Student deleted successfully.');
+    }
+
+    public function import(Request $request)
+    {
+        // Validasi file yang di-upload (opsional)
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv',
+        ]);
+
+        // Proses import file Excel
+        try {
+            Excel::import(new StudentsImport, $request->file('file'));
+            return redirect()->back()->with('success', 'Data Imported Successfully');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'There was an error importing the data: ' . $e->getMessage());
+        }
     }
 }
