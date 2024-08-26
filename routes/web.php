@@ -42,7 +42,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('users', UserController::class);
     Route::post('/scan-qr', [AttendanceController::class, 'showScanPage'])->name('save.scanned.data');
     Route::get('user/{id}/regenerate-qr-code', [AttendanceController::class, 'regenerateQrCode'])->name('user.regenerateQrCode');
-    Route::get('attendance/add', [AttendanceController::class, 'addManual'])->name('attendance.add');
+    Route::post('attendance/add', [AttendanceController::class, 'addManual'])->name('attendance.add');
     Route::get('/download-template', function () {
         return Excel::download(new TemplateExport, 'template-data-siswa.xlsx');
     });

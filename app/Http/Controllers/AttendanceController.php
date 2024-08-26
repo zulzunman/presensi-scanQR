@@ -46,21 +46,13 @@ class AttendanceController extends Controller
 
     public function addManual(Request $request)
     {
-        // dd($request);
-        // $request->validate([
-        //     'student_id' => 'required',
-        //     'teacher_id' => 'required',
-        //     'status' => 'required',
-        // ]);
-        // dd($request);
-
-        Attendance::create([
-            'student_id' => $request->student_id,
-            'teacher_id' => $request->teacher_id,
-            'status' => $request->status,
-            'date' => now()->toDateString(), // Mengatur tanggal ke waktu saat ini
-            'time' => now()->toTimeString(),
-        ]);
+        $attendance = new Attendance;
+        $attendance->student_id = $request->student_id;
+        $attendance->teacher_id = $request->teacher_id;
+        $attendance->status = $request->keterangan;
+        $attendance->date = now()->toDateString();
+        $attendance->time = now()->toTimeString();
+        $attendance->save();
 
         return redirect()->route('attendances.index')->with('success', 'Attendance created successfully.');
     }
