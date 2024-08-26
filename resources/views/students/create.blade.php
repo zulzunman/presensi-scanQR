@@ -44,8 +44,8 @@
                         <label for="jenis_kelamin">Gender:</label>
                         <select name="jenis_kelamin" id="jenis_kelamin" class="form-control">
                             <option value="" disabled selected>Select Gender</option>
-                            <option value="Laki - Laki">Laki - Laki</option>
-                            <option value="Perempuan">Perempuan</option>
+                            <option value="L">Laki - Laki</option>
+                            <option value="P">Perempuan</option>
                         </select>
                     </div>
 

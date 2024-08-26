@@ -99,7 +99,6 @@
                 </li>
                 <!-- Tambahkan menu untuk siswa jika diperlukan -->
             @endif
-            @endif
             <!-- Logout Item -->
             <li class="nav-item">
                 <a href="{{ route('logout') }}"

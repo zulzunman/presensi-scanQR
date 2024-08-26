@@ -15,7 +15,7 @@
                         <label for="student_id">Student :</label>
                         <select class="form-control" id="student_id" name="student_id" required>
                             <option value="" disabled selected>Select Student</option>
-                            @foreach ($students as $student)
+                            @foreach ($study as $student)
                                 <option value="{{ $student->id }}">{{ $student->name }}</option>
                             @endforeach
                         </select>
@@ -37,14 +37,6 @@
                             <option value="Sakit">Sakit</option>
                             <option value="Tidak Ada Keterangan">Tidak Ada Keterangan</option>
                         </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="attendance_date">Date :</label>
-                        <input type="date" class="form-control" id="date" name="date" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="attendance_time">Time :</label>
-                        <input type="time" class="form-control" id="time" name="time" required>
                     </div>
                     <div class="form-group d-flex justify-content-end mt-3">
                         <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>

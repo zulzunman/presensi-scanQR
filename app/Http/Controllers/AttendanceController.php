@@ -24,17 +24,42 @@ class AttendanceController extends Controller
         $attendances = Attendance::with(['student.class', 'teacher.schedule.subject'])->get();
 
         if ($userData->role == 'admin') {
-            $teachers = Teacher::with('user', 'subject')->get();
+            $teachers = Teacher::with('user', 'subject', 'schedule')->get();
             $students = Student::with('class')->get();
         } elseif ($userData->role == 'teacher') {
-            $teachers = Teacher::with('user', 'subject')->where('user_id', $userData->id)->get();
+            $teachers = Teacher::with('user', 'subject', 'schedule')->where('user_id', $userData->id)->get();
             $students = Student::with('class')->get();
         } elseif ($userData->role == 'student') {
-            $teachers = Teacher::with('user', 'subject')->get();
+            $teachers = Teacher::with('user', 'subject', 'schedule')->get();
             $students = Student::with('class')->where('user_id', $userData->id)->first();
+            $study = Student::with('class')->get();
+        } elseif ($userData->role == 'picket_teacher') {
+            $teachers = Teacher::with('user', 'subject', 'schedule')->get();
+            $students = Student::with('class')->where('user_id', $userData->id)->first();
+            $study = Student::with('class')->get();
         }
 
-        return view('attendances.index', compact('attendances', 'teachers', 'userData', 'students'));
+        return view('attendances.index', compact('attendances', 'teachers', 'userData', 'students', 'study'));
+    }
+
+    public function addManual(Request $request)
+    {
+        // $request->validate([
+        //     'student_id' => 'required',
+        //     'teacher_id' => 'required',
+        //     'status' => 'required',
+        // ]);
+        // dd($request);
+
+        Attendance::create([
+            'student_id' => $request->student_id,
+            'teacher_id' => $request->teacher_id,
+            'status' => $request->status,
+            'date' => now()->toDateString(), // Mengatur tanggal ke waktu saat ini
+            'time' => now()->toTimeString(),
+        ]);
+
+        return redirect()->route('attendances.index')->with('success', 'Attendance created successfully.');
     }
 
     public function showScanPage(Request $request)
