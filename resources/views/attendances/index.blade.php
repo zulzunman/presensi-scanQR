@@ -57,10 +57,17 @@
                                     @endif
                                 @elseif (auth()->user()->role == 'picket_teacher')
                                 <!-- simpan button add disini -->
+                                    <div class="d-flex justify-content-center my-3">
+                                        <button class="btn btn-primary btn-round" data-bs-toggle="modal"
+                                            data-bs-target="#createAttendanceModal">
+                                            <i class="fa fa-plus"></i> Add Presensi
+                                        </button>
+                                    </div>
                                 @elseif (auth()->user()->role == 'teacher')
                                     <div class="d-flex align-items-center justify-content-center">
                                         <h4 class="card-title">Scan untuk melakukan presensi</h4>
                                     </div>
+
                                     @foreach ($teachers as $teacher)
                                         <div class="text-center my-3"> <!-- Menggunakan text-center dan margin vertical -->
                                             <!-- Tombol untuk meregenerasi QR code -->
@@ -85,18 +92,20 @@
                                                 <th>Name</th>
                                                 <th>Gender</th>
                                                 <th>Class</th>
+                                                <th>Subject</th>
                                                 <th>Status Kehadiran</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach ($attendances as $attendance)
-                                            <tr>
-                                                <td>{{ $attendance->student->nis }}</td>
-                                                <td>{{ $attendance->student->name }}</td>
-                                                <td>{{ $attendance->student->jenis_kelamin }}</td>
-                                                <td>{{ $attendance->student->class->name }}</td>
-                                                <td>{{ $attendance->status }}</td>
-                                            </tr>
+                                                <tr>
+                                                    <td>{{ $attendance->student->nis }}</td>
+                                                    <td>{{ $attendance->student->name }}</td>
+                                                    <td>{{ $attendance->student->jenis_kelamin }}</td>
+                                                    <td>{{ $attendance->student->class->name }}</td>
+                                                    <td>{{ $attendance->teacher->subject->name }}
+                                                    <td>{{ $attendance->status }}</td>
+                                                </tr>
                                             @endforeach
                                         </tbody>
                                         <tfoot>
@@ -105,10 +114,15 @@
                                                 <th>Name</th>
                                                 <th>Gender</th>
                                                 <th>Class</th>
+                                                <th>Subject</th>
                                                 <th>Status Kehadiran</th>
                                             </tr>
                                         </tfoot>
                                     </table>
+                                    @include('attendances.create', [
+                                        'study' => $study,
+                                        'teachers' => $teachers,
+                                    ])
                                 </div>
                             @else
                             @endif

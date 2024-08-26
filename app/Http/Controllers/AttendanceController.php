@@ -19,26 +19,40 @@ class AttendanceController extends Controller
     {
         // Dapatkan user yang sedang login
         $userData = auth()->user();
-        $attendances = Attendance::all();
+
+        // Load attendance data with related student, teacher, and subject information
+        $attendances = Attendance::with(['student.class', 'teacher.schedule.subject'])->get();
+
         if ($userData->role == 'admin') {
-            // Jika pengguna adalah admin, tampilkan semua data guru
-            $teachers = Teacher::with('user', 'subject')->get();
+            $teachers = Teacher::with('user', 'subject', 'schedule')->get();
             $students = Student::with('class')->get();
-        } elseif ($userData->role == 'teacher' || 'student') {
-            // Jika pengguna adalah guru, tampilkan data sesuai dengan ID guru pada pengguna
-            $teachers = Teacher::with('user', 'subject')->where('user_id', $userData->id)->get();
+            $study = Student::with('class')->get();
+        } elseif ($userData->role == 'teacher') {
+            $teachers = Teacher::with('user', 'subject', 'schedule')->where('user_id', $userData->id)->get();
+            $students = Student::with('class')->get();
+            $study = Student::with('class')->get();
+        } elseif ($userData->role == 'student') {
+            $teachers = Teacher::with('user', 'subject', 'schedule')->get();
             $students = Student::with('class')->where('user_id', $userData->id)->first();
+            $study = Student::with('class')->get();
+        } elseif ($userData->role == 'picket_teacher') {
+            $teachers = Teacher::with('user', 'subject', 'schedule')->get();
+            $students = Student::with('class')->where('user_id', $userData->id)->first();
+            $study = Student::with('class')->get();
         }
-        return view('attendances.index', compact('attendances', 'teachers', 'userData', 'students'));
+
+        return view('attendances.index', compact('attendances', 'teachers', 'userData', 'students', 'study'));
     }
 
     public function addManual(Request $request)
     {
-        $request->validate([
-            'student_id' => 'required',
-            'teacher_id' => 'required',
-            'status' => 'required',
-        ]);
+        // dd($request);
+        // $request->validate([
+        //     'student_id' => 'required',
+        //     'teacher_id' => 'required',
+        //     'status' => 'required',
+        // ]);
+        // dd($request);
 
         Attendance::create([
             'student_id' => $request->student_id,

@@ -62,7 +62,7 @@ class StudentController extends Controller
             'nis' => 'required|string|max:255',
             'user_id' => 'required|exists:users,id',
             'name' => 'required|string|max:255',
-            'jenis_kelamin' => 'required|in:Laki - Laki,Perempuan',
+            'jenis_kelamin' => 'required|in:L,P',
             'class_id' => 'required|exists:classes,id',
         ]);
 
@@ -86,7 +86,7 @@ class StudentController extends Controller
             'nis' => 'required|string|max:255',
             'user_id' => 'required|exists:users,id',
             'name' => 'required|string|max:255',
-            'jenis_kelamin' => 'required|in:Laki - Laki,Perempuan',
+            'jenis_kelamin' => 'required|in:L,P',
             'class_id' => 'required|exists:classes,id',
         ]);
 
