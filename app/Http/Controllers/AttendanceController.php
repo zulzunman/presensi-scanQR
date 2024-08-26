@@ -26,9 +26,11 @@ class AttendanceController extends Controller
         if ($userData->role == 'admin') {
             $teachers = Teacher::with('user', 'subject', 'schedule')->get();
             $students = Student::with('class')->get();
+            $study = Student::with('class')->get();
         } elseif ($userData->role == 'teacher') {
             $teachers = Teacher::with('user', 'subject', 'schedule')->where('user_id', $userData->id)->get();
             $students = Student::with('class')->get();
+            $study = Student::with('class')->get();
         } elseif ($userData->role == 'student') {
             $teachers = Teacher::with('user', 'subject', 'schedule')->get();
             $students = Student::with('class')->where('user_id', $userData->id)->first();
@@ -44,31 +46,13 @@ class AttendanceController extends Controller
 
     public function addManual(Request $request)
     {
+        // dd($request);
         // $request->validate([
         //     'student_id' => 'required',
         //     'teacher_id' => 'required',
         //     'status' => 'required',
         // ]);
         // dd($request);
-
-        Attendance::create([
-            'student_id' => $request->student_id,
-            'teacher_id' => $request->teacher_id,
-            'status' => $request->status,
-            'date' => now()->toDateString(), // Mengatur tanggal ke waktu saat ini
-            'time' => now()->toTimeString(),
-        ]);
-
-        return redirect()->route('attendances.index')->with('success', 'Attendance created successfully.');
-    }
-
-    public function addManual(Request $request)
-    {
-        $request->validate([
-            'student_id' => 'required',
-            'teacher_id' => 'required',
-            'status' => 'required',
-        ]);
 
         Attendance::create([
             'student_id' => $request->student_id,

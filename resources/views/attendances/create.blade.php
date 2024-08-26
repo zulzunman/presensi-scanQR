@@ -30,8 +30,8 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="jenis_kelamin">Status :</label>
-                        <select name="jenis_kelamin" id="jenis_kelamin" class="form-control">
+                        <label for="status">Status :</label>
+                        <select name="status" id="status" class="form-control">
                             <option value="" disabled selected>Select Status</option>
                             <option value="Izin">Izin</option>
                             <option value="Sakit">Sakit</option>
