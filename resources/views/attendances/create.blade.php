@@ -30,9 +30,9 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="status">Status :</label>
-                        <select name="status" id="status" class="form-control">
-                            <option value="" disabled selected>Select Status</option>
+                        <label for="keterangan">Keterangan :</label>
+                        <select name="keterangan" id="keterangan" class="form-control">
+                            <option value="" disabled selected>Select Keterangan</option>
                             <option value="Izin">Izin</option>
                             <option value="Sakit">Sakit</option>
                             <option value="Tidak Ada Keterangan">Tidak Ada Keterangan</option>
