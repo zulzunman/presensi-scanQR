@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Log;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AttendanceController extends Controller
 {
@@ -20,28 +21,66 @@ class AttendanceController extends Controller
         // Dapatkan user yang sedang login
         $userData = auth()->user();
 
-        // Load attendance data with related student, teacher, and subject information
-        $attendances = Attendance::with(['student.class', 'teacher.schedule.subject'])->get();
+        // // Load attendance data with related student, teacher, and subject information
+        // $attendances = Attendance::with(['student.class', 'teacher.schedule.subject'])->get();
+        // // Mengambil semua tanggal unik dari attendances
+        // $dates = $attendances->pluck('date')->unique()->sort()->values();
 
         if ($userData->role == 'admin') {
             $teachers = Teacher::with('user', 'subject', 'schedule')->get();
             $students = Student::with('class')->get();
             $study = Student::with('class')->get();
+            // Load attendance data with related student, teacher, and subject information
+            $attendances = Attendance::with(['student.class', 'teacher.schedule.subject'])->get();
+            // Mengambil semua tanggal unik dari attendances
+            $dates = $attendances->pluck('date')->unique()->sort()->values();
         } elseif ($userData->role == 'teacher') {
             $teachers = Teacher::with('user', 'subject', 'schedule')->where('user_id', $userData->id)->get();
             $students = Student::with('class')->get();
             $study = Student::with('class')->get();
+            // Load attendance data with related student, teacher, and subject information
+            $attendances = Attendance::with(['student.class', 'teacher.schedule.subject'])->get();
+            // Mengambil semua tanggal unik dari attendances
+            $dates = $attendances->pluck('date')->unique()->sort()->values();
         } elseif ($userData->role == 'student') {
+            // $teachers = Teacher::with('user', 'subject', 'schedule')->get();
+            // $students = Student::with('class')->where('user_id', $userData->id)->first();
+            // $study = Student::with('class')->get();
+            // // Load attendance data with related student, teacher, and subject information
+            // $attendances = Attendance::with(['student.class', 'teacher.schedule.subject'])->where('student_id', $students->id)->get();
+            // // Mengambil semua tanggal unik dari attendances
+            // $dates = $attendances->pluck('date')->unique()->sort()->values();
             $teachers = Teacher::with('user', 'subject', 'schedule')->get();
             $students = Student::with('class')->where('user_id', $userData->id)->first();
             $study = Student::with('class')->get();
+
+            if ($students) {
+                // Load attendance data with related student, teacher, and subject information
+                $attendances = Attendance::with(['student.class', 'teacher.schedule.subject'])
+                    ->where('student_id', $students->id)
+                    ->get();
+
+                // Mengambil semua tanggal unik dari attendances
+                $dates = $attendances->pluck('date')->unique()->sort()->values();
+            } else {
+                // Tindakan jika $students adalah null, misalnya:
+                $attendances = collect(); // kosongkan collection attendances
+                $dates = collect(); // kosongkan collection dates
+                // Anda juga bisa mengembalikan pesan error atau alihkan pengguna ke halaman lain
+                return redirect()->back()->with('error', 'Siswa tidak ditemukan.');
+            }
+
         } elseif ($userData->role == 'picket_teacher') {
             $teachers = Teacher::with('user', 'subject', 'schedule')->get();
             $students = Student::with('class')->where('user_id', $userData->id)->first();
             $study = Student::with('class')->get();
+            // Load attendance data with related student, teacher, and subject information
+            $attendances = Attendance::with(['student.class', 'teacher.schedule.subject'])->get();
+            // Mengambil semua tanggal unik dari attendances
+            $dates = $attendances->pluck('date')->unique()->sort()->values();
         }
 
-        return view('attendances.index', compact('attendances', 'teachers', 'userData', 'students', 'study'));
+        return view('attendances.index', compact('attendances', 'teachers', 'userData', 'students', 'study', 'dates'));
     }
 
     public function addManual(Request $request)
@@ -70,6 +109,16 @@ class AttendanceController extends Controller
 
         if ($students->isEmpty()) {
             return response()->json(['status' => 'error', 'message' => 'Student not found']);
+        }
+
+        // Cek apakah siswa sudah melakukan presensi hari ini
+        $alreadyPresent = Attendance::where('student_id', $students[0])
+            ->where('date', now()->toDateString())
+            ->where('teacher_id', $dataQR)
+            ->exists();
+
+        if ($alreadyPresent) {
+            return response()->json(['status' => 'error', 'message' => 'You have already checked in today!']);
         }
 
         $attend = new Attendance([
