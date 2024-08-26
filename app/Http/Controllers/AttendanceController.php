@@ -60,9 +60,17 @@ class AttendanceController extends Controller
     public function showScanPage(Request $request)
     {
         $dataArray = json_decode($request->json('data'), true);
+        if (is_null($dataArray) || !isset($dataArray['id'])) {
+            return response()->json(['status' => 'error', 'message' => 'Invalid data received']);
+        }
+
         $dataQR = $dataArray['id']; // Ambil data dari request
         $idAuth = auth()->user()->id;
         $students = Student::where('user_id', $idAuth)->pluck('id');
+
+        if ($students->isEmpty()) {
+            return response()->json(['status' => 'error', 'message' => 'Student not found']);
+        }
 
         $attend = new Attendance([
             'student_id' => $students[0],

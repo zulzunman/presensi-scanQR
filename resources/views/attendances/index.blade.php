@@ -202,7 +202,7 @@
                             },
                             success: function(response) {
                                 window.location.reload()
-                                alert(response.success);
+                                alert('Presensi Berhasil');
                             },
                             error: function(xhr) {
                                 alert('An error occurred: ' + xhr.responseText);
