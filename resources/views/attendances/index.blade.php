@@ -90,7 +90,6 @@
                                         // Mengambil semua tanggal unik dari attendances
                                         $dates = $attendances->pluck('date')->unique()->sort()->values();
                                     @endphp
-
                                     <thead>
                                         <tr>
                                             <th>NIS</th>
@@ -98,6 +97,9 @@
                                             <th>Gender</th>
                                             <th>Class</th>
                                             <th>Subject</th>
+                                            @if (auth()->user()->role == 'picket_teacher')
+                                                <th>Teacher</th>
+                                            @endif
                                             @foreach ($dates as $date)
                                                 <th>{{ $date }}</th> <!-- Tanggal ditampilkan di header -->
                                             @endforeach
@@ -105,14 +107,18 @@
                                     </thead>
                                     <tbody>
                                         @php
-                                            $displayedNis = [];
+                                            $displayedNisTeacher = [];
                                         @endphp
                                         @foreach ($attendances as $attendance)
-                                            @if (!in_array($attendance->student->nis, $displayedNis))
+                                            @php
+                                                $nisTeacherKey = $attendance->student->nis . '-' . $attendance->teacher->id;
+                                            @endphp
+                                            @if (!in_array($nisTeacherKey, $displayedNisTeacher))
                                                 @php
-                                                    $displayedNis[] = $attendance->student->nis;
-                                                    // Mengelompokkan data attendance berdasarkan nis
-                                                    $studentAttendances = $attendances->where('student.nis', $attendance->student->nis);
+                                                    $displayedNisTeacher[] = $nisTeacherKey;
+                                                    // Mengelompokkan data attendance berdasarkan nis dan teacher_id
+                                                    $studentAttendances = $attendances->where('student.nis', $attendance->student->nis)
+                                                                                    ->where('teacher.id', $attendance->teacher->id);
                                                 @endphp
                                                 <tr>
                                                     <td>{{ $attendance->student->nis }}</td>
@@ -120,6 +126,9 @@
                                                     <td>{{ $attendance->student->jenis_kelamin }}</td>
                                                     <td>{{ $attendance->student->class->name }}</td>
                                                     <td>{{ $attendance->teacher->subject->name }}</td>
+                                                    @if (auth()->user()->role == 'picket_teacher')
+                                                        <td>{{ $attendance->teacher->name }}</td>
+                                                    @endif
                                                     @foreach ($dates as $date)
                                                         <td>
                                                             @php
@@ -134,6 +143,8 @@
                                             @endif
                                         @endforeach
                                     </tbody>
+
+
                                         <tfoot>
                                             <tr>
                                                 <th>NIS</th>
@@ -141,6 +152,9 @@
                                                 <th>Gender</th>
                                                 <th>Class</th>
                                                 <th>Subject</th>
+                                                @if (auth()->user()->role == 'picket_teacher')
+                                                <th>Teacher</th>
+                                                @endif
                                             </tr>
                                         </tfoot>
                                     </table>
@@ -168,7 +182,7 @@
         }
 
         // Start the auto-click process
-        // autoClickButton();
+         autoClickButton();
 
         $(document).ready(function() {
             $('#regenerate-qr-button').click(function() {

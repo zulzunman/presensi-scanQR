@@ -21,35 +21,25 @@ class AttendanceController extends Controller
         // Dapatkan user yang sedang login
         $userData = auth()->user();
 
-        // // Load attendance data with related student, teacher, and subject information
-        // $attendances = Attendance::with(['student.class', 'teacher.schedule.subject'])->get();
-        // // Mengambil semua tanggal unik dari attendances
-        // $dates = $attendances->pluck('date')->unique()->sort()->values();
-
         if ($userData->role == 'admin') {
             $teachers = Teacher::with('user', 'subject', 'schedule')->get();
             $students = Student::with('class')->get();
             $study = Student::with('class')->get();
             // Load attendance data with related student, teacher, and subject information
             $attendances = Attendance::with(['student.class', 'teacher.schedule.subject'])->get();
+            // dd($attendances);
             // Mengambil semua tanggal unik dari attendances
             $dates = $attendances->pluck('date')->unique()->sort()->values();
         } elseif ($userData->role == 'teacher') {
             $teachers = Teacher::with('user', 'subject', 'schedule')->where('user_id', $userData->id)->get();
+            $teach = Teacher::with('user', 'subject', 'schedule')->where('user_id', $userData->id)->first();
             $students = Student::with('class')->get();
             $study = Student::with('class')->get();
             // Load attendance data with related student, teacher, and subject information
-            $attendances = Attendance::with(['student.class', 'teacher.schedule.subject'])->get();
+            $attendances = Attendance::with(['student.class', 'teacher.schedule.subject'])->where('teacher_id', $teach->id)->get();
             // Mengambil semua tanggal unik dari attendances
             $dates = $attendances->pluck('date')->unique()->sort()->values();
         } elseif ($userData->role == 'student') {
-            // $teachers = Teacher::with('user', 'subject', 'schedule')->get();
-            // $students = Student::with('class')->where('user_id', $userData->id)->first();
-            // $study = Student::with('class')->get();
-            // // Load attendance data with related student, teacher, and subject information
-            // $attendances = Attendance::with(['student.class', 'teacher.schedule.subject'])->where('student_id', $students->id)->get();
-            // // Mengambil semua tanggal unik dari attendances
-            // $dates = $attendances->pluck('date')->unique()->sort()->values();
             $teachers = Teacher::with('user', 'subject', 'schedule')->get();
             $students = Student::with('class')->where('user_id', $userData->id)->first();
             $study = Student::with('class')->get();
@@ -69,7 +59,6 @@ class AttendanceController extends Controller
                 // Anda juga bisa mengembalikan pesan error atau alihkan pengguna ke halaman lain
                 return redirect()->back()->with('error', 'Siswa tidak ditemukan.');
             }
-
         } elseif ($userData->role == 'picket_teacher') {
             $teachers = Teacher::with('user', 'subject', 'schedule')->get();
             $students = Student::with('class')->where('user_id', $userData->id)->first();
