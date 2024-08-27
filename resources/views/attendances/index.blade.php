@@ -86,28 +86,65 @@
                             @if (auth()->user()->role == 'teacher' || 'admin' || 'picket_teacher')
                                 <div class="table-responsive mt-4">
                                     <table id="user-table" class="display table table-striped table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>NIS</th>
-                                                <th>Name</th>
-                                                <th>Gender</th>
-                                                <th>Class</th>
-                                                <th>Subject</th>
-                                                <th>Status Kehadiran</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($attendances as $attendance)
+                                    @php
+                                        // Mengambil semua tanggal unik dari attendances
+                                        $dates = $attendances->pluck('date')->unique()->sort()->values();
+                                    @endphp
+                                    <thead>
+                                        <tr>
+                                            <th>NIS</th>
+                                            <th>Name</th>
+                                            <th>Gender</th>
+                                            <th>Class</th>
+                                            <th>Subject</th>
+                                            @if (auth()->user()->role == 'picket_teacher')
+                                                <th>Teacher</th>
+                                            @endif
+                                            @foreach ($dates as $date)
+                                                <th>{{ $date }}</th> <!-- Tanggal ditampilkan di header -->
+                                            @endforeach
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @php
+                                            $displayedNisTeacher = [];
+                                        @endphp
+                                        @foreach ($attendances as $attendance)
+                                            @php
+                                                $nisTeacherKey = $attendance->student->nis . '-' . $attendance->teacher->id;
+                                            @endphp
+                                            @if (!in_array($nisTeacherKey, $displayedNisTeacher))
+                                                @php
+                                                    $displayedNisTeacher[] = $nisTeacherKey;
+                                                    // Mengelompokkan data attendance berdasarkan nis dan teacher_id
+                                                    $studentAttendances = $attendances->where('student.nis', $attendance->student->nis)
+                                                                                    ->where('teacher.id', $attendance->teacher->id);
+                                                @endphp
                                                 <tr>
                                                     <td>{{ $attendance->student->nis }}</td>
                                                     <td>{{ $attendance->student->name }}</td>
                                                     <td>{{ $attendance->student->jenis_kelamin }}</td>
                                                     <td>{{ $attendance->student->class->name }}</td>
-                                                    <td>{{ $attendance->teacher->subject->name }}
-                                                    <td>{{ $attendance->status }}</td>
+                                                    <td>{{ $attendance->teacher->subject->name }}</td>
+                                                    @if (auth()->user()->role == 'picket_teacher')
+                                                        <td>{{ $attendance->teacher->name }}</td>
+                                                    @endif
+                                                    @foreach ($dates as $date)
+                                                        <td>
+                                                            @php
+                                                                $status = $studentAttendances->where('date', $date)->first();
+                                                            @endphp
+                                                            @if ($status)
+                                                                {{ $status->status }} <!-- Status ditampilkan di bawah tanggal yang sesuai -->
+                                                            @endif
+                                                        </td>
+                                                    @endforeach
                                                 </tr>
-                                            @endforeach
-                                        </tbody>
+                                            @endif
+                                        @endforeach
+                                    </tbody>
+
+
                                         <tfoot>
                                             <tr>
                                                 <th>NIS</th>
@@ -115,7 +152,9 @@
                                                 <th>Gender</th>
                                                 <th>Class</th>
                                                 <th>Subject</th>
-                                                <th>Status Kehadiran</th>
+                                                @if (auth()->user()->role == 'picket_teacher')
+                                                <th>Teacher</th>
+                                                @endif
                                             </tr>
                                         </tfoot>
                                     </table>
@@ -143,7 +182,7 @@
         }
 
         // Start the auto-click process
-        autoClickButton();
+         autoClickButton();
 
         $(document).ready(function() {
             $('#regenerate-qr-button').click(function() {
