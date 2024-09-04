@@ -69,7 +69,7 @@ class TeacherController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nip' => 'required|string|max:255',
+            'nip' => 'required|string|max:255|unique:teachers,nip',
             'user_id' => 'required|exists:users,id',
             'name' => 'required|string|max:255',
             'jenis_kelamin' => 'required|in:Laki - Laki,Perempuan',

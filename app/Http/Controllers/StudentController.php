@@ -59,7 +59,7 @@ class StudentController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nis' => 'required|string|max:255',
+            'nis' => 'required|string|max:255|unique:students,nis',
             'user_id' => 'required|exists:users,id',
             'name' => 'required|string|max:255',
             'jenis_kelamin' => 'required|in:L,P',
