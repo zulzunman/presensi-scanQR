@@ -10,24 +10,23 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
                             <div class="d-flex align-items-center">
-                                <h4 class="card-title">Students List</h4>
+                                <h4 class="card-title">Daftar Siswa</h4>
                                 @if (auth()->user()->role == 'admin' || (auth()->user()->role == 'student' && $students->isEmpty()))
                                     <button class="btn btn-primary btn-round ms-auto" data-bs-toggle="modal"
                                         data-bs-target="#createStudentModal">
                                         <i class="fa fa-plus"></i>
-                                        Add Student
+                                        Tambah Siswa
                                     </button>
-                                @elseif (auth()->user()->role == 'admin')
-                                    <a href="{{ url('/download-template') }}" class="btn btn-primary">Download Template Excel</a>
-                                    <form action="{{ route('import') }}" method="POST" enctype="multipart/form-data">
-                                        @csrf
-                                        <div class="form-group">
-                                            <label for="file">Upload Excel</label>
-                                            <input type="file" name="file" class="form-control" required>
-                                        </div>
-                                        <button class="btn btn-primary">Upload</button>
-                                    </form>
                                 @endif
                             </div>
                         </div>
@@ -37,10 +36,10 @@
                                     <thead>
                                         <tr>
                                             <th>NIS</th>
-                                            <th>Name</th>
-                                            <th>Gender</th>
-                                            <th>Class</th>
-                                            <th>Actions</th>
+                                            <th>Nama Lengkap</th>
+                                            <th>Jenis Kelamin</th>
+                                            <th>Kelas</th>
+                                            <th>Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>

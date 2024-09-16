@@ -5,6 +5,7 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ClassController;
 use App\Http\Controllers\ScheduleController;
+use App\Imports\UserImport;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TeacherController;
@@ -47,7 +48,7 @@ Route::middleware(['auth'])->group(function () {
         return Excel::download(new TemplateExport, 'template-data-siswa.xlsx');
     });
     Route::post('/import', function () {
-        Excel::import(new StudentsImport, request()->file('file'));
+        Excel::import(new UserImport, request()->file('file'));
 
         return redirect()->back()->with('success', 'Data Imported Successfully');
     })->name('import');

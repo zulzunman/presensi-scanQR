@@ -93,12 +93,12 @@
                                     <thead>
                                         <tr>
                                             <th>NIS</th>
-                                            <th>Name</th>
-                                            <th>Gender</th>
-                                            <th>Class</th>
-                                            <th>Subject</th>
+                                            <th>Nama Siswa</th>
+                                            <th>Jenis Kelamin</th>
+                                            <th>Kelas</th>
+                                            <th>Mata Pelajaean</th>
                                             @if (auth()->user()->role == 'picket_teacher')
-                                                <th>Teacher</th>
+                                                <th>Guru</th>
                                             @endif
                                             @foreach ($dates as $date)
                                                 <th>{{ $date }}</th> <!-- Tanggal ditampilkan di header -->
@@ -148,12 +148,12 @@
                                         <tfoot>
                                             <tr>
                                                 <th>NIS</th>
-                                                <th>Name</th>
-                                                <th>Gender</th>
-                                                <th>Class</th>
-                                                <th>Subject</th>
+                                                <th>Nama Siswa</th>
+                                                <th>Jenis Kelamin</th>
+                                                <th>Kelas</th>
+                                                <th>Mata Pelajaran</th>
                                                 @if (auth()->user()->role == 'picket_teacher')
-                                                <th>Teacher</th>
+                                                <th>Guru</th>
                                                 @endif
                                             </tr>
                                         </tfoot>

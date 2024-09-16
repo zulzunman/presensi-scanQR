@@ -10,11 +10,11 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="d-flex align-items-center">
-                                <h4 class="card-title">List Subject</h4>
+                                <h4 class="card-title">Daftar Mata Pelajaran</h4>
                                 <button class="btn btn-primary btn-round ms-auto" data-bs-toggle="modal"
                                     data-bs-target="#createSubjectModal">
                                     <i class="fa fa-plus"></i>
-                                    Add Subject
+                                    Tambah Data
                                 </button>
                             </div>
                         </div>
@@ -23,8 +23,8 @@
                                 <table id="user-table" class="display table table-striped table-hover">
                                     <thead>
                                         <tr>
-                                            <th>Name</th>
-                                            <th style="width: 10%">Action</th>
+                                            <th>Nama</th>
+                                            <th style="width: 10%">Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>

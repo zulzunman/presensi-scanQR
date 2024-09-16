@@ -13,7 +13,7 @@
                         <div class="card-header">
                             <div class="card-body">
                                 <div class="table-responsive text-center">
-                                    <h6 class="fw-bold mb-0">Welcome {{ ucfirst($role) }}!</h6>
+                                    <h6 class="fw-bold mb-0">Selamat Datang {{ ucfirst($role) }}!</h6>
                                 </div>
                             </div>
                         </div>
