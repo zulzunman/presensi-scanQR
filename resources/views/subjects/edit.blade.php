@@ -4,7 +4,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editSubjectModal{{ $subject->id }}">Edit Subject</h5>
+                <h5 class="modal-title" id="editSubjectModal{{ $subject->id }}">Edit Mata Pelajaran</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -12,13 +12,13 @@
                     @csrf
                     @method('PUT')
                     <div class="form-group">
-                        <label for="name">Name :</label>
+                        <label for="name">Nama :</label>
                         <input type="text" id="name" name="name" class="form-control"
                             value="{{ $subject->name }}" required>
                     </div>
                     <div class="form-group d-flex justify-content-end mt-3">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary ms-2">Update Subject</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary ms-2">Perbaharui</button>
                     </div>
                 </form>
             </div>

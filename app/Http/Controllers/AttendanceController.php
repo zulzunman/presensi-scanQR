@@ -82,14 +82,14 @@ class AttendanceController extends Controller
         $attendance->time = now()->toTimeString();
         $attendance->save();
 
-        return redirect()->route('attendances.index')->with('success', 'Attendance created successfully.');
+        return redirect()->route('attendances.index')->with('success', 'Kehadiran berhasil dibuat.');
     }
 
     public function showScanPage(Request $request)
     {
         $dataArray = json_decode($request->json('data'), true);
         if (is_null($dataArray) || !isset($dataArray['id'])) {
-            return response()->json(['status' => 'error', 'message' => 'Invalid data received']);
+            return response()->json(['status' => 'error', 'message' => 'Data yang diterima tidak valid']);
         }
 
         $dataQR = $dataArray['id']; // Ambil data dari request
@@ -97,7 +97,7 @@ class AttendanceController extends Controller
         $students = Student::where('user_id', $idAuth)->pluck('id');
 
         if ($students->isEmpty()) {
-            return response()->json(['status' => 'error', 'message' => 'Student not found']);
+            return response()->json(['status' => 'error', 'message' => 'Siswa tidak ditemukan']);
         }
 
         // Cek apakah siswa sudah melakukan presensi hari ini
@@ -107,7 +107,7 @@ class AttendanceController extends Controller
             ->exists();
 
         if ($alreadyPresent) {
-            return response()->json(['status' => 'error', 'message' => 'You have already checked in today!']);
+            return response()->json(['status' => 'error', 'message' => 'Anda sudah check in hari ini!']);
         }
 
         $attend = new Attendance([
@@ -120,7 +120,7 @@ class AttendanceController extends Controller
         $attend->save();
 
         // Mengembalikan respons JSON
-        return response()->json(['status' => 'success', 'message' => 'Data saved successfully!']);
+        return response()->json(['status' => 'success', 'message' => 'Data berhasil disimpan!']);
     }
 
     public function regenerateQrCode($id)
@@ -136,7 +136,7 @@ class AttendanceController extends Controller
             // Hapus QR code yang lama jika ada
             if (File::exists($filePath)) {
                 File::delete($filePath);
-                Log::info("Deleted old QR code for teacher ID: {$teacher->id}");
+                Log::info("Menghapus kode QR lama untuk ID guru: {$teacher->id}");
             }
 
             // Data untuk QR code dengan pola yang berbeda (misalnya, menambahkan timestamp)
@@ -154,7 +154,7 @@ class AttendanceController extends Controller
 
             // Simpan QR code ke file
             file_put_contents($filePath, $qrCode);
-            Log::info("Generated new QR code for teacher ID: {$teacher->id}");
+            Log::info("Menghasilkan kode QR baru untuk ID guru: {$teacher->id}");
 
             // Simpan nama file QR ke database
             $teacher->qr_name = $fileName;
@@ -162,14 +162,14 @@ class AttendanceController extends Controller
 
             return response()->json([
                 'status' => true,
-                'message' => 'QR Code regenerated successfully',
+                'message' => 'Kode QR berhasil dibuat ulang',
                 'file_path' => asset('assets/qrcodes/' . $fileName)
             ], 200);
         } catch (\Exception $e) {
-            Log::error("Failed to regenerate QR code: " . $e->getMessage());
+            Log::error("Gagal membuat ulang kode QR: " . $e->getMessage());
             return response()->json([
                 'status' => false,
-                'message' => 'Failed to regenerate QR code',
+                'message' => 'Gagal membuat ulang kode QR',
                 'error' => $e->getMessage(),
             ], 500);
         }

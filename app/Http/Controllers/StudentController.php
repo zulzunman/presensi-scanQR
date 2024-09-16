@@ -58,7 +58,7 @@ class StudentController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validatedData = $request->validate([
             'nis' => 'required|string|max:255|unique:students,nis',
             'user_id' => 'required|exists:users,id',
             'name' => 'required|string|max:255',
@@ -66,9 +66,9 @@ class StudentController extends Controller
             'class_id' => 'required|exists:classes,id',
         ]);
 
-        Student::create($request->all());
+        Student::create($validatedData);
 
-        return redirect()->route('students.index')->with('success', 'Student created successfully.');
+        return redirect()->route('students.index')->with('success', 'Siswa berhasil dibuat.');
     }
 
     public function edit($id)
@@ -93,7 +93,7 @@ class StudentController extends Controller
         $student = Student::findOrFail($id);
         $student->update($request->all());
 
-        return redirect()->route('students.index')->with('success', 'Student updated successfully.');
+        return redirect()->route('students.index')->with('success', 'Siswa berhasil diperbarui.');
     }
 
     public function destroy($id)
@@ -101,7 +101,7 @@ class StudentController extends Controller
         $student = Student::findOrFail($id);
         $student->delete();
 
-        return redirect()->route('students.index')->with('success', 'Student deleted successfully.');
+        return redirect()->route('students.index')->with('success', 'Siswa berhasil dihapus.');
     }
 
     public function import(Request $request)
@@ -114,9 +114,9 @@ class StudentController extends Controller
         // Proses import file Excel
         try {
             Excel::import(new StudentsImport, $request->file('file'));
-            return redirect()->back()->with('success', 'Data Imported Successfully');
+            return redirect()->back()->with('success', 'Data Berhasil Diimpor');
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'There was an error importing the data: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat mengimpor data: ' . $e->getMessage());
         }
     }
 }

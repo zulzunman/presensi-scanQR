@@ -39,7 +39,7 @@ class TeacherController extends Controller
             $users = User::where('id', $userData->id)->get();
         } else {
             // Jika peran lain, misalnya siswa atau lainnya, bisa ditambahkan kondisi lain atau menampilkan error
-            return abort(403, 'Unauthorized action.');
+            return abort(403, 'Tindakan tidak sah.');
         }
 
         return view('teachers.index', compact('teachers', 'users', 'subjects', 'currentUserRole', 'userData'));
@@ -82,7 +82,7 @@ class TeacherController extends Controller
         // Memanggil fungsi generateQr untuk menghasilkan QR code
         $this->generateQr($teacher->id);
 
-        return redirect()->route('teachers.index')->with('success', 'Teacher created and QR code generated successfully.');
+        return redirect()->route('teachers.index')->with('success', 'Guru dibuat dan kode QR berhasil dibuat.');
     }
 
     // Fungsi generateQr
@@ -140,7 +140,7 @@ class TeacherController extends Controller
             $users = User::where('role', 'Teacher')->where('id', $user->id)->get();
         } else {
             // Jika peran lain, misalnya siswa atau lainnya, bisa ditambahkan kondisi lain atau menampilkan error
-            return abort(403, 'Unauthorized action.');
+            return abort(403, 'Tindakan tidak sah.');
         }
 
         return view('teachers.edit', compact('teacher', 'users', 'subjects'));
@@ -160,7 +160,7 @@ class TeacherController extends Controller
         $teacher->update($request->all());
 
         return redirect()->route('teachers.index')
-            ->with('success', 'Teacher updated successfully.');
+            ->with('success', 'Guru berhasil diperbarui.');
     }
 
     public function destroy($id)
@@ -169,6 +169,6 @@ class TeacherController extends Controller
         $teacher->delete();
 
         return redirect()->route('teachers.index')
-            ->with('success', 'Teacher deleted successfully.');
+            ->with('success', 'Guru berhasil dihapus.');
     }
 }

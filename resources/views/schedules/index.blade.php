@@ -12,12 +12,12 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="d-flex align-items-center justify-content-between">
-                                <h4 class="card-title">Schedule List</h4>
+                                <h4 class="card-title">Daftar Jadwal</h4>
                                 @if (auth()->user()->role == 'admin')
                                     <button class="btn btn-primary btn-round ms-auto" data-bs-toggle="modal"
                                         data-bs-target="#createScheduleModal">
                                         <i class="fa fa-plus"></i>
-                                        Add Schedule
+                                        Tambah Jadwal
                                     </button>
                                 @endif
                             </div>
@@ -26,9 +26,9 @@
                             <div class="table-responsive">
                                 <div class="d-flex justify-content-end mb-3">
                                     <div class="d-flex align-items-center me-3">
-                                        <label for="sort-by-class" class="form-label me-2">Sort By Class:</label>
+                                        <label for="sort-by-class" class="form-label me-2">Urutkan dengan kelas:</label>
                                         <select id="sort-by-class" class="form-select" onchange="filterSchedulesByClass()">
-                                            <option value="all">All Classes</option>
+                                            <option value="all">Semua Kelas</option>
                                             @foreach ($classes as $class)
                                                 <option value="{{ $class->name }}">{{ $class->name }}</option>
                                             @endforeach
@@ -38,14 +38,14 @@
                                 <table id="user-table" class="display table table-striped table-hover">
                                     <thead>
                                         <tr>
-                                            <th>Day</th>
-                                            <th>Start Time</th>
-                                            <th>End Time</th>
-                                            <th>Subject</th>
-                                            <th>Teacher</th>
-                                            <th>Class</th>
+                                            <th>Hari</th>
+                                            <th>Jam Mulai</th>
+                                            <th>Jam Berakhir</th>
+                                            <th>Mata Pelajaran</th>
+                                            <th>Guru</th>
+                                            <th>Kelas</th>
                                             @if (auth()->user()->role == 'admin')
-                                                <th>Actions</th>
+                                                <th>Aksi</th>
                                             @endif
                                         </tr>
                                     </thead>

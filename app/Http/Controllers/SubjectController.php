@@ -32,7 +32,7 @@ class SubjectController extends Controller
 
         Subject::create($request->all());
 
-        return redirect()->route('subjects.index')->with('success', 'Subject created successfully.');
+        return redirect()->route('subjects.index')->with('success', 'Subjek berhasil dibuat.');
     }
 
     public function show($id)
@@ -56,7 +56,7 @@ class SubjectController extends Controller
         $subject = Subject::findOrFail($id);
         $subject->update($request->all());
 
-        return redirect()->route('subjects.index')->with('success', 'subject updated successfully.');
+        return redirect()->route('subjects.index')->with('success', 'subjek berhasil diperbarui.');
     }
 
     public function destroy($id)
@@ -64,6 +64,6 @@ class SubjectController extends Controller
         $subject = Subject::findOrFail($id);
         $subject->delete();
 
-        return redirect()->route('subjects.index')->with('success', 'subject deleted successfully.');
+        return redirect()->route('subjects.index')->with('success', 'subjek berhasil dihapus.');
     }
 }
