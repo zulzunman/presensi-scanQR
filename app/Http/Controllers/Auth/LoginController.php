@@ -26,7 +26,7 @@ class LoginController extends Controller
 
         // Gagal login
         return back()->withErrors([
-            'username' => 'The provided credentials do not match our records.',
+            'username' => 'Kredensial yang diberikan tidak cocok dengan catatan kami.',
         ]);
     }
 

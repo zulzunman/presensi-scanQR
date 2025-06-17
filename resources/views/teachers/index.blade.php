@@ -11,12 +11,12 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="d-flex align-items-center">
-                                <h4 class="card-title">List Teachers</h4>
+                                <h4 class="card-title">Daftar Guru</h4>
                                 @if (auth()->user()->role == 'admin' || (auth()->user()->role == 'teacher' && $teachers->isEmpty()))
                                     <button class="btn btn-primary btn-round ms-auto" data-bs-toggle="modal"
                                         data-bs-target=" #createTeacherModal">
                                         <i class="fa fa-plus"></i>
-                                        Add Teachers
+                                        Tambah Data
                                     </button>
                                 @endif
                             </div>
@@ -33,10 +33,10 @@
                                     <thead>
                                         <tr>
                                             <th>NIP</th>
-                                            <th>Nama</th>
+                                            <th>Nama Lengkap</th>
                                             <th>Jenis Kelamin</th>
                                             <th>Mata Pelajaran</th>
-                                            <th>Action</th>
+                                            <th>Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>

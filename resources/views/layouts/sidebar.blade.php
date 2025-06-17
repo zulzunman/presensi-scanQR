@@ -15,43 +15,43 @@
                 <li class="nav-item">
                     <a href="{{ route('teachers.index') }}">
                         <i class="fas fa-chalkboard-teacher"></i>
-                        <p>Manage Teachers</p>
+                        <p>Kelola Guru</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('students.index') }}">
                         <i class="fas fa-user-graduate"></i>
-                        <p>Manage Students</p>
+                        <p>Kelola Siswa</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('users.index') }}">
                         <i class="fas fa-users-cog"></i>
-                        <p>Manage Users</p>
+                        <p>Kelola Users</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('subjects.index') }}">
                         <i class="fas fa-book-open"></i>
-                        <p>Manage Subjects</p>
+                        <p>Kelola Mata Pelajaran</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('schedules.index') }}">
                         <i class="fas fa-calendar-alt"></i>
-                        <p>Manage Schedule</p>
+                        <p>Kelola Jadwal</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('classes.index') }}">
                         <i class="fas fa-school"></i>
-                        <p>Manage Class</p>
+                        <p>Kelola Kelas</p>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('attendances.index') }}">
                         <i class="fas fa-clipboard-list"></i>
-                        <p>Manage Attendance</p>
+                        <p>Kelola Kehadiran</p>
                     </a>
                 </li>
             @elseif (auth()->user()->role == 'teacher')
@@ -59,7 +59,7 @@
                 <li class="nav-item">
                     <a href="{{ route('schedules.index') }}">
                         <i class="fas fa-calendar-alt"></i>
-                        <p>Manage Schedule</p>
+                        <p>Kelola Jadwal</p>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -71,7 +71,7 @@
                 <li class="nav-item">
                     <a href="{{ route('attendances.index') }}">
                         <i class="fas fa-clipboard-list"></i>
-                        <p>Manage Attendance</p>
+                        <p>Kelola Kehadiran</p>
                     </a>
                 </li>
             @elseif (auth()->user()->role == 'student')
@@ -85,7 +85,7 @@
                 <li class="nav-item">
                     <a href="{{ route('attendances.index') }}">
                         <i class="fas fa-clipboard-list"></i>
-                        <p>Manage Attendance</p>
+                        <p>Kelola Kehadiran</p>
                     </a>
                 </li>
                 <!-- Tambahkan menu untuk siswa jika diperlukan -->
@@ -94,7 +94,7 @@
                 <li class="nav-item">
                     <a href="{{ route('attendances.index') }}">
                         <i class="fas fa-clipboard-list"></i>
-                        <p>Manage Attendance</p>
+                        <p>Kelola Kehadiran</p>
                     </a>
                 </li>
                 <!-- Tambahkan menu untuk siswa jika diperlukan -->

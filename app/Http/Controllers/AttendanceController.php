@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Log;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AttendanceController extends Controller
 {
@@ -20,28 +21,55 @@ class AttendanceController extends Controller
         // Dapatkan user yang sedang login
         $userData = auth()->user();
 
-        // Load attendance data with related student, teacher, and subject information
-        $attendances = Attendance::with(['student.class', 'teacher.schedule.subject'])->get();
-
         if ($userData->role == 'admin') {
             $teachers = Teacher::with('user', 'subject', 'schedule')->get();
             $students = Student::with('class')->get();
             $study = Student::with('class')->get();
+            // Load attendance data with related student, teacher, and subject information
+            $attendances = Attendance::with(['student.class', 'teacher.schedule.subject'])->get();
+            // dd($attendances);
+            // Mengambil semua tanggal unik dari attendances
+            $dates = $attendances->pluck('date')->unique()->sort()->values();
         } elseif ($userData->role == 'teacher') {
             $teachers = Teacher::with('user', 'subject', 'schedule')->where('user_id', $userData->id)->get();
+            $teach = Teacher::with('user', 'subject', 'schedule')->where('user_id', $userData->id)->first();
             $students = Student::with('class')->get();
             $study = Student::with('class')->get();
+            // Load attendance data with related student, teacher, and subject information
+            $attendances = Attendance::with(['student.class', 'teacher.schedule.subject'])->where('teacher_id', $teach->id)->get();
+            // Mengambil semua tanggal unik dari attendances
+            $dates = $attendances->pluck('date')->unique()->sort()->values();
         } elseif ($userData->role == 'student') {
             $teachers = Teacher::with('user', 'subject', 'schedule')->get();
             $students = Student::with('class')->where('user_id', $userData->id)->first();
             $study = Student::with('class')->get();
+
+            if ($students) {
+                // Load attendance data with related student, teacher, and subject information
+                $attendances = Attendance::with(['student.class', 'teacher.schedule.subject'])
+                    ->where('student_id', $students->id)
+                    ->get();
+
+                // Mengambil semua tanggal unik dari attendances
+                $dates = $attendances->pluck('date')->unique()->sort()->values();
+            } else {
+                // Tindakan jika $students adalah null, misalnya:
+                $attendances = collect(); // kosongkan collection attendances
+                $dates = collect(); // kosongkan collection dates
+                // Anda juga bisa mengembalikan pesan error atau alihkan pengguna ke halaman lain
+                return redirect()->back()->with('error', 'Siswa tidak ditemukan.');
+            }
         } elseif ($userData->role == 'picket_teacher') {
             $teachers = Teacher::with('user', 'subject', 'schedule')->get();
             $students = Student::with('class')->where('user_id', $userData->id)->first();
             $study = Student::with('class')->get();
+            // Load attendance data with related student, teacher, and subject information
+            $attendances = Attendance::with(['student.class', 'teacher.schedule.subject'])->get();
+            // Mengambil semua tanggal unik dari attendances
+            $dates = $attendances->pluck('date')->unique()->sort()->values();
         }
 
-        return view('attendances.index', compact('attendances', 'teachers', 'userData', 'students', 'study'));
+        return view('attendances.index', compact('attendances', 'teachers', 'userData', 'students', 'study', 'dates'));
     }
 
     public function addManual(Request $request)
@@ -54,15 +82,33 @@ class AttendanceController extends Controller
         $attendance->time = now()->toTimeString();
         $attendance->save();
 
-        return redirect()->route('attendances.index')->with('success', 'Attendance created successfully.');
+        return redirect()->route('attendances.index')->with('success', 'Kehadiran berhasil dibuat.');
     }
 
     public function showScanPage(Request $request)
     {
         $dataArray = json_decode($request->json('data'), true);
+        if (is_null($dataArray) || !isset($dataArray['id'])) {
+            return response()->json(['status' => 'error', 'message' => 'Data yang diterima tidak valid']);
+        }
+
         $dataQR = $dataArray['id']; // Ambil data dari request
         $idAuth = auth()->user()->id;
         $students = Student::where('user_id', $idAuth)->pluck('id');
+
+        if ($students->isEmpty()) {
+            return response()->json(['status' => 'error', 'message' => 'Siswa tidak ditemukan']);
+        }
+
+        // Cek apakah siswa sudah melakukan presensi hari ini
+        $alreadyPresent = Attendance::where('student_id', $students[0])
+            ->where('date', now()->toDateString())
+            ->where('teacher_id', $dataQR)
+            ->exists();
+
+        if ($alreadyPresent) {
+            return response()->json(['status' => 'error', 'message' => 'Anda sudah check in hari ini!']);
+        }
 
         $attend = new Attendance([
             'student_id' => $students[0],
@@ -74,7 +120,7 @@ class AttendanceController extends Controller
         $attend->save();
 
         // Mengembalikan respons JSON
-        return response()->json(['status' => 'success', 'message' => 'Data saved successfully!']);
+        return response()->json(['status' => 'success', 'message' => 'Data berhasil disimpan!']);
     }
 
     public function regenerateQrCode($id)
@@ -90,7 +136,7 @@ class AttendanceController extends Controller
             // Hapus QR code yang lama jika ada
             if (File::exists($filePath)) {
                 File::delete($filePath);
-                Log::info("Deleted old QR code for teacher ID: {$teacher->id}");
+                Log::info("Menghapus kode QR lama untuk ID guru: {$teacher->id}");
             }
 
             // Data untuk QR code dengan pola yang berbeda (misalnya, menambahkan timestamp)
@@ -108,7 +154,7 @@ class AttendanceController extends Controller
 
             // Simpan QR code ke file
             file_put_contents($filePath, $qrCode);
-            Log::info("Generated new QR code for teacher ID: {$teacher->id}");
+            Log::info("Menghasilkan kode QR baru untuk ID guru: {$teacher->id}");
 
             // Simpan nama file QR ke database
             $teacher->qr_name = $fileName;
@@ -116,14 +162,14 @@ class AttendanceController extends Controller
 
             return response()->json([
                 'status' => true,
-                'message' => 'QR Code regenerated successfully',
+                'message' => 'Kode QR berhasil dibuat ulang',
                 'file_path' => asset('assets/qrcodes/' . $fileName)
             ], 200);
         } catch (\Exception $e) {
-            Log::error("Failed to regenerate QR code: " . $e->getMessage());
+            Log::error("Gagal membuat ulang kode QR: " . $e->getMessage());
             return response()->json([
                 'status' => false,
-                'message' => 'Failed to regenerate QR code',
+                'message' => 'Gagal membuat ulang kode QR',
                 'error' => $e->getMessage(),
             ], 500);
         }

@@ -4,11 +4,11 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="viewSubjectModalLabel{{ $subject->id }}">Subject Detail</h5>
+                <h5 class="modal-title" id="viewSubjectModalLabel{{ $subject->id }}">Rincian Mata Pelajaran</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p><strong>Name :</strong> {{ $subject->name }}</p>
+                <p><strong>Nama :</strong> {{ $subject->name }}</p>
             </div>
         </div>
     </div>

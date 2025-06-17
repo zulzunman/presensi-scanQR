@@ -4,7 +4,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editTeacherModalLabel{{ $teacher->id }}">Edit Teacher</h5>
+                <h5 class="modal-title" id="editTeacherModalLabel{{ $teacher->id }}">Edit Guru</h5>
                 <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -20,7 +20,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="user_id">Account:</label>
+                        <label for="user_id">Akun:</label>
                         <select name="user_id" id="user_id" class="form-control">
                             @foreach ($users as $user)
                                 <option value="{{ $user->id }}"
@@ -31,13 +31,13 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="name">Name:</label>
+                        <label for="name">Nama Lengkap:</label>
                         <input type="text" name="name" id="name" class="form-control"
                             value="{{ $teacher->name }}">
                     </div>
 
                     <div class="form-group">
-                        <label for="jenis_kelamin">Gender:</label>
+                        <label for="jenis_kelamin">Jenis Kelamin:</label>
                         <select name="jenis_kelamin" id="jenis_kelamin" class="form-control">
                             <option value="Laki - Laki"
                                 {{ $teacher->jenis_kelamin == 'Laki - Laki' ? 'selected' : '' }}>Laki - Laki</option>
@@ -47,7 +47,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="subject_id">Subject:</label>
+                        <label for="subject_id">Mata Pelajaran:</label>
                         <select name="subject_id" id="subject_id" class="form-control">
                             @foreach ($subjects as $subject)
                                 <option value="{{ $subject->id }}"
@@ -57,8 +57,8 @@
                         </select>
                     </div>
                     <div class="form-group d-flex justify-content-end mt-3">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary ms-2">Update</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary ms-2">Perbaharui</button>
                     </div>
                 </form>
             </div>

@@ -16,7 +16,7 @@
                         <select class="form-control" id="student_id" name="student_id" required>
                             <option value="" disabled selected>Select Student</option>
                             @foreach ($study as $student)
-                                <option value="{{ $student->id }}">{{ $student->name }}</option>
+                                <option value="{{ $student->id }}">{{ $student->name }} - {{ $student->class->name}}</option>
                             @endforeach
                         </select>
                     </div>
@@ -25,7 +25,7 @@
                         <select name="teacher_id" id="teacher_id" class="form-control">
                             <option value="" disabled selected>Select Teacher</option>
                             @foreach ($teachers as $teacher)
-                                <option value="{{ $teacher->id }}">{{ $teacher->name }}</option>
+                                <option value="{{ $teacher->id }}">{{$teacher->name}} - {{ $teacher->subject->name }}</option>
                             @endforeach
                         </select>
                     </div>

@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\UserImport;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
@@ -46,7 +48,7 @@ class UserController extends Controller
             'role' => $request->role,
         ]);
 
-        return redirect()->route('users.index')->with('success', 'User created successfully.');
+        return redirect()->route('users.index')->with('success', 'Pengguna berhasil dibuat.');
     }
 
     public function show($id)
@@ -81,11 +83,11 @@ class UserController extends Controller
         $user->save();
 
         if ($currentUserRole == 'admin') {
-            return redirect()->route('users.index')->with('success', 'User updated successfully.');
+            return redirect()->route('users.index')->with('success', 'Pengguna berhasil diperbarui.');
         } elseif ($currentUserRole == 'teacher') {
-            return redirect()->route('teachers.index')->with('success', 'User updated successfully.');
+            return redirect()->route('teachers.index')->with('success', 'Pengguna berhasil diperbarui.');
         } else {
-            return redirect()->route('students.index')->with('success', 'User updated successfully.');
+            return redirect()->route('students.index')->with('success', 'Pengguna berhasil diperbarui.');
         }
 
     }
@@ -95,6 +97,22 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $user->delete();
 
-        return redirect()->route('users.index')->with('success', 'User deleted successfully.');
+        return redirect()->route('users.index')->with('success', 'Pengguna berhasil dihapus.');
+    }
+
+    public function import(Request $request)
+    {
+        // Validasi file yang di-upload (opsional)
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv',
+        ]);
+
+        // Proses import file Excel
+        try {
+            Excel::import(new UserImport, $request->file('file'));
+            return redirect()->back()->with('success', 'Data Berhasil Diimpor');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Terjadi kesalahan saat mengimpor data: ' . $e->getMessage());
+        }
     }
 }

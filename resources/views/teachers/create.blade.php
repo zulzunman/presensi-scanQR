@@ -4,7 +4,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="createTeacherModalLabel">Create Teacher</h5>
+                <h5 class="modal-title" id="createTeacherModalLabel">Buat Data Guru</h5>
                 <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -20,9 +20,9 @@
 
                     @if (auth()->user()->role == 'admin')
                         <div class="form-group">
-                            <label for="user_id">Account:</label>
+                            <label for="user_id">Akun:</label>
                             <select name="user_id" id="user_id" class="form-control">
-                                <option value="" disabled selected>Select Account</option>
+                                <option value="" disabled selected>Pilih Akun</option>
                                 @foreach ($users as $user)
                                     <option value="{{ $user->id }}">{{ $user->username }}</option>
                                 @endforeach
@@ -35,32 +35,32 @@
                     @endif
 
                     <div class="form-group">
-                        <label for="name">Name:</label>
+                        <label for="name">Nama:</label>
                         <input type="text" name="name" id="name" class="form-control"
                             value="{{ old('name') }}">
                     </div>
 
                     <div class="form-group">
-                        <label for="jenis_kelamin">Gender:</label>
+                        <label for="jenis_kelamin">Jenis Kelamin:</label>
                         <select name="jenis_kelamin" id="jenis_kelamin" class="form-control">
-                            <option value="" disabled selected>Select Gender</option>
+                            <option value="" disabled selected>Pilih Jenis Kelamin</option>
                             <option value="Laki - Laki">Laki - Laki</option>
                             <option value="Perempuan">Perempuan</option>
                         </select>
                     </div>
 
                     <div class="form-group">
-                        <label for="subject_id">Subject:</label>
+                        <label for="subject_id">Mata Pelajaran:</label>
                         <select name="subject_id" id="subject_id" class="form-control">
-                            <option value="" disabled selected>Select Subject</option>
+                            <option value="" disabled selected>Pilih Mata Pelajaran</option>
                             @foreach ($subjects as $subject)
                                 <option value="{{ $subject->id }}">{{ $subject->name }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="form-group d-flex justify-content-end mt-3">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary ms-2">Create</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Tutup</button>
+                        <button type="submit" class="btn btn-primary ms-2">Buat</button>
                     </div>
                 </form>
             </div>

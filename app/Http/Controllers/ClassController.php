@@ -32,7 +32,7 @@ class ClassController extends Controller
 
         Classes::create($request->all());
 
-        return redirect()->route('classes.index')->with('success', 'Class created successfully.');
+        return redirect()->route('classes.index')->with('success', 'Kelas berhasil dibuat.');
     }
 
     public function show($id)
@@ -56,7 +56,7 @@ class ClassController extends Controller
         $class = Classes::findOrFail($id);
         $class->update($request->all());
 
-        return redirect()->route('classes.index')->with('success', 'Class updated successfully.');
+        return redirect()->route('classes.index')->with('success', 'Kelas berhasil diperbarui.');
     }
 
     public function destroy($id)
@@ -64,6 +64,6 @@ class ClassController extends Controller
         $class = Classes::findOrFail($id);
         $class->delete();
 
-        return redirect()->route('classes.index')->with('success', 'Class deleted successfully.');
+        return redirect()->route('classes.index')->with('success', 'Kelas berhasil dihapus.');
     }
 }

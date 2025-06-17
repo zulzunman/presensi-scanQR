@@ -63,7 +63,7 @@ class ScheduleController extends Controller
 
         Schedule::create($request->all());
 
-        return redirect()->route('schedules.index')->with('success', 'Schedule created successfully.');
+        return redirect()->route('schedules.index')->with('success', 'Jadwal berhasil dibuat.');
     }
 
     public function edit($id)
@@ -114,7 +114,7 @@ class ScheduleController extends Controller
         $schedule->save();
 
         // Redirect dengan pesan sukses
-        return redirect()->route('schedules.index')->with('success', 'Schedule updated successfully');
+        return redirect()->route('schedules.index')->with('success', 'Jadwal berhasil diperbarui');
     }
 
 
@@ -123,6 +123,6 @@ class ScheduleController extends Controller
         $schedule = Schedule::findOrFail($id);
         $schedule->delete();
 
-        return redirect()->route('schedules.index')->with('success', 'Schedule deleted successfully.');
+        return redirect()->route('schedules.index')->with('success', 'Jadwal berhasil dihapus.');
     }
 }

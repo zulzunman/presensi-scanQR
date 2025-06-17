@@ -11,13 +11,23 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="d-flex align-items-center">
-                                <h4 class="card-title">List Users</h4>
+                                <h4 class="card-title">Daftar Users</h4>
                                 <button class="btn btn-primary btn-round ms-auto" data-bs-toggle="modal"
                                     data-bs-target="#createUserModal">
                                     <i class="fa fa-plus"></i>
-                                    Add Users
+                                    Tambah Data
                                 </button>
                             </div>
+                            @if (auth()->user()->role == 'admin')
+                                <form action="{{ route('import') }}" method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="form-group">
+                                        <label for="file">Upload Excel</label>
+                                        <input type="file" name="file" class="form-control" required>
+                                    </div>
+                                    <button class="btn btn-primary">Upload</button>
+                                </form>
+                            @endif
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -25,8 +35,8 @@
                                     <thead>
                                         <tr>
                                             <th>Username</th>
-                                            <th>Role</th>
-                                            <th style="width: 10%">Action</th>
+                                            <th>Hak Akses</th>
+                                            <th style="width: 10%">Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
