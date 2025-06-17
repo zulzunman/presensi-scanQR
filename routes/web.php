@@ -32,7 +32,6 @@ Route::get('/error', [LoginController::class, 'error'])->name('error');
 // Route untuk dashboard berbeda berdasarkan role
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [LoginController::class, 'dashboard'])->name('dashboard');
-
     Route::resource('teachers', TeacherController::class);
     Route::resource('classes', ClassController::class);
     Route::resource('students', StudentController::class);

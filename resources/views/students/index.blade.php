@@ -2,7 +2,7 @@
 @section('sidebar')
     @include('layouts.sidebar')
 @endsection
-
+{{-- @section('content') --}}
 @section('content')
     <div class="container">
         <div class="page-inner">
@@ -19,7 +19,8 @@
                                         Add Student
                                     </button>
                                 @elseif (auth()->user()->role == 'admin')
-                                    <a href="{{ url('/download-template') }}" class="btn btn-primary">Download Template Excel</a>
+                                    <a href="{{ url('/download-template') }}" class="btn btn-primary">Download Template
+                                        Excel</a>
                                     <form action="{{ route('import') }}" method="POST" enctype="multipart/form-data">
                                         @csrf
                                         <div class="form-group">
